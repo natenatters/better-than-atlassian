@@ -1,0 +1,60 @@
+<!doctype html><html><head><meta charset="utf-8"><title>2 Pipeline</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.layout{display:grid;grid-template-columns:300px 1fr;height:calc(100vh - 42px)}
+.inbox{border-right:1px solid var(--line);padding:14px;overflow:auto;background:var(--panel)}
+.item{padding:9px 10px;border-radius:6px;border:1px solid var(--line);background:var(--bg);margin-bottom:8px;font-size:13px}
+.item.me{border-left:3px solid var(--accent)} .item.wait{border-left:3px solid var(--wait);opacity:.75}
+.item small{display:block;color:var(--dim);font-family:var(--mono);font-size:11px}
+.board{display:flex;gap:10px;padding:14px;overflow:auto}
+.col{min-width:170px;flex:1}
+.col h2{display:flex;justify-content:space-between}
+.col .n{color:var(--text)}
+.col.hot h2{color:var(--accent)} .col.hold h2{color:var(--wait)}
+.t{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:8px;margin-bottom:8px;font-size:12px}
+.t b{display:block;margin-bottom:2px;font-size:13px}
+.t .m{display:flex;justify-content:space-between;margin-top:6px;color:var(--dim);font:11px var(--mono)}
+.loop{font-size:10px;color:var(--bad);font-family:var(--mono)}
+.legend{padding:0 14px 14px;color:var(--dim);font-size:12px}
+.tl{margin:0 14px;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
+.track{display:flex;height:22px;border-radius:4px;overflow:hidden;margin:8px 0;font:10px var(--mono);color:#000}
+.track div{display:grid;place-items:center}
+.keys{display:flex;gap:6px;margin-top:6px}
+kbd{font:11px var(--mono);background:var(--panel2);border:1px solid var(--line);border-radius:3px;padding:0 5px}
+</style></head><body>
+<nav class="top"><b>BTA</b><a href="index.html">Mood board</a><a href="1-colony.html">1 Colony</a><a class="on" href="2-pipeline.html">2 Pipeline</a><a href="3-environments.html">3 Environments</a>
+<span style="flex:1"></span><span class="dim">press <kbd>⌘K</kbd> for commands</span></nav>
+<div class="layout">
+<aside class="inbox">
+<h2>Needs me (5)</h2>
+<div class="item me">Merge PROJ-142<small>api · approved 12m ago</small></div>
+<div class="item me">Fix PROJ-151 deploy<small>api · staging failed 1h ago</small></div>
+<div class="item me">Review PR #88 (billing)<small>other codebase · 3h</small></div>
+<div class="item me">Review PR #412 (web)<small>teammate · 1h</small></div>
+<div class="item me">Open master PR for PROJ-139<small>staging verified</small></div>
+<h2 style="margin-top:18px">Waiting on others (2)</h2>
+<div class="item wait">PROJ-147 review<small>billing · 6h</small></div>
+<div class="item wait">PROJ-139 master PR approval<small>api · 20m</small></div>
+<h2 style="margin-top:18px">Next up</h2>
+<div class="item">PROJ-158 Rate limit headers<small>top of Next</small></div>
+</aside>
+<main>
+<div class="board">
+<div class="col"><h2>Next <span class="n">3</span></h2><div class="t"><b>Rate limit headers</b><span class="mono dim">PROJ-158</span></div></div>
+<div class="col"><h2>Dev WIP <span class="n">2</span></h2>
+<div class="t"><b>Empty states</b>PROJ-155<div class="m"><span>web</span><span>2h</span></div></div>
+<div class="t" style="border-color:var(--bad)"><b>Audit export</b>PROJ-151<div class="loop">↺ back from staging ×1</div><div class="m"><span>api</span><span>1h</span></div></div></div>
+<div class="col"><h2>Draft / CI <span class="n">1</span></h2><div class="t"><b>Cache warmup</b>PROJ-149<div class="m"><span>api · CI running</span><span>8m</span></div></div></div>
+<div class="col hold"><h2>In review <span class="n">2</span></h2>
+<div class="t"><b>Invoice rounding</b>PROJ-147<div class="m"><span>billing</span><span>6h</span></div></div>
+<div class="t"><b>Master PR</b>PROJ-139<div class="m"><span>api → master</span><span>20m</span></div></div></div>
+<div class="col hot"><h2>Approved <span class="n">1</span></h2><div class="t" style="border-color:var(--accent)"><b>Retry webhook</b>PROJ-142<div class="m"><span>api</span><span>12m</span></div></div></div>
+<div class="col"><h2>Staging <span class="n">0</span></h2></div>
+<div class="col hot"><h2>Verify <span class="n">1</span></h2><div class="t"><b>SSO timeout</b>PROJ-139<div class="m"><span>verified ✓</span><span>4h</span></div></div></div>
+<div class="col"><h2>Prod <span class="n">0</span></h2></div>
+</div>
+<div class="legend">Amber header = needs you. Purple = waiting on others. Red ↺ = loop back (counted for quality metrics).</div>
+<div class="tl"><h2>PROJ-139 · lead time so far 1d 2h</h2>
+<div class="track"><div style="flex:3;background:var(--info)">WIP 3h</div><div style="flex:1;background:var(--ok)">CI</div><div style="flex:5;background:var(--wait)">review 5h</div><div style="flex:2;background:var(--ok)">staging</div><div style="flex:2;background:var(--accent)">verify</div><div style="flex:4;background:var(--wait)">master review</div></div>
+<div class="dim" style="font-size:12px">Each change gets a timeline like this. Wide purple = the bottleneck is people, not you.</div></div>
+</main></div></body></html>

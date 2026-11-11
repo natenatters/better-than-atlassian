@@ -1,0 +1,60 @@
+<!doctype html><html><head><meta charset="utf-8"><title>B · My Desk</title>
+<style>
+*{box-sizing:border-box;margin:0}
+body{min-height:100vh;color:#2b2218;font:15px/1.35 "Bradley Hand","Segoe Print","Comic Sans MS",cursive;
+ background:#7b5a3c repeating-linear-gradient(92deg,rgba(0,0,0,.06) 0 2px,transparent 2px 9px),linear-gradient(#8a6644,#6d4e33);padding:20px}
+a.back{position:fixed;right:16px;top:12px;color:#f3e6c8;font:13px system-ui;text-decoration:none;opacity:.8}
+.desk{position:relative;max-width:1200px;margin:0 auto;height:900px}
+.item{position:absolute;box-shadow:2px 4px 8px rgba(0,0,0,.35)}
+.paper{background:#fbf6e6;padding:16px 18px;background-image:repeating-linear-gradient(transparent 0 25px,#cfe0ee 25px 26px)}
+.paper h3{font-size:22px;margin-bottom:6px;color:#a2402f}
+.paper li{list-style:none;line-height:26px}
+.paper li.done{text-decoration:line-through;opacity:.5}
+.paper li:before{content:"☐ "} .paper li.done:before{content:"☑ "}
+.note{width:170px;min-height:150px;padding:14px 12px;font-size:16px}
+.note b{display:block;font-size:20px}
+.note small{display:block;margin-top:8px;font:11px system-ui;opacity:.7}
+.y{background:#ffe88a}.p{background:#ffb8c6}.g{background:#bfe6a8}.b{background:#a9d6f0}.o{background:#ffc98a}
+.note::before{content:"";position:absolute;top:-8px;left:calc(50% - 7px);width:14px;height:14px;border-radius:50%;background:#c8412f;box-shadow:inset -2px -2px 3px rgba(0,0,0,.3)}
+.glow{outline:3px dashed #c8412f;outline-offset:3px}
+.tray{width:260px;height:230px;background:#3c2d20;border-radius:6px;padding:34px 12px 8px;color:#f3e6c8}
+.tray h3{position:absolute;top:8px;left:14px;font-size:18px}
+.env-card{width:220px;background:#fffdf3;padding:12px 14px;border-top:10px solid}
+.env-card h4{font-size:20px} .env-card p{font-size:14px;line-height:1.5}
+.letter{background:#fff;color:#2b2218;padding:6px 10px;margin-bottom:8px;border-radius:2px;font-size:14px;transform:rotate(-1deg)}
+.letter:nth-child(odd){transform:rotate(1.2deg)}
+.clock{width:120px;height:120px;border-radius:50%;background:#fbf6e6;border:6px solid #3c2d20;display:grid;place-items:center;font:700 22px system-ui}
+.mug{width:84px;height:84px;border-radius:0 0 40px 40px;background:#d9d2c0;display:grid;place-items:center;font-size:34px}
+.big{font-size:54px;line-height:1;color:#a2402f}
+.tag{position:absolute;top:-12px;right:-10px;background:#c8412f;color:#fff;border-radius:99px;font:700 12px system-ui;padding:2px 8px;transform:rotate(6deg)}
+</style></head><body>
+<a class="back" href="index.html">← back</a>
+<div class="desk">
+
+<div class="item paper" style="left:20px;top:20px;width:300px;transform:rotate(-1.5deg)">
+<h3>Today, Tue</h3><ul>
+<li class="done">review billing PR</li><li>merge 142 (approved!)</li><li>sort out 151 deploy 🔥</li><li>master PR for 139</li><li>pull 158 off the board</li><li>delete old 142 worktree</li></ul></div>
+
+<div class="item tray" style="left:380px;top:10px;transform:rotate(1deg)"><h3>📥 In tray</h3>
+<div class="letter">✉ PR #88 · billing · from Sam</div><div class="letter">✉ PR #412 · web · from teammate</div></div>
+
+<div class="item clock" style="left:690px;top:20px"><span>14:20</span></div>
+<div class="item mug" style="left:850px;top:30px">☕</div>
+<div class="item paper" style="left:960px;top:20px;width:200px;transform:rotate(2deg);text-align:center"><div class="big">4h</div>my average from "started" to "live"<br><small style="font:11px system-ui">↓ better than last week</small></div>
+
+<!-- the pinboard of changes -->
+<div class="item note y" style="left:40px;top:330px;transform:rotate(-3deg)"><b>155</b>Dashboard empty states<small>web · working on it</small></div>
+<div class="item note o glow" style="left:240px;top:350px;transform:rotate(2deg)"><span class="tag">broken</span><b>151</b>Audit export<small>staging deploy failed 1h ago</small></div>
+<div class="item note g glow" style="left:440px;top:325px;transform:rotate(-1deg)"><span class="tag">approved</span><b>142</b>Retry webhook<small>just merge it!</small></div>
+<div class="item note p" style="left:640px;top:345px;transform:rotate(3deg)"><b>147</b>Invoice rounding<small>billing · waiting on review 6h</small></div>
+<div class="item note b" style="left:840px;top:330px;transform:rotate(-2deg)"><b>149</b>Cache warmup<small>robot is checking it</small></div>
+<div class="item note g" style="left:1040px;top:350px;transform:rotate(1.5deg)"><b>139</b>SSO timeout<small>works on staging ✔ master PR next</small></div>
+
+<!-- environments as index cards -->
+<div class="item env-card" style="left:60px;top:620px;border-color:#7fb069;transform:rotate(-1deg)"><h4>🧪 Staging</h4><p>api: <b>142, 139</b><br>billing: 147 (broke)<br>web: —</p></div>
+<div class="item env-card" style="left:320px;top:640px;border-color:#5aa3c7;transform:rotate(1deg)"><h4>🚢 Production</h4><p>api: 3 days old<br>billing: yesterday<br>web: 6 days, 1 waiting</p></div>
+<div class="item env-card" style="left:580px;top:625px;border-color:#a58bd0;transform:rotate(-.5deg)"><h4>🖥 My laptop</h4><p>~/wt/web-155 · up<br>~/wt/api-151 · up<br>~/wt/api-149 · off<br>~/wt/api-142 · <s>old</s> sweep me</p></div>
+
+<div class="item paper" style="left:860px;top:610px;width:280px;transform:rotate(1.5deg);font-size:16px"><h3 style="font-size:19px">Next up</h3>
+<ol style="padding-left:18px"><li style="list-style:decimal">158 · rate limit headers</li><li style="list-style:decimal">160 · tidy logs</li><li style="list-style:decimal">161 · ???</li></ol></div>
+</div></body></html>

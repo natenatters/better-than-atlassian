@@ -1,0 +1,83 @@
+<!doctype html><html><head><meta charset="utf-8"><title>1 Colony</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.alerts{display:flex;gap:8px;padding:10px 20px;border-bottom:1px solid var(--line);overflow:auto}
+.alert{padding:6px 12px;border-radius:4px;font-size:12px;white-space:nowrap;border:1px solid}
+.alert.a{color:var(--warn);border-color:var(--warn);background:#2a2113}
+.alert.b{color:var(--bad);border-color:var(--bad);background:#2a1613}
+.alert.w{color:var(--wait);border-color:var(--wait);background:#1f1a2a}
+.layout{display:grid;grid-template-columns:1fr 280px;gap:16px;padding:16px 20px}
+.pawns{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px;align-content:start}
+.pawn{display:grid;grid-template-columns:44px 1fr;gap:10px}
+.face{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:#000;font-size:13px}
+.row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.need{display:grid;grid-template-columns:64px 1fr;gap:8px;align-items:center;font-size:11px;color:var(--dim);margin-top:5px}
+.act{display:flex;gap:6px;margin-top:10px}
+button{background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:5px;padding:4px 10px;font:12px var(--sans);cursor:pointer}
+button.p{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600}
+.side .card{margin-bottom:12px}
+.big{font:700 26px var(--mono);color:var(--accent)}
+.log{font:11px/1.7 var(--mono);color:var(--dim)} .log b{color:var(--text);font-weight:400}
+.spark{display:flex;align-items:flex-end;gap:3px;height:36px;margin-top:6px}
+.spark i{flex:1;background:var(--accent);opacity:.7;border-radius:1px}
+</style></head><body>
+<nav class="top"><b>BTA</b><a href="index.html">Mood board</a><a class="on" href="1-colony.html">1 Colony</a><a href="2-pipeline.html">2 Pipeline</a><a href="3-environments.html">3 Environments</a></nav>
+<div class="alerts">
+<span class="alert a">▲ PROJ-142 review approved: ready to merge</span>
+<span class="alert b">✖ PROJ-151 pipeline failed on staging deploy</span>
+<span class="alert a">▲ 2 PRs waiting for your review (billing, web)</span>
+<span class="alert w">⏳ PROJ-147 waiting 6h on review</span>
+<span class="alert a">▲ PROJ-139 staging verified: open master PR</span>
+</div>
+<div class="layout">
+<div class="pawns">
+
+<div class="card pawn"><div class="face" style="background:var(--ok)">142</div><div>
+<div class="row"><b>Retry billing webhook</b><span class="chip warn">merge me</span></div>
+<div class="mono dim">api · feat/retry-webhook</div>
+<div class="need"><span>progress</span><div class="bar"><i style="width:55%;background:var(--ok)"></i></div></div>
+<div class="need"><span>patience</span><div class="bar"><i style="width:30%;background:var(--warn)"></i></div></div>
+<div class="act"><button class="p">Merge</button><button>Open PR</button></div></div></div>
+
+<div class="card pawn" style="border-color:var(--bad)"><div class="face" style="background:var(--bad)">151</div><div>
+<div class="row"><b>Add audit log export</b><span class="chip bad">deploy failed</span></div>
+<div class="mono dim">api · feat/audit-export</div>
+<div class="need"><span>progress</span><div class="bar"><i style="width:65%;background:var(--ok)"></i></div></div>
+<div class="need"><span>patience</span><div class="bar"><i style="width:80%;background:var(--bad)"></i></div></div>
+<div class="act"><button class="p">View log summary</button><button>Retry</button><button>Back to WIP</button></div></div></div>
+
+<div class="card pawn"><div class="face" style="background:var(--wait)">147</div><div>
+<div class="row"><b>Fix invoice rounding</b><span class="chip wait">in review · 6h</span></div>
+<div class="mono dim">billing · fix/rounding</div>
+<div class="need"><span>progress</span><div class="bar"><i style="width:40%;background:var(--ok)"></i></div></div>
+<div class="need"><span>patience</span><div class="bar"><i style="width:55%;background:var(--warn)"></i></div></div>
+<div class="act"><button>Nudge reviewer</button></div></div></div>
+
+<div class="card pawn"><div class="face" style="background:var(--info)">155</div><div>
+<div class="row"><b>Dashboard empty states</b><span class="chip info">Dev WIP</span></div>
+<div class="mono dim">web · feat/empty-states</div>
+<div class="need"><span>progress</span><div class="bar"><i style="width:20%;background:var(--ok)"></i></div></div>
+<div class="need"><span>patience</span><div class="bar"><i style="width:10%;background:var(--ok)"></i></div></div>
+<div class="act"><button>Open worktree</button><button class="p">Draft PR</button></div></div></div>
+
+<div class="card pawn"><div class="face" style="background:var(--accent)">139</div><div>
+<div class="row"><b>SSO session timeout</b><span class="chip warn">verified on staging</span></div>
+<div class="mono dim">api · feat/sso-timeout</div>
+<div class="need"><span>progress</span><div class="bar"><i style="width:85%;background:var(--ok)"></i></div></div>
+<div class="need"><span>patience</span><div class="bar"><i style="width:45%;background:var(--warn)"></i></div></div>
+<div class="act"><button class="p">PR to master</button></div></div></div>
+
+<div class="card pawn" style="opacity:.6;border-style:dashed"><div class="face" style="background:var(--panel2);color:var(--dim)">+</div><div>
+<b>Idle capacity</b><div class="dim">Next up: PROJ-158 "Rate limit headers"</div>
+<div class="act"><button class="p">Pull into WIP</button></div></div></div>
+</div>
+
+<div class="side">
+<div class="card"><h2>Lead time (14d)</h2><div class="big">4h 12m</div><div class="dim">median · p90 1d 3h</div>
+<div class="spark"><i style="height:40%"></i><i style="height:60%"></i><i style="height:35%"></i><i style="height:80%"></i><i style="height:50%"></i><i style="height:45%"></i><i style="height:30%"></i></div></div>
+<div class="card"><h2>Throughput</h2><div class="big">9</div><div class="dim">deploys this week · 2 to prod</div></div>
+<div class="card"><h2>Bottleneck</h2><b style="color:var(--wait)">Review wait</b><div class="dim">avg 5h 40m, 54% of lead time</div></div>
+<div class="card"><h2>Event log</h2><div class="log"><b>14:02</b> 142 approved<br><b>13:40</b> 151 deploy failed<br><b>12:15</b> 147 marked ready<br><b>11:58</b> 139 verified<br><b>10:30</b> 155 draft PR</div></div>
+</div></div>
+<div class="note">Mock data only. Pawn = Change. Border/colour = state; "patience" = age in current stage vs. target. Alerts strip along the top is the RimWorld-style "needs you" feed.</div>
+</body></html>

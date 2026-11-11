@@ -1,0 +1,327 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Mock Jira + Bitbucket</title>
+<style>
+body{font:14px/1.4 system-ui,sans-serif;margin:0;background:#f4f5f7;color:#172b4d}
+header{background:#0747a6;color:#fff;padding:10px 20px;display:flex;gap:20px;align-items:center}
+header span{opacity:.75;font-size:12px}
+main{display:grid;grid-template-columns:repeat(auto-fit,minmax(430px,1fr));gap:20px;padding:20px;align-items:start}
+section{background:#fff;border-radius:4px;padding:16px;box-shadow:0 1px 2px #0003}
+h2{margin:0 0 12px;font-size:16px;display:flex;gap:10px;align-items:center}
+h2 select{margin-left:auto;font-size:13px}
+details{margin-bottom:14px} summary{cursor:pointer;color:#0052cc}
+form{display:grid;gap:6px;margin-top:8px}
+input,textarea,select,button{font:inherit;padding:5px 8px;border:1px solid #c1c7d0;border-radius:3px}
+button{background:#0052cc;color:#fff;border:0;cursor:pointer}
+.item{border-top:1px solid #ebecf0;padding:8px 0}
+.top{display:flex;gap:8px;align-items:center}
+.key{font-family:ui-monospace,monospace;color:#5e6c84;white-space:nowrap}
+.title{flex:1;font-weight:600}
+.desc{color:#5e6c84;margin:2px 0 0;font-size:13px}
+.type{font-size:11px;padding:1px 6px;border-radius:3px;background:#dfe1e6}
+.t-Feature{background:#e3d5ff}.t-Defect{background:#ffd5cf}.t-Spike{background:#ffe9b8}.t-Story{background:#cfe8d5}
+.who{font-size:12px;padding:1px 7px;border-radius:99px;background:#ebecf0;white-space:nowrap}
+.who.me{background:#0052cc;color:#fff}
+.repo{font-size:11px;padding:1px 6px;border-radius:3px;background:#172b4d;color:#fff}
+.chip{font-size:11px;font-weight:700;padding:1px 7px;border-radius:3px;margin-left:auto;text-transform:uppercase}
+.steps{list-style:none;padding:0;margin:6px 0;font-size:12px}
+.steps li{padding:1px 0}.steps .RUNNING{color:#0747a6;font-weight:700}.steps .SUCCESS{color:#006644}.steps .FAILED{color:#bf2600;font-weight:700}.steps .PENDING,.steps .SKIPPED{color:#97a0af}
+.dep{font-size:11px;padding:1px 6px;border-radius:3px;white-space:nowrap}
+.dep.deployed{background:#e3fcef;color:#006644}.dep.running,.dep.queued{background:#deebff;color:#0747a6}.dep.failed{background:#ffebe6;color:#bf2600}.dep.none{background:#ebecf0;color:#5e6c84}
+.mono{font-family:ui-monospace,monospace;font-size:12px;color:#42526e}
+.warn{background:#fffae6;color:#7a5b00;border-radius:3px;padding:1px 6px;font-size:12px}
+.dk{font-size:11px;padding:1px 6px;border-radius:3px}.dk.running{background:#e3fcef;color:#006644}.dk.stopped{background:#ebecf0;color:#5e6c84}.dk.none{background:#fff;color:#97a0af}
+.small{font-size:12px;padding:1px 6px}details.more{margin:4px 0 0}details.more summary{font-size:12px;color:#5e6c84}details.more div{font-size:12px;color:#42526e;padding:2px 0 2px 12px}
+.st{font-size:11px;font-weight:600;padding:1px 7px;border-radius:3px;background:#ebecf0;color:#42526e;white-space:nowrap}
+.acts{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;align-items:flex-start}
+.acts button.small,.acts summary{font-size:12px;padding:2px 8px;border-radius:3px;background:#ebecf0;color:#172b4d;border:1px solid #dfe1e6;cursor:pointer;list-style:none}
+.acts button.small:hover,.acts summary:hover{background:#dfe1e6}
+.acts button.mock{border-style:dashed;color:#5e6c84}
+.acts details.act[open]{flex-basis:100%;background:#f4f5f7;border-radius:3px;padding:4px}
+.acts details.act[open] summary{background:#dfe1e6}
+.acts form{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0 0}.acts form input,.acts form select{font-size:12px;padding:2px 6px;flex:1;min-width:110px}
+.acts form button{font-size:12px;padding:2px 10px}
+table.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{text-align:left;font-size:11px;font-weight:600;color:#5e6c84;text-transform:uppercase;padding:4px 6px;border-bottom:2px solid #ebecf0}
+.tbl td{padding:8px 6px;border-bottom:1px solid #ebecf0;vertical-align:top}
+.tbl .chip{margin-left:0;white-space:nowrap}.tbl .acts{margin-top:0}
+tr.SUCCESS .chip{background:#e3fcef;color:#006644}tr.RUNNING .chip,tr.QUEUED .chip{background:#deebff;color:#0747a6}tr.FAILED .chip{background:#ffebe6;color:#bf2600}tr.none .chip{background:#ebecf0;color:#5e6c84}
+.st.IN_PROGRESS{background:#deebff;color:#0747a6}.st.COMPLETED,.st.SUCCESSFUL{background:#e3fcef;color:#006644}.st.FAILED,.st.ROLLBACK_SUCCESSFUL,.st.ROLLBACK_FAILED{background:#ffebe6;color:#bf2600}.st.PRIMARY{background:#172b4d;color:#fff}
+.tbl tr.sub td{border-bottom:2px solid #ebecf0;padding-top:0}.tbl .dl{margin:2px 0}.cols2{display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:12px}.cols2 h4{margin:6px 0 2px;font-size:11px;color:#5e6c84;text-transform:uppercase}
+#err{background:#ffebe6;color:#bf2600;padding:8px 20px;display:none}
+</style></head><body>
+<header><b>Mock Jira + Bitbucket</b><span id="me"></span><span>acting as <select id="actor" style="font-size:12px"></select> (mock: switch to be someone else)</span><span id="status"></span></header>
+<div id="err"></div>
+<main>
+<section style="grid-column:1/-1"><h2>ECS environments <small class="desc" style="font-weight:400">repos with role: mine</small></h2><div id="envs"></div></section>
+<section><h2>Jira issues
+<select id="issueFilter"><option value="me">Assigned to me</option><option value="">All</option></select></h2>
+<details><summary>Raise an issue</summary>
+<form id="issueForm"><input name="title" placeholder="Summary" required>
+<textarea name="description" placeholder="Description" rows="2"></textarea>
+<select name="type" id="typeSel"></select>
+<select name="parent" id="parentSel"></select>
+<select name="assignee" id="assigneeSel"></select>
+<button>Create issue</button></form></details>
+<div id="issues"></div></section>
+
+<section><h2>Bitbucket pull requests
+<select id="prFilter">
+<option value="open=true&reviewer=me">Open, me as reviewer</option>
+<option value="open=true&author=me">Open, authored by me</option>
+<option value="open=true">All open</option>
+<option value="">All</option></select></h2>
+<details><summary>Open a PR</summary>
+<form id="prForm"><select name="repo" id="repoSel"></select>
+<input name="title" placeholder="PR title" required>
+<input name="source" placeholder="Source branch (e.g. feat/thing)" required>
+<select name="destination"><option>develop</option><option>master</option></select>
+<input name="issue" placeholder="Issue key (optional, e.g. PROJ-1)">
+<select name="reviewer" id="reviewerSel"></select>
+<button>Create draft PR (as me)</button></form></details>
+<details><summary>Record a branch or commit</summary>
+<form id="brForm"><select name="repo" class="repoPick"></select>
+<input name="name" placeholder="Branch name (e.g. feat/thing)" required>
+<input name="issue" placeholder="Issue key (optional)">
+<button>Record branch</button></form>
+<form id="cmForm"><select name="repo" class="repoPick"></select>
+<input name="branch" placeholder="Branch (must be recorded)" required>
+<input name="message" placeholder="Commit message" required>
+<input name="issue" placeholder="Issue key (optional, defaults to the branch's)">
+<button>Record commit</button></form></details>
+<div id="prs"></div></section>
+<section><h2>My laptop: worktrees &amp; docker</h2>
+<details><summary>Record a worktree</summary>
+<form id="wtForm"><select name="repo" id="wtRepo"></select>
+<input name="branch" placeholder="Branch (e.g. feat/thing)" required>
+<input name="path" placeholder="Path (e.g. ~/work/impact-wt/PROJ-9)" required>
+<input name="issue" placeholder="Issue key (optional)">
+<select name="dockerStatus" id="wtDocker"></select>
+<input name="dockerPort" placeholder="Docker port (optional)">
+<input name="notes" placeholder="Notes (optional)">
+<button>Add worktree</button></form></details>
+<div id="wts"></div></section>
+<section><h2>Claude sessions</h2>
+<details><summary>Record a session</summary>
+<form id="sessForm"><input name="name" placeholder="What is it for?" required>
+<input name="sessionId" placeholder="Session ID (for claude --resume)">
+<input name="issues" placeholder="Tickets / Features, comma separated (PROJ-1, PROJ-4)">
+<input name="prs" placeholder="PRs, comma separated (impact#2, sypro#3)">
+<select name="worktree" id="sessWt"></select>
+<input name="notes" placeholder="Notes (optional)">
+<label><input type="checkbox" name="longLived"> Long-lived</label>
+<button>Add session</button></form></details>
+<div id="sessions"></div></section>
+</main>
+<script>
+const API = "http://localhost:4010";
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let meta, me, users = [];
+const actorId = () => document.querySelector("#actor")?.value || me?.id;
+const name = (id) => users.find((u) => u.id === id)?.name ?? id;
+const person = (id) => id ? `<span class="who ${id === actorId() ? "me" : ""}">${esc(id === actorId() ? "me" : name(id))}</span>` : `<span class="who">unassigned</span>`;
+
+async function api(path, method = "GET", body) {
+  try {
+    const r = await fetch(API + path, { method, headers: { "Content-Type": "application/json", "X-Actor": actorId() || "" }, body: body ? JSON.stringify(body) : undefined });
+    const j = await r.json();
+    if (!r.ok) throw new Error(j.error || r.statusText);
+    $("#err").style.display = "none";
+    return j;
+  } catch (e) {
+    $("#err").textContent = e.message === "Failed to fetch" ? "Can't reach backend at " + API + ". Start it with: node backend/server.js" : e.message;
+    $("#err").style.display = "block";
+    throw e;
+  }
+}
+const opts = (list, cur) => list.map((x) => `<option ${x === cur ? "selected" : ""}>${esc(x)}</option>`).join("");
+const userOpts = (blank, cur) => `<option value="">${blank}</option>` + users.map((u) => `<option value="${u.id}" ${u.id === cur ? "selected" : ""}>${esc(u.name)}</option>`).join("");
+
+async function renderIssues() {
+  const all = await api("/jira/issues");
+  $("#parentSel").innerHTML = '<option value="">(no feature)</option>' + all.filter((i) => i.type === "Feature").map((f) => `<option value="${esc(f.key)}">${esc(f.key)} ${esc(f.title)}</option>`).join("");
+  const mine = $("#issueFilter").value === "me";
+  const issues = all.filter((i) => !mine || i.assignee === actorId());
+  $("#issues").innerHTML = issues.length ? issues.slice().reverse().map((i) => `<div class="item">
+    <div class="top"><span class="key">${esc(i.key)}</span><span class="type t-${esc(i.type)}">${esc(i.type)}</span><span class="title">${esc(i.title)}</span>
+    ${person(i.assignee)}
+    <span class="st">${esc(i.status)}</span></div>
+    ${i.deployments.length ? `<p class="desc">${i.deployments.map((d) => `<span class="dep ${d.state}">${esc(d.repo)} ${esc(d.environment)}: ${d.state === "none" ? "no pipeline" : esc(d.state)}</span>`).join(" ")}</p>` : ""}
+    ${i.parent ? `<p class="desc">under ${esc(i.parent)}${i.spawnedFrom ? " · from spike " + esc(i.spawnedFrom) : ""}</p>` : ""}
+    ${i.description ? `<p class="desc">${esc(i.description)}</p>` : ""}${actionsHtml(i.actions)}${more(i)}</div>`).join("") : "<p class='desc'>Nothing here.</p>";
+}
+async function renderPrs() {
+  const f = $("#prFilter").value;
+  const prs = await api(`/bitbucket/pullrequests${f ? "?" + f : ""}`);
+  $("#prs").innerHTML = prs.length ? prs.slice().reverse().map((p) => `<div class="item">
+    <div class="top"><span class="repo">${esc(p.repo)}</span><span class="key">#${p.id}</span><span class="title">${esc(p.title)}</span>
+    <span class="st">${esc(p.state)}</span></div>
+    <p class="desc">${esc(p.source)} → ${esc(p.destination)}${p.destination === "master" ? " (prod)" : " (staging)"}${p.issue ? " · " + esc(p.issue) : ""}</p>
+    <p class="desc">by ${person(p.author)} · reviewers ${p.reviewers.length ? p.reviewers.map(person).join(" ") : "none"}</p>${actionsHtml(p.actions)}${more(p)}</div>`).join("") : "<p class='desc'>Nothing here.</p>";
+}
+
+const hist = (h) => h.map((x) => `${new Date(x.at).toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"})} ${x.field ? x.field + " " : ""}${x.from ?? "created"} → ${x.to}${x.by ? " (" + esc(x.by === actorId() ? "me" : name(x.by)) + ")" : ""}`).join("<br>");
+const row = (label, items) => items.length ? `<br><b>${label}</b> ${items.join(" · ")}` : "";
+const depChip = (d) => d ? `<span class="dep ${d.state}">${esc(d.environment)}: ${esc(d.state)}</span>` : "";
+const artefacts = (o) => {
+  const a = o.artifacts;
+  if (!a) return "";
+  const sess = a.sessions.map((x) => esc(x.name));
+  if (a.pullRequests) return "<br>" + row("branches", a.branches.map((b) => `<span class="mono">${esc(b.repo)}:${esc(b.name)}</span>`))
+    + row("PRs", a.pullRequests.map((p) => `${esc(p.repo)}#${p.id} ${esc(p.state)}`)) + row("commits", a.commits.map((c) => `<span class="mono">${esc(c.sha)}</span> ${esc(c.message)} <span class="dim">(${esc(c.branch)})</span>`))
+    + row("deployments", o.deployments.map((d) => `${esc(d.repo)} ${esc(d.environment)} ${esc(d.sha)}: ${esc(d.state)}`)) + row("worktrees", a.worktrees.map((w) => `<span class="mono">${esc(w.path)}</span>`))
+    + row("sessions", sess) + row("spawned", (o.spawned || []).map(esc));
+  return "<br>" + row("branch", [`<span class="mono">${esc(a.branch)}</span>`]) + row("commits", a.commits.map((c) => `<span class="mono">${esc(c.sha)}</span> ${esc(c.message)} <span class="dim">(${esc(c.branch)})</span>`))
+    + row("deployment", a.deployment ? [`${esc(a.deployment.environment)} ${esc(a.deployment.sha)}: ${esc(a.deployment.state)}`] : []) + row("worktrees", a.worktrees.map((w) => `<span class="mono">${esc(w.path)}</span>`)) + row("sessions", sess);
+};
+const more = (o, extra = "") => `<details class="more"><summary>record${o.comments?.length ? " · " + o.comments.length + " comment(s)" : ""}</summary><div>${hist(o.history)}${artefacts(o)}${o.comments?.length ? "<br><br>" + o.comments.map((c) => `<b>${esc(c.author ? name(c.author) : "")}</b> ${esc(c.body)}`).join("<br>") : ""}${extra}</div></details>`;
+async function renderWts() {
+  const wts = await api("/local/worktrees");
+  $("#wts").innerHTML = wts.length ? wts.map((w) => `<div class="item">
+    <div class="top"><span class="repo">${esc(w.repo)}</span><span class="title mono">${esc(w.branch)}</span>
+    <span class="dk ${w.docker.status}">docker ${esc(w.docker.status)}${w.docker.port ? " :" + esc(w.docker.port) : ""}</span>
+    </div>
+    <p class="desc mono">${esc(w.path)}</p>
+    <p class="desc">${w.issue ? `<span class="key">${esc(w.issue)}</span> (${esc(w.issueStatus)})` : "no ticket"}${w.pr ? ` · PR #${w.pr.id} ${esc(w.pr.state)}` : " · no PR"}${w.notes ? " · " + esc(w.notes) : ""}</p>
+    ${w.sessions.length ? `<p class="desc">sessions: ${w.sessions.map((x) => esc(x.name)).join(" · ")}</p>` : ""}
+    ${actionsHtml(w.actions)}</div>`).join("") : "<p class='desc'>No worktrees recorded.</p>";
+}
+async function renderSessions() {
+  const [list, wts] = await Promise.all([api("/local/sessions"), api("/local/worktrees")]);
+  $("#sessWt").innerHTML = '<option value="">(no worktree)</option>' + wts.map((w) => `<option value="${esc(w.id)}">${esc(w.repo)} ${esc(w.branch)}</option>`).join("");
+  const order = { active: 0, idle: 1, archived: 2 };
+  $("#sessions").innerHTML = list.length ? list.slice().sort((a, b) => order[a.status] - order[b.status] || b.longLived - a.longLived).map((x) => `<div class="item" style="${x.status === "archived" ? "opacity:.55" : ""}">
+    <div class="top">${x.longLived ? '<span class="st">long-lived</span>' : ""}<span class="title">${esc(x.name)}</span>
+    <span class="st">${esc(x.status)}</span></div>
+    <p class="desc"><b>tickets</b> ${x.issues.length ? x.issues.map((i) => `<span class="key" title="${esc(i.title)}">${esc(i.key)}</span> <span class="type t-${esc(i.type)}">${esc(i.type)}</span> ${esc(i.status)}`).join(" · ") : "none"}</p>
+    <p class="desc"><b>PRs</b> ${x.prs.length ? x.prs.map((r) => `${esc(r.repo)}#${r.id} ${esc(r.state)}`).join(" · ") : "none"}${x.worktree ? " · worktree " + esc(x.worktree) : ""}</p>
+    ${x.resume ? `<p class="desc mono">${esc(x.resume)}</p>` : '<p class="desc">no session ID recorded</p>'}
+    ${x.notes ? `<p class="desc">${esc(x.notes)}</p>` : ""}
+    ${actionsHtml(x.actions)}</div>`).join("") : "<p class='desc'>No sessions recorded.</p>";
+}
+const ago = (t) => { const m = Math.round((Date.now() - Date.parse(t)) / 60000); return m < 1 ? "just now" : m < 60 ? m + "m ago" : Math.round(m / 60) + "h ago"; };
+const ICON = { RUNNING: "⟳", SUCCESS: "✔", FAILED: "✖", PENDING: "·", SKIPPED: "–" };
+const openEnv = new Set();
+document.addEventListener("toggle", (e) => { const k = e.target.dataset?.k; if (k) e.target.open ? openEnv.add(k) : openEnv.delete(k); }, true);
+const tdShort = (arn) => (arn || "").split("/").pop() || "none";
+const hhmmss = (t) => new Date(t).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+function renderEnvs(envs) {
+  const rows = envs.map((e) => {
+    const l = e.latestPipeline, c = e.current, st = e.pipelineStatus, sv = e.service, k = `${e.repo}/${e.environment}`;
+    let pipe = '<span class="desc">none</span>';
+    if (l && st === "RUNNING") { const i = l.steps.findIndex((x) => x.status === "RUNNING"); pipe = `#${l.id} RUNNING<br>${ICON.RUNNING} ${esc(l.steps[i].name)} <span class="dim">(${i + 1}/${l.steps.length})</span>`; }
+    else if (l && st === "QUEUED") pipe = `#${l.id} QUEUED`;
+    else if (l && st === "FAILED") pipe = `#${l.id} FAILED<br>${ICON.FAILED} ${esc(l.steps.find((x) => x.status === "FAILED")?.name ?? "")}`;
+    else if (l) pipe = `#${l.id} SUCCESS`;
+    const deps = sv.deployments.length ? sv.deployments.map((d) => `<div class="dl"><span class="st ${d.status}">${d.status}</span> <span class="mono">${esc(tdShort(d.taskDefinition))}</span> <span class="st ${d.rolloutState}">${d.rolloutState}</span><br><span class="desc">running ${d.runningCount}/${d.desiredCount} · pending ${d.pendingCount} · failedTasks ${d.failedTasks}${d.rolloutState === "FAILED" ? " · " + esc(d.rolloutStateReason) : ""}</span></div>`).join("") : '<span class="desc">no deployments</span>';
+    const hist = e.deploymentHistory.map((h) => `<div class="dl"><span class="st ${h.status}">${h.status}</span> <span class="mono">${esc(tdShort(h.targetServiceRevision.taskDefinition))}</span> ${hhmmss(h.startedAt)}${h.finishedAt ? "–" + hhmmss(h.finishedAt) : ""} · pipeline #${h.pipelineId}${h.statusReason ? "<br><span class=desc>" + esc(h.statusReason) + "</span>" : ""}<br><span class="desc">circuit breaker ${esc(h.deploymentCircuitBreaker.status)} (${h.deploymentCircuitBreaker.failureCount}/${h.deploymentCircuitBreaker.threshold})</span></div>`).join("") || '<span class="desc">none</span>';
+    const evs = sv.events.map((x) => `<div class="dl"><span class="dim">${hhmmss(x.createdAt)}</span> ${esc(x.message)}</div>`).join("") || '<span class="desc">none</span>';
+    const tds = e.taskDefinitions.map((t) => `<div class="dl"><span class="mono">${esc(t.family)}:${t.revision}</span> <span class="desc">${esc(t.image.split("/").pop())} · pipeline #${t.pipelineId}</span></div>`).join("") || '<span class="desc">none</span>';
+    return `<tr><td><span class="repo">${esc(e.repo)}</span><br><b>${esc(e.environment)}</b><br><span class="desc">${esc(e.branch)}</span></td>
+    <td>${esc(sv.serviceName)}<br><span class="desc">${sv.status} · ${sv.launchType}<br>desired ${sv.desiredCount} · running ${sv.runningCount} · pending ${sv.pendingCount}</span><br><span class="mono">${esc(tdShort(sv.taskDefinition))}</span></td>
+    <td>${deps}</td>
+    <td>${pipe}</td>
+    <td>${e.notDeployed.length ? e.notDeployed.map((x) => esc(x.issue || x.message)).join(", ") : '<span class="desc">none</span>'}</td>
+    <td>${actionsHtml(e.actions)}</td></tr>
+    <tr class="sub"><td colspan="6"><details data-k="${esc(k)}" ${openEnv.has(k) ? "open" : ""}><summary class="desc">service events (${sv.events.length}) · deployment history (${e.deploymentHistory.length}) · task definitions</summary>
+    <div class="cols2"><div><h4>Service events</h4>${evs}</div><div><h4>Deployment history</h4>${hist}<h4>Task definitions</h4>${tds}</div></div></details></td></tr>`;
+  }).join("");
+  $("#envs").innerHTML = envs.length ? `<table class="tbl"><tr><th>Env</th><th>ECS service</th><th>Deployments</th><th>Latest pipeline</th><th>Merged, not deployed</th><th></th></tr>${rows}</table>` : "<p class='desc'>No environments.</p>";
+}
+let sigEnv = "", sigState = "";
+async function pollEnvs() {
+  try {
+    const envs = await fetch(API + "/bitbucket/environments").then((r) => r.json());
+    const a = JSON.stringify(envs.map((e) => [e.pipelineStatus, e.latestPipeline?.id, e.latestPipeline?.steps.map((x) => x.status), e.current?.sha, e.service.deployments.map((d) => [d.id, d.status, d.rolloutState, d.runningCount, d.pendingCount]), e.service.events.length, e.deploymentHistory.map((h) => h.status)]));
+    const b = JSON.stringify(envs.map((e) => [e.pipelineStatus, e.latestPipeline?.id, e.current?.sha]));
+    if (a !== sigEnv) { sigEnv = a; renderEnvs(envs); }
+    if (b !== sigState) { sigState = b; renderIssues(); renderPrs(); renderWts(); renderSessions(); }
+  } catch {}
+}
+setInterval(pollEnvs, 2000);
+
+const actionsHtml = (acts) => `<div class="acts">${acts.map((a) => {
+  const data = esc(JSON.stringify(a));
+  if (!a.inputs?.length) return `<button class="small${a.mock ? " mock" : ""}" data-a="${data}">${esc(a.label)}</button>`;
+  return `<details class="act"><summary>${esc(a.label)}…</summary><form class="actForm" data-a="${data}">${a.inputs.map((n) => n.kind === "select"
+    ? `<select name="${esc(n.name)}" title="${esc(n.label)}">${n.options.map((o) => `<option value="${esc(o.value)}">${esc(o.label)}</option>`).join("")}</select>`
+    : `<input name="${esc(n.name)}" placeholder="${esc(n.label)}" value="${esc(n.value ?? "")}" required>`).join("")}<button>${esc(a.label)}</button></form></details>`;
+}).join("")}</div>`;
+function refreshAll() { renderIssues(); renderPrs(); renderWts(); renderSessions(); sigEnv = ""; pollEnvs(); }
+async function runAction(a, vals = {}) {
+  const body = { ...(a.body || {}), ...vals };
+  const path = a.path.replace(/\{(\w+)\}/g, (_m, k) => { const v = body[k]; delete body[k]; return encodeURIComponent(v); });
+  await api(path, a.method, body);
+  refreshAll();
+}
+document.addEventListener("click", (e) => { const b = e.target.closest?.("button[data-a]"); if (b) runAction(JSON.parse(b.dataset.a)); });
+document.addEventListener("submit", (e) => {
+  const f = e.target.closest?.("form.actForm");
+  if (!f) return;
+  e.preventDefault();
+  runAction(JSON.parse(f.dataset.a), Object.fromEntries(new FormData(f)));
+});
+document.addEventListener("change", (e) => {
+  if (e.target.id === "actor") refreshAll();
+  if (e.target.id === "issueFilter") renderIssues();
+  if (e.target.id === "prFilter") renderPrs();
+});
+$("#issueForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const d = Object.fromEntries(new FormData(e.target));
+  await api("/jira/issues", "POST", d);
+  e.target.reset(); renderIssues();
+});
+$("#wtForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const d = Object.fromEntries(new FormData(e.target));
+  await api("/local/worktrees", "POST", d);
+  e.target.reset(); renderWts();
+});
+$("#sessForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const d = Object.fromEntries(new FormData(e.target));
+  d.longLived = d.longLived === "on";
+  for (const f of ["issues", "prs"]) d[f] = (d[f] || "").split(",").map((v) => v.trim()).filter(Boolean);
+  await api("/local/sessions", "POST", d);
+  e.target.reset(); renderSessions();
+});
+$("#brForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const d = Object.fromEntries(new FormData(e.target)); const repo = d.repo; delete d.repo;
+  await api(`/bitbucket/repos/${repo}/branches`, "POST", d);
+  e.target.reset(); renderIssues(); renderPrs();
+});
+$("#cmForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const d = Object.fromEntries(new FormData(e.target)); const repo = d.repo; delete d.repo;
+  await api(`/bitbucket/repos/${repo}/commits`, "POST", d);
+  e.target.reset(); renderIssues(); renderPrs();
+});
+$("#prForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const d = Object.fromEntries(new FormData(e.target));
+  const repo = d.repo; delete d.repo;
+  d.reviewers = d.reviewer ? [d.reviewer] : []; delete d.reviewer;
+  await api(`/bitbucket/repos/${repo}/pullrequests`, "POST", d);
+  e.target.reset(); renderPrs();
+});
+
+(async () => {
+  try {
+    [meta, me, users] = await Promise.all([api("/meta"), api("/me"), api("/users")]);
+    const repos = await api("/bitbucket/repos");
+    $("#me").textContent = "you are " + me.name;
+    $("#actor").innerHTML = users.map((u) => `<option value="${u.id}" ${u.id === me.id ? "selected" : ""}>${esc(u.name)}</option>`).join("");
+    $("#typeSel").innerHTML = opts(meta.issueTypes, "Story");
+    $("#assigneeSel").innerHTML = userOpts("(unassigned)", me.id);
+    $("#reviewerSel").innerHTML = userOpts("(no reviewer)", "");
+    const mine = repos.filter((r) => r.role === "mine").map((r) => r.slug);
+    $("#repoSel").innerHTML = opts(mine, "impact");
+    $("#status").textContent = "backend: " + API;
+    document.querySelectorAll(".repoPick").forEach((el) => (el.innerHTML = opts(mine, "impact")));
+    $("#wtRepo").innerHTML = opts(repos.map((r) => r.slug), "impact");
+    $("#wtDocker").innerHTML = opts(meta.dockerStates, "none");
+    renderIssues(); renderPrs(); renderWts(); renderSessions(); pollEnvs();
+  } catch {}
+})();
+</script></body></html>

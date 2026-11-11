@@ -1,0 +1,58 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Mood board</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.wrap{max-width:1100px;margin:0 auto;padding:28px 20px}
+h1{font-size:28px;margin-bottom:4px} .sub{color:var(--dim);margin-bottom:28px}
+.grid{display:grid;gap:14px}
+.g3{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.sw{display:flex;gap:0;border-radius:8px;overflow:hidden;margin-bottom:28px}
+.sw div{flex:1;padding:28px 8px 8px;font:11px var(--mono);color:#000}
+section{margin-bottom:32px}
+.pawn{width:34px;height:34px;border-radius:50%;background:var(--accent);display:inline-grid;place-items:center;color:#000;font-weight:700}
+.big{font-size:22px;font-weight:700}
+.pill{display:flex;gap:6px;flex-wrap:wrap}
+</style></head><body>
+<nav class="top"><b>BTA</b><a class="on" href="index.html">Mood board</a><a href="1-colony.html">1 Colony</a><a href="2-pipeline.html">2 Pipeline</a><a href="3-environments.html">3 Environments</a></nav>
+<div class="wrap">
+<h1>Mood board</h1>
+<p class="sub">Calm, dense, game-like. A control room for one person juggling many changes, not a ticket form factory.</p>
+
+<section><h2>Palette: "workbench at dusk"</h2>
+<div class="sw">
+<div style="background:#14120f;color:#9a8f7a">bg</div><div style="background:#1d1a15;color:#9a8f7a">panel</div>
+<div style="background:#e8dfcf">text</div><div style="background:#e0a33a">accent / waiting on me</div>
+<div style="background:#7fb069">ok / passed</div><div style="background:#d65a4a">bad / failed</div>
+<div style="background:#5aa3c7">info / running</div><div style="background:#a58bd0">waiting on others</div></div>
+<p class="dim">Rule: amber = needs <i>you</i>. Purple = waiting on someone/something else. Everything else stays quiet.</p></section>
+
+<section><h2>Principles</h2><div class="grid g3">
+<div class="card"><b>Change is the pawn</b><p class="dim">One entity carries ticket, branch, worktree, PRs, environments, timeline.</p></div>
+<div class="card"><b>"What needs me?" first</b><p class="dim">The top of every screen answers it. Waiting states are visible, not buried.</p></div>
+<div class="card"><b>Time is visible</b><p class="dim">Age of each stage on every card. Lead time falls out of the log.</p></div>
+<div class="card"><b>Manual first</b><p class="dim">Every transition is a button you click. Automation later replaces a click, never the model.</p></div>
+<div class="card"><b>Freeform front-end</b><p class="dim">UI is a thin client over a boring REST API. Swap or fork views freely.</p></div>
+<div class="card"><b>Mono for facts</b><p class="dim">Branches, SHAs, ticket keys in monospace. Prose in sans.</p></div>
+</div></section>
+
+<section><h2>Reference vibes</h2><div class="grid g3">
+<div class="card"><b>RimWorld</b><p class="dim">Colonist bars with mood/needs, work priority grid, alerts strip along the edge ("Colonist idle", "Raid").</p></div>
+<div class="card"><b>Factorio</b><p class="dim">Throughput, bottleneck lights on belts, production stats graphs.</p></div>
+<div class="card"><b>Linear / Raycast</b><p class="dim">Keyboard-first, command palette, no chrome.</p></div>
+<div class="card"><b>Mission control</b><p class="dim">Status lights, big counters, event log ticker.</p></div>
+<div class="card"><b>Train departure board</b><p class="dim">Environment view: what is on each platform and when it left.</p></div>
+<div class="card"><b>Git graph</b><p class="dim">A change's life as a horizontal timeline with loops back to WIP visible.</p></div>
+</div></section>
+
+<section><h2>Type &amp; atoms</h2><div class="grid g3">
+<div class="card"><div class="big">Sans for words</div><div class="mono">PROJ-142 · feat/retry-billing · a1b2c3d</div>
+<div class="pill" style="margin-top:8px"><span class="chip ok">CI passed</span><span class="chip warn">needs you</span><span class="chip wait">in review</span><span class="chip bad">failed</span><span class="chip info">deploying</span></div></div>
+<div class="card"><div style="display:flex;gap:10px;align-items:center"><span class="pawn">P</span><div style="flex:1"><b>PROJ-142</b><div class="bar" style="margin:6px 0"><i style="width:70%;background:var(--ok)"></i></div><div class="bar"><i style="width:30%;background:var(--warn)"></i></div></div></div><p class="dim" style="margin-top:6px">Pawn + "need" bars: progress to done, patience (age).</p></div>
+<div class="card"><div class="big mono" style="color:var(--accent)">4h 12m</div><p class="dim">Median lead time, rolling 14 days. Big counter, tiny label.</p></div>
+</div></section>
+
+<section><h2>Three directions to react to</h2><div class="grid g3">
+<a class="card" href="1-colony.html"><b>1 · Colony</b><p class="dim">Changes as pawns with need-bars and alerts. Most RimWorld.</p></a>
+<a class="card" href="2-pipeline.html"><b>2 · Pipeline</b><p class="dim">Dense stage columns plus an inbox. Most practical.</p></a>
+<a class="card" href="3-environments.html"><b>3 · Environments</b><p class="dim">Platforms, worktrees, what's deployed where. The "remember" view.</p></a>
+</div></section>
+</div></body></html>

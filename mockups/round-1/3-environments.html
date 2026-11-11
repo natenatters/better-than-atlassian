@@ -1,0 +1,71 @@
+<!doctype html><html><head><meta charset="utf-8"><title>3 Environments</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+.wrap{padding:16px 20px;display:grid;gap:18px}
+.repo{display:grid;grid-template-columns:130px repeat(3,1fr);gap:10px;align-items:stretch}
+.rn{display:flex;flex-direction:column;justify-content:center}
+.rn b{font-size:16px}
+.env{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px;position:relative}
+.env h3{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--dim);display:flex;justify-content:space-between;margin-bottom:6px}
+.env .sha{font:12px var(--mono)}
+.env ul{list-style:none;padding:0;margin:6px 0 0;font-size:12px}
+.env li{padding:2px 0;color:var(--text)} .env li span{color:var(--dim);font:11px var(--mono)}
+.env.prod{border-color:#4a6b3a}
+.drift{margin-top:6px;font-size:11px;color:var(--warn)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{text-align:left;color:var(--dim);font-weight:500;padding:6px;border-bottom:1px solid var(--line)}
+td{padding:7px 6px;border-bottom:1px solid var(--panel2)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+.arrow{color:var(--dim);text-align:center;font-size:11px}
+</style></head><body>
+<nav class="top"><b>BTA</b><a href="index.html">Mood board</a><a href="1-colony.html">1 Colony</a><a href="2-pipeline.html">2 Pipeline</a><a class="on" href="3-environments.html">3 Environments</a></nav>
+<div class="wrap">
+<div><h2>What's deployed where</h2>
+
+<div class="repo">
+<div class="rn"><b>api</b><span class="dim mono">bitbucket/acme/api</span></div>
+<div class="env"><h3>Staging <span class="chip ok">healthy</span></h3><div class="sha">a1b2c3d · 2h ago</div>
+<ul><li>PROJ-142 <span>retry webhook</span></li><li>PROJ-139 <span>SSO timeout</span></li></ul>
+<div class="drift">▲ 2 changes ahead of prod</div></div>
+<div class="env"><h3>Master <span class="chip">idle</span></h3><div class="sha">9f8e7d6</div>
+<ul><li>PROJ-139 <span>PR #301 in review</span></li></ul></div>
+<div class="env prod"><h3>Production <span class="chip ok">healthy</span></h3><div class="sha">77aa001 · 3d ago</div>
+<ul><li class="dim">no pending deploy</li></ul></div></div>
+
+<div class="repo" style="margin-top:12px">
+<div class="rn"><b>billing</b><span class="dim mono">other codebase</span></div>
+<div class="env"><h3>Staging <span class="chip bad">deploy failed</span></h3><div class="sha">c4d5e6f · 1h ago</div>
+<ul><li>PROJ-147 <span>invoice rounding</span></li></ul></div>
+<div class="env"><h3>Master <span class="chip">idle</span></h3><div class="sha">12ab34c</div></div>
+<div class="env prod"><h3>Production <span class="chip ok">healthy</span></h3><div class="sha">12ab34c · 1d ago</div></div></div>
+
+<div class="repo" style="margin-top:12px">
+<div class="rn"><b>web</b><span class="dim mono">other codebase</span></div>
+<div class="env"><h3>Staging <span class="chip ok">healthy</span></h3><div class="sha">d00d111 · 5h ago</div><ul><li class="dim">nothing of yours</li></ul></div>
+<div class="env"><h3>Master <span class="chip">idle</span></h3><div class="sha">d00d111</div></div>
+<div class="env prod"><h3>Production <span class="chip ok">healthy</span></h3><div class="sha">bee5222 · 6d ago</div><div class="drift">▲ 1 behind master</div></div></div>
+</div>
+
+<div class="cols">
+<div><h2>Local worktrees &amp; docker</h2>
+<div class="card"><table>
+<tr><th>Branch</th><th>Path</th><th>Docker</th><th>Change</th></tr>
+<tr><td class="mono">feat/empty-states</td><td class="mono dim">~/wt/web-155</td><td><span class="dot" style="background:var(--ok)"></span>up :3101</td><td>PROJ-155</td></tr>
+<tr><td class="mono">feat/audit-export</td><td class="mono dim">~/wt/api-151</td><td><span class="dot" style="background:var(--ok)"></span>up :8102</td><td>PROJ-151</td></tr>
+<tr><td class="mono">feat/cache-warm</td><td class="mono dim">~/wt/api-149</td><td><span class="dot" style="background:var(--dim)"></span>stopped</td><td>PROJ-149</td></tr>
+<tr><td class="mono">feat/retry-webhook</td><td class="mono dim">~/wt/api-142</td><td><span class="dot" style="background:var(--bad)"></span>stale (merged)</td><td>PROJ-142 <span class="chip warn">clean up</span></td></tr>
+</table></div></div>
+
+<div><h2>Recent deploys</h2>
+<div class="card"><table>
+<tr><th>When</th><th>Repo</th><th>Env</th><th>Result</th></tr>
+<tr><td class="dim">13:40</td><td>billing</td><td>staging</td><td><span class="chip bad">failed</span></td></tr>
+<tr><td class="dim">12:02</td><td>api</td><td>staging</td><td><span class="chip ok">ok</span></td></tr>
+<tr><td class="dim">Mon</td><td>api</td><td>prod</td><td><span class="chip ok">ok</span></td></tr>
+<tr><td class="dim">Fri</td><td>web</td><td>prod</td><td><span class="chip ok">ok</span></td></tr>
+</table></div></div>
+</div>
+</div>
+<div class="note">This is the "stuff I have to remember" screen. Drift warnings (▲) show unreleased changes. Stale worktrees get a clean-up prompt.</div>
+</body></html>

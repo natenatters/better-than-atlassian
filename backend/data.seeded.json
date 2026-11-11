@@ -1,0 +1,1878 @@
+{
+  "me": "nate",
+  "users": [
+    {
+      "id": "nate",
+      "name": "Nathan"
+    },
+    {
+      "id": "jo",
+      "name": "Jo"
+    },
+    {
+      "id": "sam",
+      "name": "Sam"
+    },
+    {
+      "id": "priya",
+      "name": "Priya"
+    }
+  ],
+  "jira": {
+    "project": "PROJ",
+    "nextNumber": 19,
+    "issues": [
+      {
+        "key": "PROJ-1",
+        "title": "Authentication",
+        "description": "Register, log in, stay logged in, edit profile.",
+        "type": "Feature",
+        "parent": null,
+        "assignee": "nate",
+        "spawnedFrom": null,
+        "status": "Dev WIP",
+        "comments": [],
+        "created": "2026-11-10T18:58:58.674Z",
+        "updated": "2026-11-10T18:58:58.679Z",
+        "history": [
+          {
+            "at": "2026-11-10T18:58:58.674Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          },
+          {
+            "at": "2026-11-10T18:58:58.679Z",
+            "by": "nate",
+            "from": "Next",
+            "to": "Dev WIP"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-2",
+        "title": "Articles",
+        "description": "Create, read, edit, delete and list articles, with tags and pagination.",
+        "type": "Feature",
+        "parent": null,
+        "assignee": "jo",
+        "spawnedFrom": null,
+        "status": "Dev WIP",
+        "comments": [],
+        "created": "2026-11-10T18:58:58.683Z",
+        "updated": "2026-11-10T18:58:58.686Z",
+        "history": [
+          {
+            "at": "2026-11-10T18:58:58.683Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          },
+          {
+            "at": "2026-11-10T18:58:58.686Z",
+            "by": "nate",
+            "from": "Next",
+            "to": "Dev WIP"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-3",
+        "title": "Comments & favorites",
+        "description": "Readers can comment on and favorite articles, and follow authors.",
+        "type": "Feature",
+        "parent": null,
+        "assignee": "nate",
+        "spawnedFrom": null,
+        "status": "Next",
+        "comments": [],
+        "created": "2026-11-10T18:58:58.690Z",
+        "updated": "2026-11-10T18:58:58.690Z",
+        "history": [
+          {
+            "at": "2026-11-10T18:58:58.690Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-4",
+        "title": "Spike: JWT refresh vs. long-lived tokens",
+        "description": "Timebox 1 day. Decide how sessions survive page reloads without hurting security.",
+        "type": "Spike",
+        "parent": "PROJ-1",
+        "assignee": "nate",
+        "spawnedFrom": null,
+        "status": "Done",
+        "comments": [],
+        "created": "2026-11-10T18:58:58.694Z",
+        "updated": "2026-11-10T18:58:58.709Z",
+        "history": [
+          {
+            "at": "2026-11-10T18:58:58.694Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          },
+          {
+            "at": "2026-11-10T18:58:58.698Z",
+            "by": "nate",
+            "from": "Next",
+            "to": "Dev WIP"
+          },
+          {
+            "at": "2026-11-10T18:58:58.702Z",
+            "by": "nate",
+            "from": "Dev WIP",
+            "to": "Dev Done"
+          },
+          {
+            "at": "2026-11-10T18:58:58.705Z",
+            "by": "nate",
+            "from": "Dev Done",
+            "to": "Verification"
+          },
+          {
+            "at": "2026-11-10T18:58:58.709Z",
+            "by": "nate",
+            "from": "Verification",
+            "to": "Done"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-5",
+        "title": "Issue short-lived access token + refresh cookie",
+        "description": "From spike: 15 min access token, httpOnly refresh cookie.",
+        "type": "Story",
+        "parent": "PROJ-1",
+        "assignee": "nate",
+        "spawnedFrom": "PROJ-4",
+        "status": "Dev WIP",
+        "comments": [],
+        "created": "2026-11-10T18:58:58.711Z",
+        "updated": "2026-11-10T18:58:58.716Z",
+        "history": [
+          {
+            "at": "2026-11-10T18:58:58.711Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          },
+          {
+            "at": "2026-11-10T18:58:58.716Z",
+            "by": "nate",
+            "from": "Next",
+            "to": "Dev WIP"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-6",
+        "title": "Silent token refresh on the client",
+        "description": "From spike: refresh before expiry, retry the failed request once.",
+        "type": "Story",
+        "parent": "PROJ-1",
+        "assignee": "jo",
+        "spawnedFrom": "PROJ-4",
+        "status": "Next",
+        "comments": [],
+        "created": "2026-11-10T18:58:58.718Z",
+        "updated": "2026-11-10T18:58:58.718Z",
+        "history": [
+          {
+            "at": "2026-11-10T18:58:58.718Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-7",
+        "title": "User can register with email, username and password",
+        "description": "Validate uniqueness; show field-level errors.",
+        "type": "Story",
+        "parent": "PROJ-1",
+        "assignee": "jo",
+        "spawnedFrom": null,
+        "status": "Done",
+        "comments": [],
+        "created": "2026-11-10T18:58:58.721Z",
+        "updated": "2026-11-10T18:58:58.730Z",
+        "history": [
+          {
+            "at": "2026-11-10T18:58:58.721Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          },
+          {
+            "at": "2026-11-10T18:58:58.723Z",
+            "by": "nate",
+            "from": "Next",
+            "to": "Dev WIP"
+          },
+          {
+            "at": "2026-11-10T18:58:58.725Z",
+            "by": "nate",
+            "from": "Dev WIP",
+            "to": "Dev Done"
+          },
+          {
+            "at": "2026-11-10T18:58:58.728Z",
+            "by": "nate",
+            "from": "Dev Done",
+            "to": "Verification"
+          },
+          {
+            "at": "2026-11-10T18:58:58.730Z",
+            "by": "nate",
+            "from": "Verification",
+            "to": "Done"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-8",
+        "title": "User can log in and out",
+        "description": "Header shows Sign in / Sign up or the user's name.",
+        "type": "Story",
+        "parent": "PROJ-1",
+        "assignee": "nate",
+        "spawnedFrom": null,
+        "status": "Verification",
+        "comments": [],
+        "created": "2026-11-10T18:58:58.733Z",
+        "updated": "2026-11-10T18:58:58.739Z",
+        "history": [
+          {
+            "at": "2026-11-10T18:58:58.733Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          },
+          {
+            "at": "2026-11-10T18:58:58.735Z",
+            "by": "nate",
+            "from": "Next",
+            "to": "Dev WIP"
+          },
+          {
+            "at": "2026-11-10T18:58:58.737Z",
+            "by": "nate",
+            "from": "Dev WIP",
+            "to": "Dev Done"
+          },
+          {
+            "at": "2026-11-10T18:58:58.739Z",
+            "by": "nate",
+            "from": "Dev Done",
+            "to": "Verification"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-9",
+        "title": "Login error message shows raw 422 JSON",
+        "description": "Wrong password renders the whole response body instead of 'email or password is invalid'.",
+        "type": "Defect",
+        "parent": "PROJ-1",
+        "assignee": "jo",
+        "spawnedFrom": null,
+        "status": "Dev Done",
+        "comments": [],
+        "created": "2026-11-10T18:58:58.742Z",
+        "updated": "2026-11-10T18:58:58.746Z",
+        "history": [
+          {
+            "at": "2026-11-10T18:58:58.742Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          },
+          {
+            "at": "2026-11-10T18:58:58.744Z",
+            "by": "nate",
+            "from": "Next",
+            "to": "Dev WIP"
+          },
+          {
+            "at": "2026-11-10T18:58:58.746Z",
+            "by": "nate",
+            "from": "Dev WIP",
+            "to": "Dev Done"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-10",
+        "title": "User can edit profile (bio, image, password)",
+        "description": "",
+        "type": "Story",
+        "parent": "PROJ-1",
+        "assignee": "nate",
+        "spawnedFrom": null,
+        "status": "Next",
+        "comments": [],
+        "created": "2026-11-10T18:58:58.748Z",
+        "updated": "2026-11-10T18:58:58.748Z",
+        "history": [
+          {
+            "at": "2026-11-10T18:58:58.748Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-11",
+        "title": "Global feed is slow with 10k+ articles",
+        "description": "Started as a spike: 'why is the feed slow?'. Turned out to be a missing index and an N+1 on authors.",
+        "type": "Defect",
+        "parent": "PROJ-2",
+        "assignee": "jo",
+        "spawnedFrom": null,
+        "status": "Dev WIP",
+        "comments": [],
+        "created": "2026-11-10T18:58:58.751Z",
+        "updated": "2026-11-10T18:58:58.753Z",
+        "history": [
+          {
+            "at": "2026-11-10T18:58:58.751Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          },
+          {
+            "at": "2026-11-10T18:58:58.753Z",
+            "by": "nate",
+            "from": "Next",
+            "to": "Dev WIP"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-12",
+        "title": "Author can publish an article with tags",
+        "description": "Markdown body, comma-separated tags, slug generated from the title.",
+        "type": "Story",
+        "parent": "PROJ-2",
+        "assignee": "nate",
+        "spawnedFrom": null,
+        "status": "Dev Done",
+        "comments": [],
+        "created": "2026-11-10T18:58:58.756Z",
+        "updated": "2026-11-10T18:58:58.759Z",
+        "history": [
+          {
+            "at": "2026-11-10T18:58:58.756Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          },
+          {
+            "at": "2026-11-10T18:58:58.757Z",
+            "by": "nate",
+            "from": "Next",
+            "to": "Dev WIP"
+          },
+          {
+            "at": "2026-11-10T18:58:58.759Z",
+            "by": "nate",
+            "from": "Dev WIP",
+            "to": "Dev Done"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-13",
+        "title": "Reader can view an article by slug",
+        "description": "",
+        "type": "Story",
+        "parent": "PROJ-2",
+        "assignee": "jo",
+        "spawnedFrom": null,
+        "status": "Done",
+        "comments": [],
+        "created": "2026-11-10T18:58:58.761Z",
+        "updated": "2026-11-10T18:58:58.770Z",
+        "history": [
+          {
+            "at": "2026-11-10T18:58:58.761Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          },
+          {
+            "at": "2026-11-10T18:58:58.764Z",
+            "by": "nate",
+            "from": "Next",
+            "to": "Dev WIP"
+          },
+          {
+            "at": "2026-11-10T18:58:58.766Z",
+            "by": "nate",
+            "from": "Dev WIP",
+            "to": "Dev Done"
+          },
+          {
+            "at": "2026-11-10T18:58:58.768Z",
+            "by": "nate",
+            "from": "Dev Done",
+            "to": "Verification"
+          },
+          {
+            "at": "2026-11-10T18:58:58.770Z",
+            "by": "nate",
+            "from": "Verification",
+            "to": "Done"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-14",
+        "title": "Paginate the feed 10 per page",
+        "description": "Page links under the list, keep the page in the URL.",
+        "type": "Story",
+        "parent": "PROJ-2",
+        "assignee": null,
+        "spawnedFrom": null,
+        "status": "Next",
+        "comments": [],
+        "created": "2026-11-10T18:58:58.773Z",
+        "updated": "2026-11-10T18:58:58.773Z",
+        "history": [
+          {
+            "at": "2026-11-10T18:58:58.773Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-15",
+        "title": "Tag with '&' breaks the tag filter URL",
+        "description": "",
+        "type": "Defect",
+        "parent": "PROJ-2",
+        "assignee": null,
+        "spawnedFrom": null,
+        "status": "Next",
+        "comments": [],
+        "created": "2026-11-10T18:58:58.775Z",
+        "updated": "2026-11-10T18:58:58.775Z",
+        "history": [
+          {
+            "at": "2026-11-10T18:58:58.775Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-16",
+        "title": "Spike: full-text search options (Postgres FTS vs. external)",
+        "description": "Outcome should be new Stories under Articles, or a recommendation to not do it.",
+        "type": "Spike",
+        "parent": "PROJ-2",
+        "assignee": "nate",
+        "spawnedFrom": null,
+        "status": "Next",
+        "comments": [],
+        "created": "2026-11-10T18:58:58.777Z",
+        "updated": "2026-11-10T18:58:58.777Z",
+        "history": [
+          {
+            "at": "2026-11-10T18:58:58.777Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-17",
+        "title": "Reader can favorite / unfavorite an article",
+        "description": "",
+        "type": "Story",
+        "parent": "PROJ-3",
+        "assignee": "jo",
+        "spawnedFrom": null,
+        "status": "Next",
+        "comments": [],
+        "created": "2026-11-10T18:58:58.779Z",
+        "updated": "2026-11-10T18:58:58.779Z",
+        "history": [
+          {
+            "at": "2026-11-10T18:58:58.779Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-18",
+        "title": "Reader can comment on an article",
+        "description": "",
+        "type": "Story",
+        "parent": "PROJ-3",
+        "assignee": null,
+        "spawnedFrom": null,
+        "status": "Dev WIP",
+        "comments": [],
+        "created": "2026-11-10T18:58:58.781Z",
+        "updated": "2026-11-10T19:37:45.230Z",
+        "history": [
+          {
+            "at": "2026-11-10T18:58:58.781Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          },
+          {
+            "at": "2026-11-10T19:37:45.230Z",
+            "by": "nate",
+            "from": "Next",
+            "to": "Dev WIP"
+          }
+        ]
+      }
+    ]
+  },
+  "bitbucket": {
+    "repos": [
+      {
+        "slug": "impact",
+        "role": "mine",
+        "nextPrId": 7,
+        "pullrequests": [
+          {
+            "id": 1,
+            "repo": "impact",
+            "title": "Release 1.0",
+            "description": "",
+            "source": "release/1.0",
+            "destination": "master",
+            "author": "jo",
+            "reviewers": [
+              "nate"
+            ],
+            "state": "MERGED",
+            "comments": [],
+            "created": "2026-11-10T18:58:58.784Z",
+            "updated": "2026-11-10T18:58:58.796Z",
+            "history": [
+              {
+                "at": "2026-11-10T18:58:58.784Z",
+                "by": "jo",
+                "from": null,
+                "to": "OPEN"
+              },
+              {
+                "at": "2026-11-10T18:58:58.791Z",
+                "by": "nate",
+                "from": "OPEN",
+                "to": "APPROVED"
+              },
+              {
+                "at": "2026-11-10T18:58:58.796Z",
+                "by": "jo",
+                "from": "APPROVED",
+                "to": "MERGED"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "repo": "impact",
+            "title": "PROJ-5 Refresh-token cookie",
+            "description": "",
+            "source": "feat/refresh-token",
+            "destination": "develop",
+            "issue": "PROJ-5",
+            "author": "nate",
+            "reviewers": [
+              "jo"
+            ],
+            "state": "DRAFT",
+            "comments": [],
+            "created": "2026-11-10T18:58:58.825Z",
+            "updated": "2026-11-10T18:58:58.825Z",
+            "history": [
+              {
+                "at": "2026-11-10T18:58:58.825Z",
+                "by": "nate",
+                "from": null,
+                "to": "DRAFT"
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "repo": "impact",
+            "title": "PROJ-11 Index articles.created_at, fix N+1",
+            "description": "",
+            "source": "fix/feed-perf",
+            "destination": "develop",
+            "issue": "PROJ-11",
+            "author": "jo",
+            "reviewers": [
+              "nate"
+            ],
+            "state": "OPEN",
+            "comments": [],
+            "created": "2026-11-10T18:58:58.838Z",
+            "updated": "2026-11-10T18:58:58.838Z",
+            "history": [
+              {
+                "at": "2026-11-10T18:58:58.838Z",
+                "by": "jo",
+                "from": null,
+                "to": "OPEN"
+              }
+            ]
+          },
+          {
+            "id": 4,
+            "repo": "impact",
+            "title": "PROJ-12 POST /articles with tags",
+            "description": "",
+            "source": "feat/create-article",
+            "destination": "develop",
+            "issue": "PROJ-12",
+            "author": "nate",
+            "reviewers": [
+              "jo"
+            ],
+            "state": "APPROVED",
+            "comments": [],
+            "created": "2026-11-10T18:58:58.844Z",
+            "updated": "2026-11-10T18:58:58.855Z",
+            "history": [
+              {
+                "at": "2026-11-10T18:58:58.844Z",
+                "by": "nate",
+                "from": null,
+                "to": "OPEN"
+              },
+              {
+                "at": "2026-11-10T18:58:58.855Z",
+                "by": "jo",
+                "from": "OPEN",
+                "to": "APPROVED"
+              }
+            ]
+          },
+          {
+            "id": 5,
+            "repo": "impact",
+            "title": "PROJ-8 Login endpoint + session cookie",
+            "description": "",
+            "source": "feat/login",
+            "destination": "develop",
+            "issue": "PROJ-8",
+            "author": "nate",
+            "reviewers": [
+              "jo"
+            ],
+            "state": "MERGED",
+            "comments": [],
+            "created": "2026-11-10T18:58:58.857Z",
+            "updated": "2026-11-10T18:58:58.865Z",
+            "history": [
+              {
+                "at": "2026-11-10T18:58:58.857Z",
+                "by": "nate",
+                "from": null,
+                "to": "OPEN"
+              },
+              {
+                "at": "2026-11-10T18:58:58.863Z",
+                "by": "jo",
+                "from": "OPEN",
+                "to": "APPROVED"
+              },
+              {
+                "at": "2026-11-10T18:58:58.865Z",
+                "by": "nate",
+                "from": "APPROVED",
+                "to": "MERGED"
+              }
+            ]
+          },
+          {
+            "id": 6,
+            "repo": "impact",
+            "title": "PROJ-9 Return friendly login errors",
+            "description": "",
+            "source": "fix/login-errors",
+            "destination": "develop",
+            "issue": "PROJ-9",
+            "author": "jo",
+            "reviewers": [
+              "nate"
+            ],
+            "state": "OPEN",
+            "comments": [],
+            "created": "2026-11-10T18:58:58.867Z",
+            "updated": "2026-11-10T18:58:58.867Z",
+            "history": [
+              {
+                "at": "2026-11-10T18:58:58.867Z",
+                "by": "jo",
+                "from": null,
+                "to": "OPEN"
+              }
+            ]
+          }
+        ],
+        "branches": [
+          {
+            "name": "release/1.0",
+            "issue": null,
+            "created": "2026-11-10T18:58:58.784Z"
+          },
+          {
+            "name": "spike/jwt-refresh",
+            "issue": "PROJ-4",
+            "created": "2026-11-10T18:58:58.817Z"
+          },
+          {
+            "name": "feat/refresh-token",
+            "issue": "PROJ-5",
+            "created": "2026-11-10T18:58:58.825Z"
+          },
+          {
+            "name": "fix/feed-perf",
+            "issue": "PROJ-11",
+            "created": "2026-11-10T18:58:58.838Z"
+          },
+          {
+            "name": "feat/create-article",
+            "issue": "PROJ-12",
+            "created": "2026-11-10T18:58:58.844Z"
+          },
+          {
+            "name": "feat/login",
+            "issue": "PROJ-8",
+            "created": "2026-11-10T18:58:58.857Z"
+          },
+          {
+            "name": "fix/login-errors",
+            "issue": "PROJ-9",
+            "created": "2026-11-10T18:58:58.867Z"
+          }
+        ],
+        "commits": [
+          {
+            "sha": "9af5d9a",
+            "branch": "release/1.0",
+            "message": "Bump version to 1.0",
+            "prId": null,
+            "issue": null,
+            "author": "jo",
+            "at": "2026-11-10T18:58:58.788Z"
+          },
+          {
+            "sha": "14dbad9",
+            "branch": "master",
+            "message": "Release 1.0",
+            "prId": 1,
+            "issue": null,
+            "author": "jo",
+            "at": "2026-11-10T18:58:58.796Z"
+          },
+          {
+            "sha": "070fbe8",
+            "branch": "spike/jwt-refresh",
+            "message": "Prototype long-lived token",
+            "prId": null,
+            "issue": "PROJ-4",
+            "author": "nate",
+            "at": "2026-11-10T18:58:58.819Z"
+          },
+          {
+            "sha": "7120ca8",
+            "branch": "spike/jwt-refresh",
+            "message": "Prototype refresh-token cookie",
+            "prId": null,
+            "issue": "PROJ-4",
+            "author": "nate",
+            "at": "2026-11-10T18:58:58.821Z"
+          },
+          {
+            "sha": "78e755e",
+            "branch": "spike/jwt-refresh",
+            "message": "Notes: comparison and recommendation",
+            "prId": null,
+            "issue": "PROJ-4",
+            "author": "nate",
+            "at": "2026-11-10T18:58:58.823Z"
+          },
+          {
+            "sha": "486016e",
+            "branch": "feat/refresh-token",
+            "message": "Add refresh token table",
+            "prId": null,
+            "issue": "PROJ-5",
+            "author": "nate",
+            "at": "2026-11-10T18:58:58.828Z"
+          },
+          {
+            "sha": "6e805f4",
+            "branch": "feat/refresh-token",
+            "message": "Set httpOnly cookie on login",
+            "prId": null,
+            "issue": "PROJ-5",
+            "author": "nate",
+            "at": "2026-11-10T18:58:58.833Z"
+          },
+          {
+            "sha": "24a2187",
+            "branch": "feat/refresh-token",
+            "message": "Rotate refresh token on use",
+            "prId": null,
+            "issue": "PROJ-5",
+            "author": "nate",
+            "at": "2026-11-10T18:58:58.835Z"
+          },
+          {
+            "sha": "a77709d",
+            "branch": "fix/feed-perf",
+            "message": "Add index on created_at",
+            "prId": null,
+            "issue": "PROJ-11",
+            "author": "jo",
+            "at": "2026-11-10T18:58:58.840Z"
+          },
+          {
+            "sha": "d2ced82",
+            "branch": "fix/feed-perf",
+            "message": "Batch-load authors",
+            "prId": null,
+            "issue": "PROJ-11",
+            "author": "jo",
+            "at": "2026-11-10T18:58:58.842Z"
+          },
+          {
+            "sha": "a25955a",
+            "branch": "feat/create-article",
+            "message": "Article model + migration",
+            "prId": null,
+            "issue": "PROJ-12",
+            "author": "nate",
+            "at": "2026-11-10T18:58:58.846Z"
+          },
+          {
+            "sha": "4cd487c",
+            "branch": "feat/create-article",
+            "message": "POST /articles",
+            "prId": null,
+            "issue": "PROJ-12",
+            "author": "nate",
+            "at": "2026-11-10T18:58:58.848Z"
+          },
+          {
+            "sha": "fb697d2",
+            "branch": "feat/create-article",
+            "message": "Tag parsing and slug generation",
+            "prId": null,
+            "issue": "PROJ-12",
+            "author": "nate",
+            "at": "2026-11-10T18:58:58.850Z"
+          },
+          {
+            "sha": "b8fed23",
+            "branch": "feat/login",
+            "message": "POST /users/login",
+            "prId": null,
+            "issue": "PROJ-8",
+            "author": "nate",
+            "at": "2026-11-10T18:58:58.859Z"
+          },
+          {
+            "sha": "a83dc3d",
+            "branch": "feat/login",
+            "message": "Session cookie",
+            "prId": null,
+            "issue": "PROJ-8",
+            "author": "nate",
+            "at": "2026-11-10T18:58:58.861Z"
+          },
+          {
+            "sha": "ff895f1",
+            "branch": "develop",
+            "message": "PROJ-8 Login endpoint + session cookie",
+            "prId": 5,
+            "issue": "PROJ-8",
+            "author": "nate",
+            "at": "2026-11-10T18:58:58.865Z"
+          },
+          {
+            "sha": "5ee6dc5",
+            "branch": "fix/login-errors",
+            "message": "Map 422 to a friendly message",
+            "prId": null,
+            "issue": "PROJ-9",
+            "author": "jo",
+            "at": "2026-11-10T18:58:58.870Z"
+          }
+        ],
+        "pipelines": [
+          {
+            "id": 1,
+            "repo": "impact",
+            "environment": "production",
+            "branch": "master",
+            "sha": "14dbad9",
+            "trigger": "manual",
+            "status": "SUCCESS",
+            "steps": [
+              {
+                "name": "Build image",
+                "status": "SUCCESS",
+                "startedAt": "2026-11-10T18:58:59.135Z",
+                "finishedAt": "2026-11-10T18:59:03.143Z"
+              },
+              {
+                "name": "Push image to ECR",
+                "status": "SUCCESS",
+                "startedAt": "2026-11-10T18:59:03.143Z",
+                "finishedAt": "2026-11-10T18:59:07.147Z"
+              },
+              {
+                "name": "Register task definition",
+                "status": "SUCCESS",
+                "startedAt": "2026-11-10T18:59:07.147Z",
+                "finishedAt": "2026-11-10T18:59:11.151Z"
+              },
+              {
+                "name": "Update ECS service",
+                "status": "SUCCESS",
+                "startedAt": "2026-11-10T18:59:11.151Z",
+                "finishedAt": "2026-11-10T18:59:15.162Z"
+              },
+              {
+                "name": "Wait for service to stabilize",
+                "status": "SUCCESS",
+                "startedAt": "2026-11-10T18:59:15.162Z",
+                "finishedAt": "2026-11-10T18:59:20.172Z"
+              }
+            ],
+            "taskRevision": 1,
+            "created": "2026-11-10T18:58:58.798Z",
+            "startedAt": "2026-11-10T18:58:59.135Z",
+            "finishedAt": "2026-11-10T18:59:20.172Z",
+            "ecsDeploymentId": "ecs-svc/1794337155162122321"
+          },
+          {
+            "id": 2,
+            "repo": "impact",
+            "environment": "staging",
+            "branch": "develop",
+            "sha": "ff895f1",
+            "trigger": "merge",
+            "status": "SUCCESS",
+            "steps": [
+              {
+                "name": "Build image",
+                "status": "SUCCESS",
+                "startedAt": "2026-11-10T18:58:59.135Z",
+                "finishedAt": "2026-11-10T18:59:03.143Z"
+              },
+              {
+                "name": "Push image to ECR",
+                "status": "SUCCESS",
+                "startedAt": "2026-11-10T18:59:03.143Z",
+                "finishedAt": "2026-11-10T18:59:07.147Z"
+              },
+              {
+                "name": "Register task definition",
+                "status": "SUCCESS",
+                "startedAt": "2026-11-10T18:59:07.147Z",
+                "finishedAt": "2026-11-10T18:59:11.151Z"
+              },
+              {
+                "name": "Update ECS service",
+                "status": "SUCCESS",
+                "startedAt": "2026-11-10T18:59:11.151Z",
+                "finishedAt": "2026-11-10T18:59:15.161Z"
+              },
+              {
+                "name": "Wait for service to stabilize",
+                "status": "SUCCESS",
+                "startedAt": "2026-11-10T18:59:15.162Z",
+                "finishedAt": "2026-11-10T18:59:17.666Z"
+              }
+            ],
+            "taskRevision": 1,
+            "created": "2026-11-10T18:58:58.865Z",
+            "startedAt": "2026-11-10T18:58:59.135Z",
+            "finishedAt": "2026-11-10T18:59:17.666Z",
+            "ecsDeploymentId": "ecs-svc/1794337155161828784"
+          }
+        ],
+        "nextPipelineId": 3,
+        "services": {
+          "staging": {
+            "clusterName": "impact-staging",
+            "serviceName": "impact-service",
+            "family": "impact-staging",
+            "desiredCount": 1,
+            "nextRevision": 2,
+            "taskDefinitions": [
+              {
+                "family": "impact-staging",
+                "revision": 1,
+                "arn": "arn:aws:ecs:us-east-1:123456789012:task-definition/impact-staging:1",
+                "image": "123456789012.dkr.ecr.us-east-1.amazonaws.com/impact:ff895f1",
+                "registeredAt": "2026-11-10T18:59:11.151Z",
+                "pipelineId": 2
+              }
+            ],
+            "deployments": [
+              {
+                "id": "ecs-svc/1794337155161828784",
+                "status": "PRIMARY",
+                "taskDefinition": "arn:aws:ecs:us-east-1:123456789012:task-definition/impact-staging:1",
+                "launchType": "FARGATE",
+                "desiredCount": 1,
+                "pendingCount": 0,
+                "runningCount": 1,
+                "failedTasks": 0,
+                "rolloutState": "COMPLETED",
+                "rolloutStateReason": "ECS deployment ecs-svc/1794337155161828784 completed.",
+                "createdAt": "2026-11-10T18:59:15.162Z",
+                "updatedAt": "2026-11-10T18:59:17.666Z"
+              }
+            ],
+            "history": [
+              {
+                "serviceDeploymentArn": "arn:aws:ecs:us-east-1:123456789012:service-deployment/impact-staging/impact-service/1794337155161828784",
+                "deploymentId": "ecs-svc/1794337155161828784",
+                "status": "SUCCESSFUL",
+                "statusReason": null,
+                "createdAt": "2026-11-10T18:59:15.162Z",
+                "startedAt": "2026-11-10T18:59:15.162Z",
+                "finishedAt": "2026-11-10T18:59:17.666Z",
+                "targetServiceRevision": {
+                  "taskDefinition": "arn:aws:ecs:us-east-1:123456789012:task-definition/impact-staging:1",
+                  "requestedTaskCount": 1,
+                  "runningTaskCount": 1,
+                  "pendingTaskCount": 0
+                },
+                "sourceServiceRevisions": [],
+                "deploymentCircuitBreaker": {
+                  "status": "MONITORING_COMPLETE",
+                  "failureCount": 0,
+                  "threshold": 10
+                },
+                "rollback": null,
+                "pipelineId": 2
+              }
+            ],
+            "events": [
+              {
+                "id": "731fffce-6410-4d9e-be7b-4defed90d647",
+                "createdAt": "2026-11-10T18:59:17.666Z",
+                "message": "(service impact-service) has reached a steady state."
+              },
+              {
+                "id": "48e8204e-94a7-4582-8339-a9febee591d8",
+                "createdAt": "2026-11-10T18:59:17.666Z",
+                "message": "(service impact-service) has started 1 tasks: (task dacf2f3a42daf02a149baaa781633e69)."
+              }
+            ]
+          },
+          "production": {
+            "clusterName": "impact-production",
+            "serviceName": "impact-service",
+            "family": "impact-production",
+            "desiredCount": 2,
+            "nextRevision": 2,
+            "taskDefinitions": [
+              {
+                "family": "impact-production",
+                "revision": 1,
+                "arn": "arn:aws:ecs:us-east-1:123456789012:task-definition/impact-production:1",
+                "image": "123456789012.dkr.ecr.us-east-1.amazonaws.com/impact:14dbad9",
+                "registeredAt": "2026-11-10T18:59:11.151Z",
+                "pipelineId": 1
+              }
+            ],
+            "deployments": [
+              {
+                "id": "ecs-svc/1794337155162122321",
+                "status": "PRIMARY",
+                "taskDefinition": "arn:aws:ecs:us-east-1:123456789012:task-definition/impact-production:1",
+                "launchType": "FARGATE",
+                "desiredCount": 2,
+                "pendingCount": 0,
+                "runningCount": 2,
+                "failedTasks": 0,
+                "rolloutState": "COMPLETED",
+                "rolloutStateReason": "ECS deployment ecs-svc/1794337155162122321 completed.",
+                "createdAt": "2026-11-10T18:59:15.162Z",
+                "updatedAt": "2026-11-10T18:59:20.172Z"
+              }
+            ],
+            "history": [
+              {
+                "serviceDeploymentArn": "arn:aws:ecs:us-east-1:123456789012:service-deployment/impact-production/impact-service/1794337155162122321",
+                "deploymentId": "ecs-svc/1794337155162122321",
+                "status": "SUCCESSFUL",
+                "statusReason": null,
+                "createdAt": "2026-11-10T18:59:15.162Z",
+                "startedAt": "2026-11-10T18:59:15.162Z",
+                "finishedAt": "2026-11-10T18:59:20.172Z",
+                "targetServiceRevision": {
+                  "taskDefinition": "arn:aws:ecs:us-east-1:123456789012:task-definition/impact-production:1",
+                  "requestedTaskCount": 2,
+                  "runningTaskCount": 2,
+                  "pendingTaskCount": 0
+                },
+                "sourceServiceRevisions": [],
+                "deploymentCircuitBreaker": {
+                  "status": "MONITORING_COMPLETE",
+                  "failureCount": 0,
+                  "threshold": 10
+                },
+                "rollback": null,
+                "pipelineId": 1
+              }
+            ],
+            "events": [
+              {
+                "id": "b90a005c-b601-4894-9d08-184e65134d1d",
+                "createdAt": "2026-11-10T18:59:20.172Z",
+                "message": "(service impact-service) has reached a steady state."
+              },
+              {
+                "id": "fdf2fb3d-44e4-4fae-8425-79329e824025",
+                "createdAt": "2026-11-10T18:59:20.172Z",
+                "message": "(service impact-service) has started 1 tasks: (task bb65b5e66d95a73ce9e220d20b274bb0)."
+              },
+              {
+                "id": "73475007-8c2d-48c6-a46e-67c731a1362d",
+                "createdAt": "2026-11-10T18:59:17.666Z",
+                "message": "(service impact-service) has started 1 tasks: (task 26d68dd22876785106c7cde46fdd3ce1)."
+              }
+            ]
+          }
+        }
+      },
+      {
+        "slug": "pagaboplus",
+        "role": "review",
+        "nextPrId": 5,
+        "pullrequests": [
+          {
+            "id": 1,
+            "repo": "pagaboplus",
+            "title": "Release 1.0",
+            "description": "",
+            "source": "release/1.0",
+            "destination": "master",
+            "author": "jo",
+            "reviewers": [
+              "nate"
+            ],
+            "state": "MERGED",
+            "comments": [],
+            "created": "2026-11-10T18:58:58.799Z",
+            "updated": "2026-11-10T18:58:58.806Z",
+            "history": [
+              {
+                "at": "2026-11-10T18:58:58.799Z",
+                "by": "jo",
+                "from": null,
+                "to": "OPEN"
+              },
+              {
+                "at": "2026-11-10T18:58:58.804Z",
+                "by": "nate",
+                "from": "OPEN",
+                "to": "APPROVED"
+              },
+              {
+                "at": "2026-11-10T18:58:58.806Z",
+                "by": "jo",
+                "from": "APPROVED",
+                "to": "MERGED"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "repo": "pagaboplus",
+            "title": "Fix pagination off-by-one on result lists",
+            "description": "",
+            "source": "fix/pagination",
+            "destination": "develop",
+            "author": "sam",
+            "reviewers": [
+              "nate",
+              "priya"
+            ],
+            "state": "OPEN",
+            "comments": [],
+            "created": "2026-11-10T18:58:58.872Z",
+            "updated": "2026-11-10T18:58:58.872Z",
+            "history": [
+              {
+                "at": "2026-11-10T18:58:58.872Z",
+                "by": "sam",
+                "from": null,
+                "to": "OPEN"
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "repo": "pagaboplus",
+            "title": "Add CSV export to reports",
+            "description": "",
+            "source": "feat/csv-export",
+            "destination": "develop",
+            "author": "priya",
+            "reviewers": [
+              "nate"
+            ],
+            "state": "OPEN",
+            "comments": [],
+            "created": "2026-11-10T18:58:58.876Z",
+            "updated": "2026-11-10T18:58:58.876Z",
+            "history": [
+              {
+                "at": "2026-11-10T18:58:58.876Z",
+                "by": "priya",
+                "from": null,
+                "to": "OPEN"
+              }
+            ]
+          },
+          {
+            "id": 4,
+            "repo": "pagaboplus",
+            "title": "Bump dependencies and fix lockfile",
+            "description": "",
+            "source": "chore/deps",
+            "destination": "develop",
+            "author": "sam",
+            "reviewers": [
+              "nate"
+            ],
+            "state": "MERGED",
+            "comments": [],
+            "created": "2026-11-10T18:58:58.883Z",
+            "updated": "2026-11-10T18:58:58.889Z",
+            "history": [
+              {
+                "at": "2026-11-10T18:58:58.883Z",
+                "by": "sam",
+                "from": null,
+                "to": "OPEN"
+              },
+              {
+                "at": "2026-11-10T18:58:58.887Z",
+                "by": "nate",
+                "from": "OPEN",
+                "to": "APPROVED"
+              },
+              {
+                "at": "2026-11-10T18:58:58.889Z",
+                "by": "sam",
+                "from": "APPROVED",
+                "to": "MERGED"
+              }
+            ]
+          }
+        ],
+        "branches": [
+          {
+            "name": "release/1.0",
+            "issue": null,
+            "created": "2026-11-10T18:58:58.799Z"
+          },
+          {
+            "name": "fix/pagination",
+            "issue": null,
+            "created": "2026-11-10T18:58:58.872Z"
+          },
+          {
+            "name": "feat/csv-export",
+            "issue": null,
+            "created": "2026-11-10T18:58:58.876Z"
+          },
+          {
+            "name": "chore/deps",
+            "issue": null,
+            "created": "2026-11-10T18:58:58.883Z"
+          }
+        ],
+        "commits": [
+          {
+            "sha": "a67ee64",
+            "branch": "release/1.0",
+            "message": "Bump version to 1.0",
+            "prId": null,
+            "issue": null,
+            "author": "jo",
+            "at": "2026-11-10T18:58:58.801Z"
+          },
+          {
+            "sha": "c91ecd6",
+            "branch": "master",
+            "message": "Release 1.0",
+            "prId": 1,
+            "issue": null,
+            "author": "jo",
+            "at": "2026-11-10T18:58:58.806Z"
+          },
+          {
+            "sha": "3bbc045",
+            "branch": "fix/pagination",
+            "message": "Fix page offset",
+            "prId": null,
+            "issue": null,
+            "author": "sam",
+            "at": "2026-11-10T18:58:58.873Z"
+          },
+          {
+            "sha": "a6a967d",
+            "branch": "feat/csv-export",
+            "message": "CSV writer",
+            "prId": null,
+            "issue": null,
+            "author": "priya",
+            "at": "2026-11-10T18:58:58.878Z"
+          },
+          {
+            "sha": "acef582",
+            "branch": "feat/csv-export",
+            "message": "Download button",
+            "prId": null,
+            "issue": null,
+            "author": "priya",
+            "at": "2026-11-10T18:58:58.880Z"
+          },
+          {
+            "sha": "a3b9e3d",
+            "branch": "chore/deps",
+            "message": "Bump deps",
+            "prId": null,
+            "issue": null,
+            "author": "sam",
+            "at": "2026-11-10T18:58:58.885Z"
+          },
+          {
+            "sha": "15a8359",
+            "branch": "develop",
+            "message": "Bump dependencies and fix lockfile",
+            "prId": 4,
+            "issue": null,
+            "author": "sam",
+            "at": "2026-11-10T18:58:58.889Z"
+          }
+        ],
+        "pipelines": [],
+        "nextPipelineId": 1,
+        "services": {
+          "staging": {
+            "clusterName": "pagaboplus-staging",
+            "serviceName": "pagaboplus-service",
+            "family": "pagaboplus-staging",
+            "desiredCount": 1,
+            "nextRevision": 1,
+            "taskDefinitions": [],
+            "deployments": [],
+            "history": [],
+            "events": []
+          },
+          "production": {
+            "clusterName": "pagaboplus-production",
+            "serviceName": "pagaboplus-service",
+            "family": "pagaboplus-production",
+            "desiredCount": 2,
+            "nextRevision": 1,
+            "taskDefinitions": [],
+            "deployments": [],
+            "history": [],
+            "events": []
+          }
+        }
+      },
+      {
+        "slug": "sypro",
+        "role": "review",
+        "nextPrId": 5,
+        "pullrequests": [
+          {
+            "id": 1,
+            "repo": "sypro",
+            "title": "Release 1.0",
+            "description": "",
+            "source": "release/1.0",
+            "destination": "master",
+            "author": "jo",
+            "reviewers": [
+              "nate"
+            ],
+            "state": "MERGED",
+            "comments": [],
+            "created": "2026-11-10T18:58:58.808Z",
+            "updated": "2026-11-10T18:58:58.815Z",
+            "history": [
+              {
+                "at": "2026-11-10T18:58:58.808Z",
+                "by": "jo",
+                "from": null,
+                "to": "OPEN"
+              },
+              {
+                "at": "2026-11-10T18:58:58.812Z",
+                "by": "nate",
+                "from": "OPEN",
+                "to": "APPROVED"
+              },
+              {
+                "at": "2026-11-10T18:58:58.815Z",
+                "by": "jo",
+                "from": "APPROVED",
+                "to": "MERGED"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "repo": "sypro",
+            "title": "Retry failed sync jobs with backoff",
+            "description": "",
+            "source": "feat/sync-retry",
+            "destination": "develop",
+            "author": "priya",
+            "reviewers": [
+              "nate"
+            ],
+            "state": "OPEN",
+            "comments": [],
+            "created": "2026-11-10T18:58:58.892Z",
+            "updated": "2026-11-10T18:58:58.892Z",
+            "history": [
+              {
+                "at": "2026-11-10T18:58:58.892Z",
+                "by": "priya",
+                "from": null,
+                "to": "OPEN"
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "repo": "sypro",
+            "title": "Move config to environment variables",
+            "description": "",
+            "source": "chore/env-config",
+            "destination": "develop",
+            "author": "sam",
+            "reviewers": [
+              "nate",
+              "priya"
+            ],
+            "state": "CHANGES_REQUESTED",
+            "comments": [],
+            "created": "2026-11-10T18:58:58.899Z",
+            "updated": "2026-11-10T18:58:58.903Z",
+            "history": [
+              {
+                "at": "2026-11-10T18:58:58.899Z",
+                "by": "sam",
+                "from": null,
+                "to": "OPEN"
+              },
+              {
+                "at": "2026-11-10T18:58:58.903Z",
+                "by": "nate",
+                "from": "OPEN",
+                "to": "CHANGES_REQUESTED"
+              }
+            ]
+          },
+          {
+            "id": 4,
+            "repo": "sypro",
+            "title": "WIP: audit trail",
+            "description": "",
+            "source": "feat/audit-trail",
+            "destination": "develop",
+            "author": "priya",
+            "reviewers": [],
+            "state": "DRAFT",
+            "comments": [],
+            "created": "2026-11-10T18:58:58.905Z",
+            "updated": "2026-11-10T18:58:58.905Z",
+            "history": [
+              {
+                "at": "2026-11-10T18:58:58.905Z",
+                "by": "priya",
+                "from": null,
+                "to": "DRAFT"
+              }
+            ]
+          }
+        ],
+        "branches": [
+          {
+            "name": "release/1.0",
+            "issue": null,
+            "created": "2026-11-10T18:58:58.808Z"
+          },
+          {
+            "name": "feat/sync-retry",
+            "issue": null,
+            "created": "2026-11-10T18:58:58.892Z"
+          },
+          {
+            "name": "chore/env-config",
+            "issue": null,
+            "created": "2026-11-10T18:58:58.899Z"
+          },
+          {
+            "name": "feat/audit-trail",
+            "issue": null,
+            "created": "2026-11-10T18:58:58.905Z"
+          }
+        ],
+        "commits": [
+          {
+            "sha": "88dede1",
+            "branch": "release/1.0",
+            "message": "Bump version to 1.0",
+            "prId": null,
+            "issue": null,
+            "author": "jo",
+            "at": "2026-11-10T18:58:58.810Z"
+          },
+          {
+            "sha": "ce765ce",
+            "branch": "master",
+            "message": "Release 1.0",
+            "prId": 1,
+            "issue": null,
+            "author": "jo",
+            "at": "2026-11-10T18:58:58.815Z"
+          },
+          {
+            "sha": "e058fc8",
+            "branch": "feat/sync-retry",
+            "message": "Backoff helper",
+            "prId": null,
+            "issue": null,
+            "author": "priya",
+            "at": "2026-11-10T18:58:58.894Z"
+          },
+          {
+            "sha": "29bc113",
+            "branch": "feat/sync-retry",
+            "message": "Retry failed jobs",
+            "prId": null,
+            "issue": null,
+            "author": "priya",
+            "at": "2026-11-10T18:58:58.897Z"
+          },
+          {
+            "sha": "6978319",
+            "branch": "chore/env-config",
+            "message": "Read config from env",
+            "prId": null,
+            "issue": null,
+            "author": "sam",
+            "at": "2026-11-10T18:58:58.901Z"
+          }
+        ],
+        "pipelines": [],
+        "nextPipelineId": 1,
+        "services": {
+          "staging": {
+            "clusterName": "sypro-staging",
+            "serviceName": "sypro-service",
+            "family": "sypro-staging",
+            "desiredCount": 1,
+            "nextRevision": 1,
+            "taskDefinitions": [],
+            "deployments": [],
+            "history": [],
+            "events": []
+          },
+          "production": {
+            "clusterName": "sypro-production",
+            "serviceName": "sypro-service",
+            "family": "sypro-production",
+            "desiredCount": 2,
+            "nextRevision": 1,
+            "taskDefinitions": [],
+            "deployments": [],
+            "history": [],
+            "events": []
+          }
+        }
+      }
+    ]
+  },
+  "worktrees": [
+    {
+      "id": "wt-1",
+      "repo": "impact",
+      "branch": "feat/refresh-token",
+      "path": "~/work/impact-wt/PROJ-5",
+      "issue": "PROJ-5",
+      "docker": {
+        "status": "running",
+        "port": "3105"
+      },
+      "notes": "",
+      "created": "2026-11-10T18:58:58.907Z"
+    },
+    {
+      "id": "wt-2",
+      "repo": "impact",
+      "branch": "feat/create-article",
+      "path": "~/work/impact-wt/PROJ-12",
+      "issue": "PROJ-12",
+      "docker": {
+        "status": "stopped",
+        "port": "3112"
+      },
+      "notes": "",
+      "created": "2026-11-10T18:58:58.910Z"
+    },
+    {
+      "id": "wt-3",
+      "repo": "impact",
+      "branch": "feat/login",
+      "path": "~/work/impact-wt/PROJ-8",
+      "issue": "PROJ-8",
+      "docker": {
+        "status": "running",
+        "port": "3108"
+      },
+      "notes": "",
+      "created": "2026-11-10T18:58:58.912Z"
+    },
+    {
+      "id": "wt-4",
+      "repo": "impact",
+      "branch": "fix/feed-perf",
+      "path": "~/work/impact-wt/review-jo-feed",
+      "issue": "PROJ-11",
+      "docker": {
+        "status": "stopped",
+        "port": "3111"
+      },
+      "notes": "reviewing Jo's PR",
+      "created": "2026-11-10T18:58:58.914Z"
+    },
+    {
+      "id": "wt-5",
+      "repo": "pagaboplus",
+      "branch": "fix/pagination",
+      "path": "~/work/pagaboplus-wt/review-pagination",
+      "issue": null,
+      "docker": {
+        "status": "running",
+        "port": "4201"
+      },
+      "notes": "code review",
+      "created": "2026-11-10T18:58:58.917Z"
+    },
+    {
+      "id": "wt-6",
+      "repo": "sypro",
+      "branch": "feat/sync-retry",
+      "path": "~/work/sypro-wt/review-sync-retry",
+      "issue": null,
+      "docker": {
+        "status": "stopped",
+        "port": "5301"
+      },
+      "notes": "code review",
+      "created": "2026-11-10T18:58:58.919Z"
+    },
+    {
+      "id": "wt-7",
+      "repo": "impact",
+      "branch": "spike/jwt-refresh",
+      "path": "~/work/impact-wt/PROJ-4-spike",
+      "issue": "PROJ-4",
+      "docker": {
+        "status": "stopped",
+        "port": "3104"
+      },
+      "notes": "prototype of both token approaches",
+      "created": "2026-11-10T18:58:58.921Z"
+    }
+  ],
+  "nextWorktreeId": 8,
+  "sessions": [
+    {
+      "id": "sess-1",
+      "name": "Authentication: whole feature context",
+      "sessionId": "7d8c1b02-1338-4656-b4b0-70e76d76c8be",
+      "issues": [
+        "PROJ-1",
+        "PROJ-4",
+        "PROJ-5",
+        "PROJ-6",
+        "PROJ-7",
+        "PROJ-8",
+        "PROJ-9",
+        "PROJ-10"
+      ],
+      "prs": [
+        {
+          "repo": "impact",
+          "id": 2
+        },
+        {
+          "repo": "impact",
+          "id": 5
+        },
+        {
+          "repo": "impact",
+          "id": 6
+        }
+      ],
+      "worktree": null,
+      "longLived": true,
+      "status": "idle",
+      "notes": "Long-lived. Knows the token design and every Auth ticket.",
+      "created": "2026-11-10T18:58:58.925Z"
+    },
+    {
+      "id": "sess-2",
+      "name": "JWT refresh spike",
+      "sessionId": "ca8028ae-cb97-4e37-adba-2059008ea267",
+      "issues": [
+        "PROJ-4",
+        "PROJ-5",
+        "PROJ-6"
+      ],
+      "prs": [],
+      "worktree": "wt-7",
+      "longLived": false,
+      "status": "idle",
+      "notes": "Compared both approaches, wrote the recommendation, spawned two stories.",
+      "created": "2026-11-10T18:58:58.929Z"
+    },
+    {
+      "id": "sess-3",
+      "name": "Refresh-token cookie",
+      "sessionId": "f0f4a604-90d8-4c78-8e6d-9e1bd0893c12",
+      "issues": [
+        "PROJ-5"
+      ],
+      "prs": [
+        {
+          "repo": "impact",
+          "id": 2
+        }
+      ],
+      "worktree": "wt-1",
+      "longLived": false,
+      "status": "active",
+      "notes": "",
+      "created": "2026-11-10T18:58:58.935Z"
+    },
+    {
+      "id": "sess-4",
+      "name": "Login staging verification",
+      "sessionId": "7b4400e8-2679-4bd1-b652-34f4929449a5",
+      "issues": [
+        "PROJ-8"
+      ],
+      "prs": [
+        {
+          "repo": "impact",
+          "id": 5
+        }
+      ],
+      "worktree": "wt-3",
+      "longLived": false,
+      "status": "idle",
+      "notes": "Resumed to test on staging.",
+      "created": "2026-11-10T18:58:58.937Z"
+    },
+    {
+      "id": "sess-5",
+      "name": "Articles: publish + feed",
+      "sessionId": "cea21645-278a-4d92-a39a-f4d45084acce",
+      "issues": [
+        "PROJ-12",
+        "PROJ-11",
+        "PROJ-13",
+        "PROJ-14",
+        "PROJ-16"
+      ],
+      "prs": [
+        {
+          "repo": "impact",
+          "id": 3
+        },
+        {
+          "repo": "impact",
+          "id": 4
+        }
+      ],
+      "worktree": "wt-2",
+      "longLived": false,
+      "status": "idle",
+      "notes": "",
+      "created": "2026-11-10T18:58:58.939Z"
+    },
+    {
+      "id": "sess-6",
+      "name": "Review day",
+      "sessionId": "e8c0e314-abe7-4979-91f3-d3beff720451",
+      "issues": [],
+      "prs": [
+        {
+          "repo": "pagaboplus",
+          "id": 2
+        },
+        {
+          "repo": "pagaboplus",
+          "id": 3
+        },
+        {
+          "repo": "sypro",
+          "id": 2
+        },
+        {
+          "repo": "sypro",
+          "id": 3
+        },
+        {
+          "repo": "impact",
+          "id": 3
+        },
+        {
+          "repo": "impact",
+          "id": 6
+        }
+      ],
+      "worktree": "wt-5",
+      "longLived": false,
+      "status": "idle",
+      "notes": "",
+      "created": "2026-11-10T18:58:58.942Z"
+    }
+  ],
+  "nextSessionId": 8
+}

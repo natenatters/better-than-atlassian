@@ -1,0 +1,36 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Sprites</title><link rel="icon" href="data:,">
+<style>body{margin:0;background:#161412;color:#ddd;font:13px system-ui}h3{margin:14px 12px 4px;font-weight:400;color:#e8b04a}svg{display:block;margin:0 12px 6px;image-rendering:auto}.blink{animation:b 1.2s steps(2) infinite}@keyframes b{50%{opacity:.7}}</style></head><body>
+<svg width="0" height="0" style="position:absolute"><defs id="D"></defs></svg>
+<div id="out"></div>
+<script src="sprites.js"></script>
+<script>
+document.getElementById("D").innerHTML = SPR.defs;
+const S = 3, P = SPR.PALETTE;
+const sheet = (title, w, h, floor, body) => `<h3>${title}</h3><svg width="${w * S}" height="${h * S}" viewBox="0 0 ${w} ${h}"><rect width="${w}" height="${h}" fill="url(#${floor})"/>${body}</svg>`;
+const at = (x, y, s, sc = 1) => `<g transform="translate(${x} ${y}) scale(${sc})">${s}</g>`;
+let h = "";
+h += sheet("Pawns (feet at the base): bowler, helmet + rifle, hood, hair, facing left, then the Claude bot awake and idle", 520, 92, "fl-concrete",
+  at(40, 60, SPR.pawn({ cloth: "#454443", hat: "bowler", hatColor: "#7a4a2a", skin: P.skin[0] })) + at(40, 56, SPR.nameTag("Anarchist"), 1) +
+  at(105, 60, SPR.pawn({ cloth: "#cfc9ae", hat: "helmet", hatColor: "#7d8068", item: "rifle" })) +
+  at(170, 60, SPR.pawn({ cloth: "#8d8f8c", hat: "hood", hatColor: "#4f4f52", skin: P.skin[2], item: "backpack" })) +
+  at(235, 60, SPR.pawn({ cloth: "#6f8794", hat: "hair", hatColor: "#3a2a1f", skin: P.skin[1] })) +
+  at(300, 60, SPR.pawn({ cloth: "#a04a3c", hat: "cap", hatColor: "#4a6a8a", skin: P.skin[3], face: -1 })) +
+  at(385, 60, SPR.mech({})) + at(450, 60, SPR.mech({ active: false })));
+h += sheet("Walls (slab + brick facade), a vertical run and a wooden double door", 330, 90, "fl-concrete",
+  SPR.wallH(10, 10, 150) + SPR.wallV(168, 10, 70) + SPR.doorH(10, 50) + SPR.wallH(48, 56, 90));
+h += sheet("Floors: concrete, wood, carpet, tile, and the bare ground", 440, 60, "fl-concrete",
+  `<rect x="0" y="0" width="110" height="60" fill="url(#fl-concrete)"/><rect x="110" y="0" width="110" height="60" fill="url(#fl-wood)"/><rect x="220" y="0" width="110" height="60" fill="url(#fl-carpet)"/><rect x="330" y="0" width="110" height="60" fill="url(#fl-tile)"/>`);
+h += sheet("Furniture on a wood floor: table with chairs, bed, barrels, crates, logs with a count plate, workbench, cooker", 560, 190, "fl-wood",
+  table(40, 28, 70, 46) + at(75, 22, SPR.chair({})) + at(55, 90, SPR.chair({}), 1) + at(95, 90, SPR.chair({}), 1) + at(24, 56, SPR.chair({ face: -1 })) + at(126, 56, SPR.chair({})) +
+  at(215, 100, SPR.bed({})) + at(290, 40, SPR.barrel({})) + at(325, 40, SPR.barrel({})) + at(290, 78, SPR.barrel({})) + at(380, 36, SPR.crate({})) + at(412, 36, SPR.crate({ size: 22, wood: "#b78a50" })) +
+  at(470, 36, SPR.logs(3)) + at(470, 62, SPR.plate("75")) + SPR.bench(260, 130, 110) + SPR.cooker(400, 110) +
+  at(520, 36, SPR.torch({})) + at(530, 120, SPR.campfire()) + at(30, 150, SPR.shelfCell(52, 36)) + at(90, 150, SPR.shelfCell(52, 36)));
+function table(x, y, w, hh) { return SPR.table(x, y, w, hh); }
+h += `<h3>Delivery scene: foundry, conveyor, yard stack, crane holding a container over the staging train, a station sign, a monitor</h3><svg width="${700 * 2}" height="${290 * 2}" viewBox="0 0 700 290"><rect width="700" height="290" fill="url(#ground)"/>${SPR.trackLoop(250, 150, 410, 110, 40)}
+ ${SPR.foundry(20, 30, { active: true })}${SPR.yardStack(40, 150, ["a3f9c1e", "9b21d70", "5c0e8aa"])}${SPR.container(180, 52, { color: "#9a4a3a", label: "ab1945e" })}
+ ${SPR.flat(300, 174)}${SPR.container(306, 168, { w: 96, h: 22, color: "#5f7a8a", label: "serving", noShadow: true })}${SPR.loco(412, 168)}${SPR.tankWagon(210, 168, "DB")}
+ ${SPR.crane(280, 62, 150, { trolley: 0.35, cable: 62 })}${SPR.container(262, 138, { w: 96, h: 24, color: "#b58a3a", label: "9c4d2f" })}
+ ${SPR.sign(560, 70, "staging.impact.localhost")}${SPR.monitor(600, 100)}</svg>`;
+document.getElementById("out").innerHTML = h;
+const st = document.createElement("style"); st.textContent = ".smoke{animation:sm 3s ease-out infinite;transform-box:fill-box;transform-origin:center}.s2{animation-delay:1.4s}@keyframes sm{from{transform:translateY(8px) scale(.6);opacity:.8}to{transform:translateY(-14px) scale(1.5);opacity:0}}"; document.head.appendChild(st);
+</script></body></html>

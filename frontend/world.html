@@ -1,0 +1,955 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Workshop</title><link rel="icon" href="data:,">
+<style>
+:root{--ink:#17110c;--panel:#1b1b1e;--panel2:#242428;--edge:#4b4b52;--amber:#e8b04a;--red:#b3201a;--txt:#e9e6df;--dim:#9b978c}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#5d4630;color:var(--txt);font:13px/1.25 "Segoe UI",Calibri,Arial,sans-serif;overflow:hidden;user-select:none}
+#stage{position:absolute;inset:0 0 34px 0;cursor:grab}#stage.drag{cursor:grabbing}
+svg#world{width:100%;height:100%;display:block}
+text{font-family:"Segoe UI",Calibri,Arial,sans-serif}
+.nm{font-size:11px;fill:#fff;text-anchor:middle;text-decoration:underline;paint-order:stroke;stroke:var(--ink);stroke-width:3px;stroke-linejoin:round}
+.jb{font-size:9.5px;fill:#f4d78a;text-anchor:middle;paint-order:stroke;stroke:var(--ink);stroke-width:3px}
+.sha,.key{font:700 9.5px ui-monospace,Menlo,monospace;fill:#fff;text-anchor:middle;paint-order:stroke;stroke:var(--ink);stroke-width:3px}
+.lbl{font-size:10.5px;fill:#f3e8d0;paint-order:stroke;stroke:var(--ink);stroke-width:3px}
+.room{font-size:11px;letter-spacing:.08em;text-transform:uppercase;fill:var(--amber);paint-order:stroke;stroke:var(--ink);stroke-width:4px;font-weight:600}
+.spin{transform-box:fill-box;transform-origin:center;animation:spin 1.2s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.fl{transform-box:fill-box;transform-origin:50% 100%;animation:fl .5s ease-in-out infinite alternate}@keyframes fl{from{transform:scale(1,1)}to{transform:scale(.85,1.18)}}
+.pulse{transform-box:fill-box;transform-origin:center;animation:pulse 1.8s ease-out infinite}@keyframes pulse{from{transform:scale(1);opacity:.9}to{transform:scale(1.8);opacity:0}}
+.blink{animation:blink 1.1s steps(2) infinite}@keyframes blink{50%{opacity:.35}}
+.sel{fill:none;stroke:#fff;stroke-width:2;stroke-dasharray:10 8;animation:dash 1s linear infinite;pointer-events:none}@keyframes dash{to{stroke-dashoffset:-18}}
+.hit{cursor:pointer}.hit:hover .hov{opacity:.18}.hov{fill:#fff;opacity:0}
+.float{font:700 12px "Segoe UI",sans-serif;fill:#ffe29a;paint-order:stroke;stroke:var(--ink);stroke-width:3px;text-anchor:middle;animation:fup 1.6s ease-out forwards}@keyframes fup{to{transform:translateY(-26px);opacity:0}}
+.box{background:color-mix(in srgb,var(--panel) 95%,transparent);border:1px solid var(--edge)}
+#res{display:flex;flex-direction:column;gap:5px}
+#res div{display:flex;align-items:center;gap:6px;font-size:13px}#res i{width:14px;height:14px;border-radius:3px;border:1px solid #000;display:inline-block}
+#pawns{position:absolute;left:88px;top:0;display:flex;gap:6px;padding:4px 6px;background:#0d0d0fa8;max-width:calc(100% - 360px);overflow:hidden}
+#pawns div{width:48px;text-align:center;font-size:10px;text-decoration:underline;color:#fff;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#pawns svg{width:40px;height:40px;background:var(--panel2);border:1px solid #000;display:block;margin:0 auto 1px}#pawns .on svg{border-color:#fff}
+#alerts{position:absolute;right:0;top:6px;width:250px;display:flex;flex-direction:column;align-items:flex-end;max-height:60vh;overflow:hidden}
+#alerts h5{font-weight:400;color:var(--amber);font-size:12px;padding:2px 8px;background:#0d0d0f99}
+#alerts p{padding:2px 8px;text-align:right;color:#fff;font-size:12px;max-width:250px;cursor:pointer}
+#alerts p.r{background:var(--red)}#alerts p.n{background:#0d0d0f99;color:#d9d5ca}#alerts p:hover{filter:brightness(1.3)}
+#inspect{position:absolute;left:0;bottom:34px;width:440px;max-height:70vh;overflow:visible;font-size:13px;display:none}
+#inspect .tt{display:flex;border-bottom:1px solid var(--edge)}#inspect .tt span{padding:3px 16px;background:#17171a;color:var(--dim);border-right:1px solid var(--edge);cursor:pointer}#inspect .tt span.on{background:var(--panel2);color:#fff}#inspect .tt b{margin-left:auto;padding:3px 10px;cursor:pointer;font-weight:400;color:var(--dim)}
+#inspect details.more{flex-basis:100%}#inspect details.more summary{list-style:none;display:inline-block}#inspect.wide{width:760px;max-height:72vh}.tx{margin:4px 10px 10px;padding:6px 8px;background:#0f0f11;border:1px solid var(--edge);max-height:300px;overflow:auto;font:11.5px/1.35 ui-monospace,Menlo,monospace;user-select:text}.tx .m{margin-bottom:6px;white-space:pre-wrap;word-break:break-word}.tx .m b{color:var(--amber);font-weight:400}.tx .m.assistant b{color:#a48cf0}#inspect code{background:#101012;padding:1px 4px;user-select:text}#inspect h4{font-weight:400;font-size:18px;padding:6px 10px 0}#inspect h4 small{color:var(--dim);font-size:13px}
+.rows{padding:2px 10px 4px;color:#cfcbc0;line-height:1.4}.rows b{color:var(--amber);font-weight:400}
+.btns{display:flex;gap:6px;padding:4px 10px 10px;flex-wrap:wrap}
+.gbtn{background:linear-gradient(#7d6433,#64502a);border:1px solid #3b2e17;border-top-color:#a2864a;color:#fff;padding:3px 11px;font-size:12.5px;cursor:pointer;box-shadow:0 1px 0 #000;font-family:inherit}
+.gbtn:hover{filter:brightness(1.18)}.gbtn.m{border-style:dashed}.gbtn.ai{background:linear-gradient(#6d5ab0,#4d3d86);border-color:#a48cf0}
+form.af{display:flex;gap:4px;flex-wrap:wrap;width:100%}form.af input,form.af select,.in{background:#101012;border:1px solid var(--edge);color:#fff;padding:3px 6px;font:inherit;font-size:12px;user-select:text}
+#bar{position:absolute;left:0;right:0;bottom:0;height:34px;display:flex;background:var(--panel);border-top:1px solid var(--edge)}
+#bar span{flex:1;display:flex;align-items:center;justify-content:center;border-right:1px solid var(--edge);color:#ddd;cursor:pointer}#bar span:hover,#bar span.on{background:var(--panel2)}#bar span.dim{flex:.6;color:var(--dim)}
+#speed{position:absolute;right:8px;bottom:78px;display:flex;gap:2px}#speed span{padding:2px 9px;background:#0d0d0fb8;border:1px solid var(--edge);color:#8aa7c0;cursor:pointer;font-size:12px}#speed span.on{background:#2a3d52;color:#fff}#clock{position:absolute;right:8px;bottom:42px;text-align:right;text-shadow:0 0 3px #000}#clock small{display:block;color:var(--dim)}
+#work{position:absolute;left:50%;top:70px;transform:translateX(-50%);width:min(760px,94vw);display:none;padding:12px 14px;max-height:calc(100% - 120px);overflow:auto}
+#work h3{font-weight:400;font-size:17px;margin-bottom:8px}#work table{border-collapse:collapse;width:100%}
+#work th{font-weight:400;color:var(--dim);font-size:12px;padding:3px 6px;text-align:center}#work td{padding:3px 6px;text-align:center;border-top:1px solid #2d2d33}
+#work td:first-child{text-align:left;color:#fff}#work .p{width:34px;height:24px;background:#101012;border:1px solid var(--edge);color:#ddd;cursor:pointer}
+#work .p.p1{color:#7be07b;border-color:#3d7a3d}#work .p.p2{color:#c9e07b}#work .p.p3{color:#e0b07b}#work .p.p4{color:#e07b7b}
+#work .sub{color:var(--dim);font-size:12px;margin:12px 0 4px}#work label{display:inline-flex;gap:5px;align-items:center;margin:2px 12px 2px 0}
+#wins .win{position:absolute;background:#1c2127;border:1px solid #5a6068;color:#dcdcdc;box-shadow:0 10px 36px #000b;display:flex;flex-direction:column;max-height:calc(100% - 80px);z-index:20}
+.win .wt{display:flex;align-items:center;padding:10px 14px 2px;cursor:move}.win .wt h2{font-weight:400;font-size:20px;flex:1}.win .wx{color:#9a9a9a;cursor:pointer;font-size:20px;padding:0 4px}.win .wx:hover{color:#fff}
+.win .wd{padding:0 14px 8px;color:#b4b4b4;font-size:13px}.win .wb{flex:1;min-height:0;display:flex;padding:0 14px;overflow:hidden}.win .wf{padding:10px;text-align:center}
+.win .wl{width:215px;border:1px solid #3a4046;background:#14181c;overflow:auto;flex:none}.win .wl .row{padding:7px 10px;cursor:pointer;display:flex;justify-content:space-between;gap:8px;align-items:center}.win .wl .row small{color:#9a9a9a;font-size:11px}
+.win .wl .row.on{background:#4a4a2c}.win .wl .row:hover:not(.on){background:#2a2c24}.win .wp{flex:1;min-width:0;margin-left:12px;overflow:auto}.win .wp.full{margin-left:0}
+.win .sec{border:1px solid #3a4046;background:#202429;padding:9px 11px;margin-bottom:10px}.win .sec h4{font-weight:400;color:#e8b04a;font-size:12px;letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px}
+.win .big{font-size:17px;color:#fff;margin-bottom:4px}.win .dim{color:#9a9a9a}.win .line{display:flex;gap:8px;align-items:center;padding:3px 0}.win .line .sp{flex:1}
+.tri{font:700 18px/1 sans-serif;width:20px;text-align:center}.tri.ok{color:#2ee02e}.tri.no{color:#d33a30}.tri.mid{color:#d9a53d}
+.win .cap{display:flex;gap:10px;align-items:center;padding:5px 0;border-bottom:1px solid #2c3238}.win .cap code{background:#101214;padding:1px 6px;color:#e8b04a}
+.bar{height:11px;background:#0a0a0a;border:1px solid #000;position:relative;width:160px}.bar i{display:block;height:100%;background:#37c9d6}
+.brow{display:flex;align-items:center;gap:8px;padding:6px 8px;border-bottom:1px solid #2c3238}.brow .bn{flex:1}.brow .bn small{display:block;color:#9a9a9a;font-size:11px}.brow.sus .bn{color:#9a8a80}
+.gbtn.sm{padding:2px 10px;font-size:12px}.bS{font:700 18px sans-serif;color:#7a6a40;cursor:pointer;padding:0 4px}.bS.on{color:#f0b43c}.bX{color:#d33a30;cursor:pointer;font:700 18px sans-serif;padding:0 4px}
+.cols3{display:flex;gap:14px;width:100%}.cols3>div{flex:1;min-width:0}.menu{background:#14181c;border:1px solid #3a4046;margin:6px 0}.menu .mi{padding:7px 10px;cursor:pointer;border-bottom:1px solid #22272c}.menu .mi:hover{background:#4a4a2c}.menu .mi small{display:block;color:#9a9a9a;font-size:11px}
+#inspect .tt span{white-space:nowrap;padding:3px 11px}#inspect .tt span.gold{background:linear-gradient(#7d6433,#64502a);color:#fff;border:1px solid #3b2e17;margin:2px 3px}
+#more{position:absolute;right:8px;bottom:40px;width:310px;padding:10px 12px;display:none;z-index:12}#more #res{position:static;width:auto;display:flex;flex-wrap:wrap;gap:4px 12px;background:none;padding:0 0 8px}#more #res div{font-size:12px;color:#cfcfcf}
+#more #speed{position:static;margin:0 0 10px}#more .mrow{display:flex;flex-direction:column;gap:6px}#more .mrow .gbtn{text-align:center;text-decoration:none;color:#fff}
+.gz{width:66px;height:76px;margin:2px;padding:4px 2px;background:linear-gradient(#2a3036,#1a1e22);border:1px solid #4a525a;color:#e8e8e8;cursor:pointer;display:inline-flex;flex-direction:column;align-items:center;justify-content:space-between;position:relative;font-family:inherit}
+.gz:hover:not(.q){border-color:#d6b15a;background:linear-gradient(#34404a,#1f262c)}.gz .gi{font-size:30px;line-height:38px}.gz .gc{font-size:10.5px;line-height:1.05;text-align:center}.gz .hk{position:absolute;left:4px;top:2px;font:700 11px sans-serif;color:#e8c872;font-style:normal}.gz.q{opacity:.5;cursor:default}
+.pills{display:flex;gap:2px;padding:6px 6px 0}.pill{padding:5px 11px;border-radius:12px 12px 0 0;background:#2a2e33;color:#bbb;cursor:pointer;font-size:12px}.pill.on{background:#4a4a2c;color:#fff}
+#arch{position:absolute;left:0;bottom:34px;display:none;z-index:12;padding:6px}#arch .cats{display:grid;grid-template-columns:1fr 1fr;gap:3px;align-content:start}#arch .cats button{background:#2a2d31;border:1px solid #444;color:#ddd;padding:7px 18px;cursor:pointer;font:inherit}#arch .cats button.on{background:#4a4a2c;color:#fff}#arch .des{display:flex;gap:2px;align-items:flex-start}#bar span.on{background:#4a4a2c;color:#fff}
+.win.bare{background:#13161a;border:1px solid #4a4f55}.win.bare .wt,.win.bare .wd,.win.bare .wf{display:none}.win.nofoot .wf{display:none}.win.bare .wb{padding:16px 18px;display:block;overflow:hidden}
+.qwrap{display:flex;gap:18px;height:min(640px,calc(100vh - 150px));font-size:15px}.qleft{width:390px;flex:none;display:flex;flex-direction:column}.qtabs{display:flex;padding-left:2px}
+.qtab{flex:1;text-align:center;padding:8px 4px 7px;border:2px solid #7c7f83;border-bottom:none;border-radius:18px 18px 0 0;background:#1f2226;color:#d6d8da;cursor:pointer;margin-right:-2px;font-size:15px}.qtab.on{background:#2b2e32;color:#fff;position:relative;z-index:1}
+.qlist{flex:1;min-height:0;overflow:auto;border:2px solid #7c7f83;background:#2b2e32;margin-top:-2px}.qrow{display:flex;align-items:center;padding:9px 12px;font-size:16px;color:#f0f0f0;cursor:pointer;gap:8px}.qrow:hover:not(.on){background:#34373b}.qrow.on{background:#4b4a30}
+.qrow .qn{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.qrow .stars{color:#dcdcdc;letter-spacing:1px;width:44px;text-align:right;font-size:15px}.qrow .ag{width:42px;text-align:right;color:#e0372d}
+.qsearch{display:flex;align-items:center;gap:8px;margin:12px 0 0}.qsearch input{flex:1;background:#06070a;border:2px solid #6e7174;color:#fff;padding:5px 8px;font:inherit;font-size:15px;user-select:text}
+.qright{flex:1;min-width:0;border:2px solid #9a9da0;background:#2a2d31;padding:18px 24px;overflow:auto;position:relative}.qt{font-size:27px;color:#fff;margin-bottom:6px;padding-right:44px}.qtrash{position:absolute;right:26px;top:18px;cursor:pointer;opacity:.85}.qtrash:hover{opacity:1}
+.qexp{text-align:right;color:#aaadb0;font-size:14px;margin:18px 0 26px}.qdesc{font-size:16px;line-height:1.38;color:#ecebe8;margin-bottom:22px}.qo{color:#d9a259}.qb{color:#19a3e8}.qr{color:#e5796a}.qa{color:#7fe8e8}
+.qacc{display:flex;gap:14px;align-items:center;background:#222529;margin-bottom:8px;padding:8px 10px 8px 0}.qacc>.gbtn{width:132px;align-self:stretch;font-size:17px;flex:none}
+.qchip{display:inline-flex;align-items:center;gap:8px;background:#383b40;color:#eee;padding:6px 10px;margin:3px 4px 3px 0;font-size:15px}.qchip i{font-style:normal;color:#c8cbd0}.qval{color:#aaadb0;font-size:15px}.qval b{color:#e8c030;font-weight:400}
+.qreq{margin-bottom:20px}.qreq .line{padding:5px 0;font-size:16px;color:#ecebe8}.qfoot{display:flex;justify-content:space-between;margin-top:26px;font-size:15px;color:#a8b3d4}.qfoot .l:before{content:"■ ";color:#6d7075;font-size:11px}.qfoot .r{text-align:right;color:#8c8f93;line-height:1.35}.qfoot .r em{font-style:normal;color:#19a3e8}
+.puff{transform-box:fill-box;transform-origin:center;animation:puff 1.7s ease-out forwards}@keyframes puff{from{transform:scale(.3);opacity:.7}to{transform:scale(2.4);opacity:0}}
+#inspect .itabs{display:flex;gap:3px;padding-left:2px;margin-bottom:-1px}#inspect .itabs .gbtn{padding:4px 16px;font-size:13px}
+#inspect .card{background:#1c2127;border:1px solid #5a6068;padding:7px 12px 8px;position:relative}#inspect .ih{display:flex;align-items:baseline;gap:8px;font-size:21px;color:#fff;padding-right:22px;line-height:1.2}#inspect .ih small{color:#9a9a9a;font-size:14px}
+#inspect .ix{position:absolute;right:9px;top:6px;color:#9a9a9a;cursor:pointer;font-size:16px}#inspect .ix:hover{color:#fff}
+.chips{display:flex;gap:3px;padding:7px 0 3px;flex-wrap:wrap}.chips span{font-size:11.5px;padding:2px 9px;background:#14171b;border:1px solid #000;border-bottom:3px solid #4a4f55;color:#d8d8d8}.chips .g{border-bottom-color:#4cc38a}.chips .b{border-bottom-color:#5b86e0}.chips .r{border-bottom-color:#d33a30}.chips .y{border-bottom-color:#d9a53d}
+#inspect .rows{color:#dcdcdc;line-height:1.45;padding:3px 0 0}#inspect .rows b{color:#fff;font-weight:400}#inspect .btns{padding:8px 0 0;display:flex;gap:6px;flex-wrap:wrap}
+#hud{position:absolute;left:50%;top:48px;transform:translateX(-50%);background:#0d0d0fdd;border:1px solid var(--amber);color:#ffe29a;padding:5px 14px;display:none;z-index:8;pointer-events:none}#err{position:absolute;left:0;right:0;top:0;background:var(--red);color:#fff;padding:5px 10px;display:none;text-align:center;z-index:9}
+</style></head><body>
+<div id="err"></div><div id="hud"></div>
+<div id="stage"><svg id="world"><defs id="defs"></defs><g id="cam"><g id="layer"></g><g id="pl"></g><g id="ov"></g></g></svg></div>
+<div id="pawns"></div><div id="alerts"></div>
+<div id="res" style="display:none"></div><div id="speed"><span data-spd="0" title="pause">⏸</span><span data-spd="1" class="on" title="normal">▶</span><span data-spd="2" title="fast">▶▶</span><span data-spd="3" title="fastest">▶▶▶</span></div><div id="arch" class="box"></div><div id="clock"></div>
+<div id="inspect"></div><div id="wins"></div>
+<div id="work" class="box"></div>
+<div id="bar"><span id="archbtn">Architect</span><span id="workbtn">Work</span><span id="ticketsbtn">Quests</span><span id="historybtn">History</span><span id="worldbtn">World</span><span class="dim"><a href="index.html" style="color:inherit;text-decoration:none">Console ↗</a></span></div>
+<script>
+const API = "http://localhost:4010", $ = (s) => document.querySelector(s), NS = "http://www.w3.org/2000/svg";
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+// all state lives in the backend (/world); the browser keeps nothing
+try { for (const k of Object.keys(localStorage)) if (k.startsWith("bta.")) localStorage.removeItem(k); } catch {}
+const wsave = (path, method, body) => api(path, method, body).catch(() => {});
+const K = "#17110c", rnd = (i) => { const x = Math.sin(i * 91.7) * 10000; return x - Math.floor(x); }, trunc = (s, n) => (s || "").length > n ? s.slice(0, n - 1) + "…" : s || "";
+let S = { me: { id: "nate", name: "Nathan" }, users: [], issues: [], prs: [], envs: [], wts: [], sessions: [], derived: [], sel: null, hand: null, bread: 0, work: {}, roster: { humans: {}, mechs: {} }, openAct: null, plots: {}, tab: "main", orders: [], doneToday: 0, releases: [], bills: [], haul: null, drops: [], pickups: [], reviews: [], images: [], seen: new Set(), dismissed: new Set() };
+let sig = "", reg = {}, pawns = [], cam = { x: 40, y: 40, k: 0.8 };
+
+async function api(path, method = "GET", body) {
+  try {
+    const r = await fetch(API + path, { method, headers: { "Content-Type": "application/json" }, body: body ? JSON.stringify(body) : undefined });
+    const j = await r.json(); if (!r.ok) throw new Error(j.error || r.statusText);
+    $("#err").style.display = "none"; return j;
+  } catch (e) { $("#err").textContent = e.message === "Failed to fetch" ? "Can't reach the backend at " + API + " — run: node backend/server.js" : e.message; $("#err").style.display = "block"; throw e; }
+}
+
+/* ---------------- derive: what needs a person ---------------- */
+const TYPE = { review: "review", merge: "deploy", deploy: "deploy", pipe: "deploy", verify: "verify", dev: "build", start: "build", bp: "build", fix: "build", ready: "build", tidy: "chores", relbuild: "deploy", relrisk: "deploy", switch: "deploy" };
+const TYPES = [["build", "Build"], ["review", "Review"], ["verify", "Verify"], ["deploy", "Deploy"], ["chores", "Chores"]];
+const DEF = { human: { build: 2, review: 1, verify: 2, deploy: 1, chores: 3 }, mech: { build: 1, review: 2, verify: 3 } };
+function derive() {
+  const me = S.me.id, nm = (id) => S.users.find((u) => u.id === id)?.name ?? id, out = [], hasWt = new Set(S.wts.map((w) => w.issue).filter(Boolean));
+  const add = (ref, pri, title, sub) => out.push({ ref, pri, title, sub, kind: ref.split(":")[0] });
+  for (const p of S.prs) {
+    const k = `${p.repo}#${p.id}`;
+    if (p.state === "OPEN" && p.reviewers.includes(me)) add("review:" + k, 2, `Review ${k}: ${p.title}`, `from ${nm(p.author)}`);
+    if (p.author === me && p.state === "APPROVED") add("merge:" + k, 1, `Merge ${k}: ${p.title}`, "approved — merge it");
+    if (p.author === me && p.state === "CHANGES_REQUESTED") add("fix:" + k, 3, `Address review on ${k}`, p.title);
+    if (p.author === me && p.state === "DRAFT") add("ready:" + k, 4, `Finish ${k} and mark ready`, p.title);
+  }
+  for (const i of S.issues.filter((x) => x.assignee === me && x.type !== "Feature")) {
+    if (i.status === "Verification") add("verify:" + i.key, 3, `Verify ${i.key} on staging`, i.title);
+    else if (["Dev WIP", "Dev Done"].includes(i.status) && !hasWt.has(i.key)) add("bp:" + i.key, 5, `Build a room for ${i.key}`, i.title);
+    else if (i.status === "Dev WIP") add("dev:" + i.key, 5, `Work on ${i.key}`, i.title);
+  }
+  for (const e of S.envs) {
+    if (e.pipelineStatus === "FAILED") add(`pipe:${e.repo}/${e.environment}`, 1, `Fire! ${e.repo} ${e.environment}`, "pipeline failed");
+    if (e.latestPipeline?.held) add(`switch:${e.repo}/${e.environment}`, 2, `Switch ${e.environment} to the new image`, "built and pushed; waiting for you");
+    if (e.notDeployed.length && !["RUNNING", "QUEUED"].includes(e.pipelineStatus)) add(`deploy:${e.repo}/${e.environment}`, 2, `Deploy ${e.repo} → ${e.environment}`, `waiting: ${e.notDeployed.map((x) => x.issue || x.message).join(", ")}`);
+  }
+  for (const r of S.releases) if (r.atRisk) add("relrisk:" + r.id, 3, `Release ${r.name} is at risk`, r.waiting[0] ?? "");
+  for (const r of S.releases) if (r.ready) add("relbuild:" + r.id, 2, `Build release ${r.name}`, `${r.items.length} branch${r.items.length === 1 ? "" : "es"} ready`);
+  for (const w of S.wts) if (w.pr?.state === "MERGED" && w.docker.status === "running") add("tidy:" + w.id, 9, `Tear down docker: ${w.branch}`, w.repo);
+  return out.sort((a, b) => a.pri - b.pri);
+}
+const handedSessions = () => S.sessions.filter((s) => s.notes?.startsWith("ref:") && s.status !== "archived");
+const claimed = () => new Set([...(S.hand ? [S.hand] : []), ...handedSessions().map((s) => s.notes.slice(4))]);
+const open = () => { const c = claimed(); return S.derived.filter((d) => !c.has(d.ref)); };
+
+/* ---------------- layout: where everything lives ---------------- */
+const RW = 370, RH = 250;
+function obstacles(except) {
+  const r = [{ x: SLAB.yard[0], y: SLAB.yard[1] - 20, w: SLAB.yard[2], h: SLAB.yard[3] + 20 }, { x: 1930, y: 110, w: 620, h: 1700 }];
+  for (const [k, v] of Object.entries(S.plots)) if (k !== except && v && typeof v === "object") r.push({ x: v.x - 10, y: v.y - 30, w: RW + 20, h: RH + 40 });
+  return r;
+}
+const overlap = (a, b) => a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+const freeAt = (x, y, key) => x > -300 && y > -100 && x + RW < 3000 && y + RH < 1800 && !obstacles(key).some((o) => overlap({ x, y, w: RW, h: RH }, o));
+function plotRect(key) {
+  let v = S.plots[key];
+  if (!v || typeof v !== "object") { v = null; for (let i = 0; i < 80 && !v; i++) { const P = PLOT(i); if (freeAt(P.x, P.y, key)) v = { x: P.x, y: P.y }; } v ??= { x: 640, y: 140 }; S.plots[key] = v; wsave("/world/plots/" + encodeURIComponent(key), "PATCH", v); }
+  return { x: v.x, y: v.y, w: RW, h: RH };
+}
+const renderLayer = () => { $("#layer").innerHTML = build(); renderOverlay(); };
+const SLAB = { store: [120, 140, 400, 250], yard: [130, 470, 420, 480], review: [1960, 140, 520, 640] };
+const PLOT = (i) => ({ x: 640 + (i % 3) * 420, y: 140 + Math.floor(i / 3) * 330, w: 370, h: 250 });
+const PRCOL = { DRAFT: "#cfcfcf", OPEN: "#8fd1ff", APPROVED: "#7ad28f", CHANGES_REQUESTED: "#ff9f6b", MERGED: "#b9a4e8", DECLINED: "#777" };
+const TCOL = { Feature: "#c9a1e8", Story: "#69b36a", Defect: "#e0614f", Spike: "#e8b04a" };
+
+function build() {
+  reg = {}; const o = [];
+  const issueBy = (k) => S.issues.find((i) => i.key === k);
+  // districts (positions first so trails can point to them)
+  const prsOpen = S.prs.filter((p) => ["DRAFT", "OPEN", "APPROVED", "CHANGES_REQUESTED"].includes(p.state)).sort((x, y) => (needsMe(y) - needsMe(x)) || x.id - y.id).slice(0, 18);
+  const plots = []; S.wts.forEach((w) => plots.push({ type: "wt", w }));
+  const bps = S.issues.filter((i) => i.assignee === S.me.id && i.type !== "Feature" && ["Dev WIP", "Dev Done", "Verification"].includes(i.status) && !S.wts.some((w) => w.issue === i.key));
+  bps.forEach((i) => plots.push({ type: "bp", i }));
+  (S.reviews || []).filter((r) => !r.done).forEach((r) => plots.push({ type: "rv", r }));
+  const pkey = (p) => (p.type === "wt" ? p.w.issue || p.w.id : p.type === "rv" ? p.r.key : p.i.key), live = new Set([...plots.map(pkey), ...S.orders.filter((o) => o.carry?.key).map((o) => o.carry.key), ...(S.drops || []).map((d) => d.key)]);
+  for (const k of Object.keys(S.plots)) if (!live.has(k)) { delete S.plots[k]; wsave("/world/plots/" + encodeURIComponent(k), "DELETE"); }
+  plots.forEach((p) => { const P = plotRect(pkey(p)); p.P = P; const key = p.type === "wt" ? "wt:" + p.w.id : p.type === "rv" ? "rv:" + p.r.key : "bp:" + p.i.key; reg[key] = { ...P, spot: [P.x + 120, P.y + 175] }; if (p.type === "wt" && p.w.issue) reg["issue:" + p.w.issue] ??= reg[key]; if (p.type === "bp") reg["issue:" + p.i.key] = reg[key]; });
+
+  // ground + scenery
+  o.push(`<rect x="-600" y="-600" width="4200" height="3000" fill="url(#dirt)"/>`);
+  for (let i = 0; i < 40; i++) o.push(`<ellipse cx="${rnd(i) * 2700}" cy="${rnd(i + 50) * 1700}" rx="${40 + rnd(i + 9) * 60}" ry="${20 + rnd(i + 3) * 30}" fill="#556b2c" opacity=".3"/>`);
+  o.push(`<path d="M0 1130C500 1090 900 1150 1500 1120S2200 1100 2700 1140" stroke="#7a6642" stroke-width="40" fill="none" opacity=".55"/><path d="M0 1130C500 1090 900 1150 1500 1120S2200 1100 2700 1140" stroke="#a48d5c" stroke-width="2.5" stroke-dasharray="12 16" fill="none" opacity=".7"/>`);
+  for (let i = 0; i < 70; i++) { const x = rnd(i + 200) * 2600, y = rnd(i + 300) * 1650; if (reg_inside(x, y)) continue; o.push(`<g transform="translate(${x} ${y}) scale(${0.8 + rnd(i) * 0.6})"><circle r="15" fill="#2f4a22" stroke="${K}" stroke-width="2.2"/><circle cx="-4" cy="-4" r="8" fill="#3e6a2c"/><circle cx="5" cy="3" r="6" fill="#36602a"/></g>`); }
+
+  // workshops (one room per worktree) + blueprints
+  for (const od of S.orders.filter((x) => x.carry?.key)) { const P = plotRect(od.carry.key); o.push(`<rect x="${P.x}" y="${P.y}" width="${P.w}" height="${P.h}" fill="#3d6fd9" opacity=".06" stroke="#7fb0ff" stroke-width="2" stroke-dasharray="6 10"/><text class="room" x="${P.x + 4}" y="${P.y - 12}" style="fill:#8fbaff">Planned · ${esc(od.carry.key)}</text>${crate(P.x + P.w / 2, P.y + P.h / 2 - 20, "", "#d6b06a")}<text class="lbl" x="${P.x + P.w / 2}" y="${P.y + P.h / 2 + 18}" style="text-anchor:middle;fill:#9fc4ff">${od.worker ? "a worker is bringing it" : "waiting for a worker"}</text>`); }
+  plots.forEach((p) => {
+    const P = p.P;
+    if (p.type === "rv") {
+      const q = S.prs.find((x) => `${x.repo}#${x.id}` === p.r.key);
+      o.push(`<g class="hit" data-s="pr:${esc(p.r.key)}">${roomSvg(P.x + 130, P.y + 100, 250, 130, "wood", `Review · ${esc(p.r.key)}`)}<text class="lbl" x="${P.x + 140}" y="${P.y + 120}" style="font-size:10.5px">${esc(trunc(q?.title ?? "", 36))}</text>${q ? deskSvg(P, q) : ""}<rect x="${P.x + 130}" y="${P.y + 100}" width="250" height="130" class="hov"/></g>`);
+      return;
+    }
+    if (p.type === "bp") {
+      o.push(`<g class="hit" data-s="bp:${p.i.key}"><rect x="${P.x}" y="${P.y}" width="${P.w}" height="${P.h}" fill="#3d6fd9" opacity=".12" stroke="#7fb0ff" stroke-width="3" stroke-dasharray="14 9"/><text class="room" x="${P.x + 6}" y="${P.y - 8}" style="fill:#8fbaff">Blueprint · ${esc(p.i.key)}</text>${crate(P.x + 70, P.y + 80, "", "#d6b06a")}<text class="key" x="${P.x + 70}" y="${P.y + 104}">${esc(p.i.key)}</text><text class="lbl" x="${P.x + 20}" y="${P.y + 128}">Dropped here — needs a room built</text><text class="lbl" x="${P.x + 20}" y="${P.y + 148}" style="fill:#9fc4ff">${esc(trunc(p.i.title, 44))}</text><rect x="${P.x}" y="${P.y}" width="${P.w}" height="${P.h}" class="hov"/></g>`);
+      return;
+    }
+    const w = p.w, dk = w.docker.status, iss = w.issue ? issueBy(w.issue) : null, built = dk !== "none";
+    const commits = iss?.artifacts?.commits?.filter((c) => c.repo === w.repo && c.branch === w.branch) ?? [];
+    o.push(`<g class="hit" data-s="wt:${w.id}">${roomSvg(P.x, P.y, P.w, P.h, built ? "wood" : "slab", `${esc(w.repo)} · ${esc(trunc(w.branch, 26))}`, built ? "" : "dash")}
+      <text class="lbl" x="${P.x + 14}" y="${P.y + 28}" style="font-weight:600">${esc(w.issue || "no ticket")}${iss ? " · " + esc(trunc(iss.title, 34)) : ""}</text>
+      ${iss ? `<rect x="${P.x + 4}" y="${P.y + 14}" width="4" height="22" fill="${TCOL[iss.type] || "#999"}"/>` : ""}
+      ${bench(P.x + 30, P.y + 110, 150, commits.slice(0, 7).map((c, n) => `<g transform="translate(${10 + n * 19} -7)"><rect width="15" height="12" rx="2" fill="#b48a52" stroke="${K}" stroke-width="1.6"/></g>`).join("") + (w.pr ? paper(128, 6, PRCOL[w.pr.state]) : ""))}
+      ${dk === "running" ? `<circle cx="${P.x + P.w - 60}" cy="${P.y + 100}" r="44" fill="url(#glow)"/>` : ""}
+      ${built ? fan(P.x + P.w - 60, P.y + 100, dk === "running") : `<text class="lbl" x="${P.x + P.w - 110}" y="${P.y + 104}" style="fill:#9fc4ff">foundation only</text>`}
+      ${w.pr ? deskSvg(P, S.prs.find((q) => q.repo === w.repo && q.id === w.pr.id) ?? { id: w.pr.id, state: w.pr.state, reviewers: [], checks: "none" }) : S.orders.some((o) => o.key === "wt:" + w.id && o.a?.name === "openPr") ? `<rect x="${P.x + 196}" y="${P.y + 128}" width="120" height="34" fill="#3d6fd9" opacity=".12" stroke="#7fb0ff" stroke-width="2.5" stroke-dasharray="8 6"/><text class="lbl" x="${P.x + 256}" y="${P.y + 150}" style="text-anchor:middle;fill:#9fc4ff;font-size:10px">PR desk · planned</text>` : ""}
+      <rect x="${P.x}" y="${P.y}" width="${P.w}" height="${P.h}" class="hov"/>
+      <g data-parcel="wt:${w.id}" style="cursor:grab">${crate(P.x + P.w - 34, P.y + P.h - 62, "", "#cfa863")}<text class="key" x="${P.x + P.w - 34}" y="${P.y + P.h - 38}" style="font-size:8.5px">${esc(trunc(w.branch, 18))}</text>${S.releases.find((r) => r.status === "planning" && r.branches.includes(w.branch)) ? `<text class="lbl" x="${P.x + P.w - 34}" y="${P.y + P.h - 26}" style="text-anchor:middle;font-size:9px;fill:#9be8a8">in ${esc(S.releases.find((r) => r.branches.includes(w.branch)).name)}</text>` : ""}</g></g>`);
+  });
+
+  // release benches: a bill with ingredients per branch; the release is built when every light is green
+  const fmtD = (t) => t ? new Date(t + "T12:00").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }) : "no date";
+  const SL = ["added", "CI", "approved", "merged", "verified"];
+  let by = 140; const BX = 1960, BW = 520;
+  const show = S.releases.filter((r) => (r.status === "planning" && (!r.auto || r.items.length)) || (r.status === "built" && S.prs.find((p) => p.repo === r.pr?.repo && p.id === r.pr?.id)?.state !== "MERGED"));
+  for (const r of show) {
+    const built = r.status === "built", H = built ? 110 : Math.max(150, 96 + r.items.length * 42 + (r.extras.length ? 64 : 0));
+    reg["rel:" + r.id] = { x: BX, y: by, w: BW, h: H, spot: [BX + BW / 2, by + H + 18] };
+    o.push(`<g class="hit" data-s="rel:${r.id}">${roomSvg(BX, by, BW, H, "wood", `${built ? "Built" : r.auto ? "Next release" : "Release"} ${esc(r.name)} · ${fmtD(r.target)} · ${r.mode === "develop" ? "merge develop straight in" : "release branch"}`)}`);
+    if (built) {
+      const pr = S.prs.find((q) => q.repo === r.pr.repo && q.id === r.pr.id);
+      o.push(`<g transform="translate(${BX + 60} ${by + 56})"><path d="M-30 12L-20 -10H30L40 12Z" fill="#8a96a0" stroke="${K}" stroke-width="2.4"/><rect x="-6" y="-26" width="12" height="16" fill="#59616a" stroke="${K}" stroke-width="2"/><circle cx="26" cy="2" r="3" fill="#ffb347" class="blink"/></g><text class="lbl" x="${BX + 130}" y="${by + 52}" style="font-weight:600">${esc(r.releaseBranch)} → master</text><text class="lbl" x="${BX + 130}" y="${by + 72}" style="fill:#9fc4ff">PR #${r.pr.id} ${esc(pr?.state ?? "")} · ${r.shipped.length} branch${r.shipped.length === 1 ? "" : "es"} aboard</text>`);
+    } else {
+      SL.forEach((l, i) => o.push(`<text class="lbl" x="${BX + 250 + i * 54}" y="${by + 30}" style="text-anchor:middle;font-size:9px;fill:#cdbf9f">${l}</text>`));
+      r.items.forEach((it, n) => {
+        if (it.fate === "progress") o.push('<g opacity=".5">');
+        const y = by + 62 + n * 42, ing = it.ingredients, vals = [ing.added, ing.ci, ing.approved, ing.merged, ing.verified];
+        o.push(`${crate(BX + 30, y, "", "#cfa863")}<text class="lbl" x="${BX + 52}" y="${y - 2}" style="font-weight:600">${esc(trunc(it.branch, 22))}</text><text class="lbl" x="${BX + 52}" y="${y + 12}" style="font-size:9px;fill:#cdbf9f">${esc(it.author ?? "")}${it.issue ? " · " + esc(it.issue) : ""}</text>`);
+        vals.forEach((v, i) => {
+          const cx = BX + 250 + i * 54, fail = (i === 1 && it.pr?.checks === "failed") || (i === 2 && it.pr?.state === "CHANGES_REQUESTED"), run = i === 1 && it.pr?.checks === "running";
+          o.push(v === null ? `<text class="lbl" x="${cx}" y="${y + 4}" style="text-anchor:middle;fill:#777">–</text>` : `<circle cx="${cx}" cy="${y}" r="11" fill="${v ? "#3f8a3f" : fail ? "#b3201a" : run ? "#e8b04a" : "#2a2d31"}" stroke="${K}" stroke-width="2" class="${run ? "blink" : ""}"/><text x="${cx}" y="${y + 4}" style="text-anchor:middle;font:700 12px sans-serif;fill:#fff">${v ? "✓" : fail ? "✗" : ""}</text>`);
+        });
+        if (it.fate === "held") o.push(`<text class="lbl" x="${BX + 228}" y="${y - 2}" style="font-size:9px;font-weight:700;fill:#ff9a8a;text-anchor:end">HELD BACK</text>`);
+        if (it.fate === "in" && r.auto) o.push(`<text class="lbl" x="${BX + 228}" y="${y - 2}" style="font-size:9px;fill:#9be8a8;text-anchor:end">in this release</text>`);
+        if (it.fate === "progress") o.push("</g>");
+      });
+      if (!r.items.length) o.push(`<text class="lbl" x="${BX + 20}" y="${by + 70}">${r.auto ? "No PRs on develop yet — nothing to release. Branches join by themselves once they have a PR." : r.mode === "develop" ? "Nothing on develop to release." : "Drag a branch parcel from a workshop onto this bench."}</text>`);
+      if (r.extras.length) o.push(`<g transform="translate(${BX + 24} ${by + H - 38})"><path d="M0 -4l12 0 6 14-24 0z" fill="#e8b04a" stroke="${K}" stroke-width="1.8" class="blink"/></g><text class="lbl" x="${BX + 50}" y="${by + H - 36}" style="fill:#ffd27a;font-size:10px">develop also holds work that isn't in this release:</text>${r.extras.slice(0, 4).map((e, n) => crate(BX + 60 + n * 70, by + H - 14, "", "#e0a850") + `<text class="key" x="${BX + 60 + n * 70}" y="${by + H + 6}" style="font-size:8px">${esc(trunc(e.issue || e.branch, 11))}</text>`).join("")}`);
+      if (r.atRisk) o.push(`<text class="room" x="${BX + BW - 6}" y="${by - 12}" style="fill:#ff7a6a;text-anchor:end" class="blink">⚠ at risk</text>`);
+      if (r.ready) o.push(`<rect x="${BX - 4}" y="${by - 4}" width="${BW + 8}" height="${H + 8}" fill="none" stroke="#6ff08a" stroke-width="3" class="blink"/><text class="room" x="${BX + BW - 150}" y="${by - 12}" style="fill:#9be8a8">ready to build</text>`);
+    }
+    o.push(`<rect x="${BX}" y="${by}" width="${BW}" height="${H}" class="hov"/></g>`);
+    by += H + 46;
+  }
+  // where each PR lives: its workshop's desk, the release bench it was cut for, or the review package you accepted
+  for (const q of prsOpen) {
+    const k = `pr:${q.repo}#${q.id}`, wk = S.wts.find((x) => x.repo === q.repo && x.branch === q.source), rr = S.releases.find((x) => x.pr && x.pr.repo === q.repo && x.pr.id === q.id), rv = reg[`rv:${q.repo}#${q.id}`];
+    if (wk && reg["wt:" + wk.id]) { const R = reg["wt:" + wk.id]; reg[k] = { x: R.x + 196, y: R.y + 128, w: 170, h: 90, spot: R.spot, home: "wt:" + wk.id }; }
+    else if (rr && reg["rel:" + rr.id]) reg[k] = { ...reg["rel:" + rr.id], home: "rel:" + rr.id };
+    else if (rv) reg[k] = { x: rv.x + 196, y: rv.y + 128, w: 170, h: 90, spot: rv.spot, home: "rv:" + q.repo + "#" + q.id };
+  }
+  return o.join("");
+}
+const needsMe = (p) => +((p.state === "OPEN" && p.reviewers.includes(S.me.id)) || (p.author === S.me.id && ["APPROVED", "CHANGES_REQUESTED", "DRAFT"].includes(p.state)));
+function reg_inside(x, y) { return (x > 100 && x < 530 && y > 110 && y < 1000) || (x > 600 && x < 1880 && y > 110 && y < 1100) || (x > 1930 && x < 2520 && y > 110 && y < 600) || (x > 600 && x < 2100 && y > 1170 && y < 1500); }
+
+/* ---------------- sprites ---------------- */
+function roomSvg(x, y, w, h, floor, name, mode) {
+  return `<g filter="url(#sh)"><rect x="${x - 6}" y="${y - 6}" width="${w + 12}" height="${h + 12}" fill="#241d17" stroke="${K}" stroke-width="1.5" ${mode === "dash" ? 'stroke-dasharray="10 8" opacity=".85"' : ""}/></g><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="url(#${floor})" ${mode === "dash" ? 'opacity=".7"' : ""}/><rect x="${x}" y="${y}" width="${w}" height="${h}" fill="none" stroke="#000" stroke-opacity=".3" stroke-width="2"/><text class="room" x="${x + 4}" y="${y - 12}">${name}</text>`;
+}
+function deskSvg(P, pr) {
+  const x = P.x + 196, y = P.y + 128, st = pr.state, rv = (pr.reviewers || []).map((id) => S.users.find((u) => u.id === id)?.name ?? id);
+  const ck = { passed: "#4fe08a", running: "#e8b04a", failed: "#ff5a4a" }[pr.checks] || "#555", appr = st === "APPROVED" || st === "MERGED", chg = st === "CHANGES_REQUESTED", ready = st === "APPROVED" && pr.checks === "passed";
+  return `<g>${bench(x, y, 120, paper(10, 7, PRCOL[st]) + paper(26, 11, "#efe6cf"))}<circle cx="${x + 100}" cy="${y + 15}" r="6" fill="${ck}" stroke="${K}" stroke-width="2" class="${pr.checks === "running" ? "blink" : ""}"/>
+    <rect x="${x + 128}" y="${y + 6}" width="20" height="20" rx="3" fill="#5a4630" stroke="${K}" stroke-width="2"/><circle cx="${x + 138}" cy="${y + 16}" r="8" fill="${appr ? "#3f8a3f" : chg ? "#b3201a" : "#6b6b6b"}" stroke="${K}" stroke-width="2" class="${appr || chg ? "" : "blink"}"/><text x="${x + 138}" y="${y + 20}" style="text-anchor:middle;font:700 10px sans-serif;fill:#fff">${esc((rv[0] ?? "?")[0])}</text>
+    <text class="key" x="${x + 60}" y="${y + 48}" style="font-size:9px">PR #${pr.id} · ${esc(st.replace("_", " ").toLowerCase())}</text>${ready ? `<rect x="${x}" y="${y + 56}" width="120" height="14" rx="3" fill="#3f8a3f" stroke="${K}" stroke-width="2" class="blink"/><text class="key" x="${x + 60}" y="${y + 67}" style="font-size:9px">ready to merge</text>` : ""}</g>`;
+}
+function padSvg(x, y, w, h, name) {
+  return `<g filter="url(#sh)"><rect x="${x}" y="${y}" width="${w}" height="${h}" rx="26" fill="url(#slab)" stroke="${K}" stroke-width="3"/></g><rect x="${x + 8}" y="${y + 8}" width="${w - 16}" height="${h - 16}" rx="20" fill="none" stroke="#e8c872" stroke-opacity=".55" stroke-width="3" stroke-dasharray="28 16"/>${[[x + 18, y + 18], [x + w - 18, y + 18], [x + 18, y + h - 18], [x + w - 18, y + h - 18]].map(([a, b]) => `<circle cx="${a}" cy="${b}" r="5" fill="#ffb347" stroke="${K}" stroke-width="1.6" class="blink"/>`).join("")}<text class="room" x="${x + 6}" y="${y - 12}">${name}</text>`;
+}
+// one deployment = one ship; its five hull lights are the pipeline steps
+function ship(x, y, sc, cols, o = {}) {
+  return `<g transform="translate(${x} ${y}) scale(${sc})"><ellipse cy="64" rx="36" ry="8" fill="#000" opacity=".3"/><path d="M0 -62C13 -44 17 -12 15 28L30 54L10 48L0 58L-10 48L-30 54L-15 28C-17 -12 -13 -44 0 -62Z" fill="${o.ghost ? "#8a96a033" : "#8a96a0"}" stroke="${K}" stroke-width="3" ${o.ghost ? 'stroke-dasharray="8 6"' : ""}/><ellipse cy="-36" rx="6" ry="10" fill="#2a4a6a" stroke="${K}" stroke-width="2"/>${cols.map((c, i) => `<circle cy="${-14 + i * 14}" r="4.4" fill="${c}" stroke="${K}" stroke-width="1.5" ${c === "#e8b04a" ? 'class="blink"' : ""}/>`).join("")}</g>`;
+}
+const crate = (x, y, sha, c = "#b48a52", glow = false) => `<g transform="translate(${x} ${y})">${glow ? `<circle r="22" fill="url(#glow)"/><circle class="pulse" r="14" fill="none" stroke="#f0b43c" stroke-width="2.5"/>` : ""}<rect x="-11" y="-9" width="22" height="18" rx="2" fill="${c}" stroke="${K}" stroke-width="1.8"/><path d="M-11 -2H11M0 -9V9" stroke="${K}" stroke-opacity=".45" stroke-width="1.5"/>${sha ? `<text class="sha" y="21">${esc(sha)}</text>` : ""}</g>`;
+const bench = (x, y, w, items = "") => `<g transform="translate(${x} ${y})" filter="url(#sh)"><rect width="${w}" height="30" rx="2" fill="#6e4a26" stroke="${K}" stroke-width="2.2"/><rect x="3" y="3" width="${w - 6}" height="8" fill="#8a6035" opacity=".7"/>${items}</g>`;
+const paper = (x, y, c) => `<rect x="${x}" y="${y}" width="13" height="9" fill="${c}" stroke="${K}" stroke-width="1.4" transform="rotate(-6 ${x} ${y})"/>`;
+const fan = (x, y, on) => `<g transform="translate(${x} ${y})" filter="url(#sh)"><rect x="-17" y="-17" width="34" height="34" rx="3" fill="#59616a" stroke="${K}" stroke-width="2.2"/><circle r="11" fill="#2a2f34" stroke="${K}" stroke-width="1.6"/><g class="${on ? "spin" : ""}"><path d="M0 0L0 -10M0 0L9 5M0 0L-9 5" stroke="#9fb0bd" stroke-width="3.4" stroke-linecap="round"/></g><circle cx="12" cy="-12" r="2.4" fill="${on ? "#6ff08a" : "#6b6b6b"}" stroke="${K}"/></g>`;
+const fire = (x, y, s = 1) => `<g transform="translate(${x} ${y}) scale(${s})"><circle r="26" fill="url(#glow)"/><g class="fl"><path d="M0 8C-9 6-10-4-4-10-3-5 0-4 1-9 8-4 9 4 0 8z" fill="#f0852a" stroke="#7a2c0c" stroke-width="1.4"/><path d="M0 7C-4 6-4 1 0-2 4 1 4 6 0 7z" fill="#ffd25a"/></g></g>`;
+const cells = (x, y, st) => st.map((s, i) => { const c = { ok: "#3f8a3f", run: "#e8b04a", bad: "#b3201a", wait: "#4a4f55" }[s]; return `<g transform="translate(${x + i * 42} ${y})"><rect width="36" height="26" rx="2" fill="#243447" stroke="${K}" stroke-width="2"/><rect x="3" y="3" width="30" height="20" fill="${c}" opacity=".9" class="${s === "run" ? "blink" : ""}"/><path d="M12 3V23M22 3V23M3 13H33" stroke="#0006"/></g>`; }).join("");
+const PAL = { nate: ["#3f67c9", "#e8d27a", "cap"], jo: ["#b8503b", "#3a2417", "hair"], sam: ["#4c9a6a", "#6e5a3c", "hood"], priya: ["#c27fa6", "#6b3a1a", "hair"] };
+function pawnBody(p) {
+  if (p.kind === "mech") { const eye = p.active ? "#f0b43c" : "#7fe0ff"; return `<line x1="0" y1="-11" x2="0" y2="-17" stroke="${K}" stroke-width="2"/><circle cy="-18" r="2.2" fill="${eye}" stroke="${K}" stroke-width="1.2"/><rect x="-10" y="-9" width="20" height="18" rx="5" fill="#8a96a0" stroke="${K}" stroke-width="2"/><rect x="-7" y="-6" width="14" height="6" rx="2" fill="#2d3236"/><circle cx="-3" cy="-3" r="1.7" fill="${eye}"/><circle cx="3" cy="-3" r="1.7" fill="${eye}"/><rect x="-6" y="3" width="12" height="3" rx="1" fill="#5c666e"/>`; }
+  const [s, h, t] = PAL[p.id] || ["#777", "#444", "hair"], hat = t === "cap" ? `<path d="M-5.2 -1.2a5.4 5.4 0 0 1 10.4 0z" fill="${h}" stroke="${K}" stroke-width="1.5"/><rect x="-6.5" y="-1.6" width="13" height="2.2" rx="1" fill="${h}" stroke="${K}" stroke-width="1.3"/>` : t === "hood" ? `<circle r="6.4" cy="-1" fill="${h}" stroke="${K}" stroke-width="1.7"/><circle r="3.8" cy="-1" fill="#d9b48c"/>` : `<path d="M-5.6 0a5.6 5.6 0 0 1 11.2 0c0 1.5-2.5-1-5.6-1s-5.6 2.5-5.6 1z" fill="${h}" stroke="${K}" stroke-width="1.5"/>`;
+  return `<ellipse cy="3" rx="9.5" ry="6.2" fill="${s}" stroke="${K}" stroke-width="1.9"/><circle cy="-1" r="5.4" fill="#e0b88d" stroke="${K}" stroke-width="1.7"/>${hat}`;
+}
+
+/* ---------------- orders: nothing changes until a worker does it ---------------- */
+const sameOrder = (o, a, key) => o.key === key && o.a.method === a.method && o.a.path === a.path && JSON.stringify(o.a.body || {}) === JSON.stringify(a.body || {});
+function classify(a) {
+  const b = a.body || {};
+  if (a.path.includes("/pullrequests/")) return ["APPROVED", "CHANGES_REQUESTED"].includes(b.state) ? "review" : b.state === "MERGED" ? "deploy" : "build";
+  if (a.path.includes("/pipelines") || a.path.includes("/environments") || a.path.startsWith("/releases/")) return "deploy";
+  if (a.path.startsWith("/jira/issues/") && ["Verification", "Done"].includes(b.status)) return "verify";
+  if (b.dockerStatus === "none" && a.method === "PATCH") return "chores";
+  return "build";
+}
+async function designate(a, vals = {}, key = S.sel, opts = {}) {
+  const aa = { name: a.name, label: a.label, method: a.method, path: a.path, body: { ...(a.body || {}), ...vals }, dur: a.dur };
+  if (!key || S.orders.some((o) => sameOrder(o, aa, key))) return;
+  const carry = opts.carry || (aa.name === "move:Dev WIP" && key.startsWith("issue:") && reg[key] ? { key: key.slice(6) } : null);
+  if (carry?.key) { if (opts.place) { S.plots[carry.key] = opts.place; await wsave("/world/plots/" + encodeURIComponent(carry.key), "PATCH", opts.place); } else plotRect(carry.key); }
+  try {
+    const o = await api("/world/orders", "POST", { label: `${aa.label} · ${key.split(":").slice(1).join(":")}`, a: aa, key, type: classify(aa), dur: carry ? 1.2 : aa.dur || 3, carry });
+    if (!S.orders.some((x) => x.id === o.id)) S.orders.push({ ...o, progress: 0 });
+  } catch { return; }
+  renderLayer(); assignJobs(); renderOverlay(); renderAlerts(); inspect(); // the plan stays on the floor straight away
+}
+// opening a PR is construction: the worker takes the commits from the bench, carries them to the desk, and writes it up there
+const carryOf = (o) => !o ? null : o.carry || (o.a?.name === "openPr" && o.key?.startsWith("wt:") ? { kind: "pr" } : null);
+const benchSpot = (R) => [R.x + 105, R.y + 150], deskSpot = (R) => [R.x + 256, R.y + 172];
+const orderSpot = (o) => {
+  const c = carryOf(o), R = reg[o.key];
+  if (c?.kind === "pr") return R ? (o.phase === 1 ? deskSpot(R) : benchSpot(R)) : undefined;
+  if (c) { if (o.phase === 1) { if (c.toKey) return reg[c.toKey]?.spot; const P = plotRect(c.key); return [P.x + 120, P.y + 175]; } if (c.fromKey) return reg[c.fromKey]?.spot; }
+  if (R && o.key.startsWith("wt:") && /\/pullrequests\//.test(o.a?.path || "")) return deskSpot(R);
+  return R?.spot;
+};
+function completeOrder(o, p) {
+  S.lastDone = { path: o.a.path, at: Date.now() }; S.orders = S.orders.filter((x) => x.id !== o.id); p.job = null; o.worker = null; renderOverlay(); renderAlerts();
+  api("/world/orders/" + o.id + "/complete", "POST", { worker: p.id }).then((r) => floatText(p.x, p.y - 34, r.ok ? "✓ " + o.a.label : "✗ " + (r.error || "failed"))).catch(() => {}).finally(() => refresh(true));
+}
+
+/* ---------------- pawns ---------------- */
+const prioOf = (p, t) => { const v = S.work[p.id]?.[t]; return v === undefined ? (DEF[p.kind][t] ?? 0) : v; };
+const suggest = (p) => { const c = open().filter((d) => prioOf(p, TYPE[d.kind]) > 0).sort((a, b) => prioOf(p, TYPE[a.kind]) - prioOf(p, TYPE[b.kind]) || a.pri - b.pri); return c[0]; };
+function targetOf(ref) {
+  const [kind, rest] = [ref.slice(0, ref.indexOf(":")), ref.slice(ref.indexOf(":") + 1)];
+  const key = { review: "pr:" + rest, merge: "pr:" + rest, fix: "pr:" + rest, ready: "pr:" + rest, verify: "issue:" + rest, dev: "issue:" + rest, start: "issue:" + rest, bp: "bp:" + rest, pipe: "env:" + rest, deploy: "env:" + rest, tidy: "wt:" + rest, relbuild: "rel:" + rest, relrisk: "rel:" + rest }[kind];
+  return reg[key] ? { key, ...reg[key] } : null;
+}
+function syncPawns() {
+  const want = [];
+  want.push({ id: S.me.id, kind: "human", name: S.me.name });
+  for (const u of S.users) if (u.id !== S.me.id && S.roster.humans[u.id]) want.push({ id: u.id, kind: "human", name: u.name });
+  for (const s of S.sessions) if (s.status !== "archived" && (s.status === "active" || S.roster.mechs[s.id])) want.push({ id: s.id, kind: "mech", name: trunc(s.name.replace(/^(Start|Work on|Review|Verify|Address review on)\s+/i, ""), 14), session: s, active: s.status === "active" });
+  const old = Object.fromEntries(pawns.map((p) => [p.id, p]));
+  pawns = want.map((w, i) => { const p = old[w.id] ?? { x: 200 + i * 50, y: 520 + (i % 3) * 40, tx: null, ty: null, wait: 0, idx: i }; Object.assign(p, w, { idx: i }); return p; });
+  const L = $("#pl"); L.innerHTML = "";
+  for (const p of pawns) { const g = document.createElementNS(NS, "g"); g.setAttribute("class", "hit"); g.dataset.s = "pawn:" + p.id; g.innerHTML = `<ellipse cy="9" rx="10" ry="3.2" fill="#000" opacity=".3"/><g class="b">${pawnBody(p)}</g><text class="nm" y="22">${esc(p.name)}</text><g class="cr" display="none" transform="translate(0 -30)">${crate(0, 0, "", "#d6b06a")}</g><text class="al" y="-26" style="font:700 18px sans-serif;fill:#ff5a4a;text-anchor:middle;paint-order:stroke;stroke:#17110c;stroke-width:3px"></text><text class="jb" y="34"></text><rect class="pbg" x="-16" y="40" width="32" height="4" fill="#000" opacity=".6" display="none"/><rect class="pb" x="-16" y="40" width="0" height="4" fill="#7be07b" display="none"/><circle r="22" fill="none" class="hs"/>`; L.appendChild(g); p.el = g; }
+  assignJobs();
+}
+function assignJobs() {
+  const taken = {};
+  for (const o of S.orders) if (o.worker && !pawns.some((q) => q.id === o.worker)) { o.worker = null; api("/world/orders/" + o.id, "PATCH", { worker: null }).catch(() => {}); }
+  for (const p of pawns) {
+    p.job = null;
+    if (p.kind === "human" && p.id === S.me.id && S.hand) { const t = targetOf(S.hand), d = S.derived.find((x) => x.ref === S.hand); if (t) p.job = { text: d ? trunc(d.title, 30) : S.hand, spot: t.spot, key: t.key }; }
+    if (p.kind === "mech" && p.active) {
+      const s = p.session; let t = s.notes?.startsWith("ref:") ? targetOf(s.notes.slice(4)) : null;
+      if (!t && s.worktree && reg["wt:" + s.worktree]) t = { key: "wt:" + s.worktree, ...reg["wt:" + s.worktree] };
+      if (!t && s.issues[0] && reg["issue:" + s.issues[0].key]) t = { key: "issue:" + s.issues[0].key, ...reg["issue:" + s.issues[0].key] };
+      if (!t && s.prs[0] && reg[`pr:${s.prs[0].repo}#${s.prs[0].id}`]) t = { key: `pr:${s.prs[0].repo}#${s.prs[0].id}`, ...reg[`pr:${s.prs[0].repo}#${s.prs[0].id}`] };
+      p.job = t ? { text: trunc(s.name, 30), spot: t.spot, key: t.key } : null;
+    }
+    if (!p.job) {
+      let o = S.orders.find((x) => x.worker === p.id);
+      if (o && !reg[o.key]) { o.worker = null; o = null; }
+      if (!o) { const free = S.orders.filter((x) => !x.worker && reg[x.key] && prioOf(p, x.type) > 0 && (!x.workerKind || x.workerKind === p.kind)).sort((a, b) => Math.hypot(orderSpot(a)[0] - p.x, orderSpot(a)[1] - p.y) - Math.hypot(orderSpot(b)[0] - p.x, orderSpot(b)[1] - p.y)); o = free[0]; if (o) { o.worker = p.id; api("/world/orders/" + o.id, "PATCH", { worker: p.id }).catch(() => { o.worker = null; }); } }
+      if (o) p.job = { text: o.label, spot: orderSpot(o), key: o.key, order: o };
+    }
+    if (p.job?.spot) { const k = p.job.key; taken[k] = (taken[k] || 0) + 1; p.slot = taken[k] - 1; }
+  }
+}
+function jobTextFor(p) { return p.job ? p.job.text : "idle"; }
+let SPEED = 1, last = performance.now();
+function frame(t) {
+  const dt = Math.min(0.05, (t - last) / 1000) * SPEED; last = t;
+  for (const p of pawns) {
+    let tx = p.tx, ty = p.ty, speed = 45;
+    p.stalled = !!(p.session?.lastSeen && p.active && Date.now() - Date.parse(p.session.lastSeen) > 120000);
+    if (p.job?.spot) {
+      tx = p.job.spot[0] + 34 + p.slot * 30; ty = p.job.spot[1] + (p.idx % 2) * 8; speed = 130;
+      const R = reg[p.job.key];
+      if (p.kind === "mech" && !p.job.order && R && R.w > 200 && R.h > 150 && p.x > R.x && p.x < R.x + R.w && p.y > R.y && p.y < R.y + R.h) { // working bot patrols its room; standing still means something is off
+        p.patrolT = (p.patrolT ?? 0) - dt;
+        if (!p.pt || Math.hypot(p.pt[0] - p.x, p.pt[1] - p.y) < 4 || p.patrolT <= 0) { p.pt = [R.x + 40 + Math.random() * (R.w - 80), R.y + 70 + Math.random() * (R.h - 120)]; p.patrolT = 3 + Math.random() * 3; }
+        tx = p.pt[0]; ty = p.pt[1]; speed = 42;
+      }
+      if (p.stalled) speed = 0;
+    }
+    else if (p.job) { /* working but nowhere to go */ }
+    else {
+      p.wait -= dt;
+      const arrived = tx == null || Math.hypot(tx - p.x, ty - p.y) < 3;
+      if (arrived && p.wait <= 0) { tx = SLAB.yard[0] + 30 + Math.random() * (SLAB.yard[2] - 60); ty = SLAB.yard[1] + 30 + Math.random() * (SLAB.yard[3] - 120); p.wait = 2 + Math.random() * 5; }
+      p.tx = tx; p.ty = ty;
+    }
+    const dx = (tx ?? p.x) - p.x, dy = (ty ?? p.y) - p.y, d = Math.hypot(dx, dy), moving = d > 3;
+    if (moving) { p.x += dx / d * Math.min(d, speed * dt); p.y += dy / d * Math.min(d, speed * dt); }
+    const po = p.job?.order, pb = p.el.querySelector(".pb"), pbg = p.el.querySelector(".pbg");
+    if (po && !moving && p.job.spot) {
+      if (carryOf(po) && !po.phase) { po.phase = 1; assignJobs(); renderLayer(); }
+      else { po.progress += dt; if (po.progress >= po.dur) { completeOrder(po, p); continue; } }
+    }
+    p.el.querySelector(".cr").setAttribute("display", carryOf(po) && po.phase === 1 ? "" : "none");
+    const al = p.el.querySelector(".al"), alt = p.stalled ? "!" : ""; if (al.textContent !== alt) al.textContent = alt;
+    pb.setAttribute("display", po && po.progress > 0 ? "" : "none"); pbg.setAttribute("display", po && po.progress > 0 ? "" : "none"); if (po) pb.setAttribute("width", (32 * Math.min(1, po.progress / po.dur)).toFixed(1));
+    const bob = moving ? Math.sin(t / 90 + p.idx) * 1.6 : p.job ? Math.sin(t / 220 + p.idx) * 1.1 : 0;
+    p.el.setAttribute("transform", `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})`);
+    p.el.querySelector(".b").setAttribute("transform", `translate(0 ${bob.toFixed(2)})`);
+    const jb = p.el.querySelector(".jb"), txt = p.stalled ? "stalled?" : p.job ? jobTextFor(p) : ""; if (jb.textContent !== txt) jb.textContent = txt;
+    const hs = p.el.querySelector(".hs"), on = S.sel === "pawn:" + p.id; hs.setAttribute("class", on ? "sel hs" : "hs");
+  }
+  stepFlights(dt);
+  for (const r of runners.slice()) { const dx = r.tx - r.x, dy = r.ty - r.y, d = Math.hypot(dx, dy); if (d < 4) { floatText(r.x, r.y - 28, r.label); r.g.remove(); runners.splice(runners.indexOf(r), 1); continue; } const st = Math.min(d, 190 * dt); r.x += dx / d * st; r.y += dy / d * st; r.g.setAttribute("transform", `translate(${r.x.toFixed(1)} ${r.y.toFixed(1)})`); }
+  requestAnimationFrame(frame);
+}
+const runners = [];
+function spawnRunner(prKey, label) {
+  const r = reg[prKey]; if (!r) return; const R = r.home ? reg[r.home] : null, to = R && r.home.startsWith("wt:") ? deskSpot(R) : (r.spot || [r.x, r.y]);
+  const g = document.createElementNS(NS, "g"); g.innerHTML = `<ellipse cy="9" rx="10" ry="3.2" fill="#000" opacity=".3"/>${pawnBody({ id: "courier", kind: "human" })}<rect x="8" y="-7" width="12" height="9" fill="#efe6cf" stroke="${K}" stroke-width="1.4"/><text class="jb" y="26">${esc(label)}</text>`;
+  $("#ov").appendChild(g); runners.push({ g, x: to[0] - 220, y: to[1] + 40, tx: to[0] + 36, ty: to[1] + 6, label });
+}
+function floatText(x, y, s) { const t = document.createElementNS(NS, "text"); t.setAttribute("class", "float"); t.setAttribute("x", x); t.setAttribute("y", y); t.textContent = s; $("#ov").appendChild(t); setTimeout(() => t.remove(), 1700); }
+
+/* ---------------- chrome ---------------- */
+function renderRes() {
+  const c = (st) => S.issues.filter((i) => i.status === st && i.type !== "Feature").length;
+  const R = [["#c8a35f", c("Next"), "Next (stockpile)"], ["#4f7bd1", c("Dev WIP"), "Dev WIP"], ["#c9a1e8", c("Dev Done"), "Dev Done"], ["#69b36a", c("Verification"), "Verification"], ["#d6d1c3", c("Done"), "Done"], ["#e0614f", S.prs.filter((p) => ["OPEN", "DRAFT", "APPROVED", "CHANGES_REQUESTED"].includes(p.state)).length, "Open PRs"], ["#7fd1e0", S.wts.filter((w) => w.docker.status === "running").length, "Docker running"], ["#a48cf0", S.sessions.filter((s) => s.status === "active").length, "Claude active"], ["#fff", S.doneToday, "Jobs finished today"]];
+  $("#res").innerHTML = R.map(([c, n, t]) => `<div title="${t}"><i style="background:${c}"></i>${n} ${t}</div>`).join("");
+}
+function renderPawnBar() {
+  $("#pawns").innerHTML = pawns.map((p) => `<div class="${S.sel === "pawn:" + p.id ? "on" : ""}" data-s="pawn:${p.id}"><svg viewBox="-16 -22 32 36"><g transform="translate(0 4)">${pawnBody(p)}</g></svg>${esc(p.name)}</div>`).join("");
+}
+function renderAlerts() {
+  const list = open(), nx = suggest(pawns.find((p) => p.id === S.me.id) || { id: S.me.id, kind: "human" }), quiet = ["start", "dev", "tidy", "review"];
+  const shown = list.filter((d) => !quiet.includes(d.kind)), lim = S.alertsAll ? 40 : 6;
+  $("#alerts").innerHTML = (S.orders.length ? `<h5>⚑ ${S.orders.length} order${S.orders.length > 1 ? "s" : ""} queued</h5>` : "") + (nx && !quiet.includes(nx.kind) ? `<h5>Next for you: ${esc(trunc(nx.title, 28))}</h5>` : "") + shown.slice(0, lim).map((d) => `<p class="${d.pri <= 2 ? "r" : "n"}" data-ref="${esc(d.ref)}">${esc(trunc(d.title, 38))}</p>`).join("") + (shown.length > lim ? `<p class="n" data-alertsall="1">+${shown.length - lim} more…</p>` : S.alertsAll && shown.length > 6 ? `<p class="n" data-alertsall="1">show fewer</p>` : "");
+  $("#clock").innerHTML = `${new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long" })}<small>${shown.length} thing${shown.length === 1 ? "" : "s"} need${shown.length === 1 ? "s" : ""} you</small>`;
+}
+const act = (a, key = S.sel) => !a.inputs?.length && S.orders.some((o) => sameOrder(o, { ...a, body: a.body || {} }, key)) ? `<button class="gbtn m" disabled>⚑ ${esc(a.label)} (queued)</button>` : a.inputs?.length ? `<form class="af" data-key="${esc(key)}" data-a="${esc(JSON.stringify(a))}">${a.inputs.map((n) => n.kind === "select" ? `<select name="${esc(n.name)}" title="${esc(n.label)}">${n.options.map((o) => `<option value="${esc(o.value)}">${esc(o.label)}</option>`).join("")}</select>` : `<input name="${esc(n.name)}" placeholder="${esc(n.label)}" value="${esc(n.value ?? "")}" required>`).join("")}<button class="gbtn">${esc(a.label)}</button></form>` : `<button class="gbtn ${a.mock ? "m" : ""}" data-key="${esc(key)}" data-act="${esc(JSON.stringify(a))}">${esc(a.label)}</button>`;
+const chip = (t, c = "") => `<span class="${c}">${esc(t)}</span>`;
+const GZ = { "move:Dev WIP": ["📦", "Start"], openPr: ["📝", "Open PR"], "move:OPEN": ["📤", "Ready"], "move:APPROVED": ["✅", "Approve"], "move:CHANGES_REQUESTED": ["✏️", "Changes"], "move:MERGED": ["🔀", "Merge"], dockerUp: ["🐳", "Docker up"], dockerStop: ["⏹", "Docker stop"], "move:Dev Done": ["🔨", "Built"], "move:Verification": ["🔍", "Verify"], "move:Done": ["✔️", "Done"], deploy: ["🚀", "Deploy"], build: ["🚀", "Ship"] };
+const gzAct = (a, key = S.sel) => {
+  const queued = !a.inputs?.length && S.orders.some((o) => sameOrder(o, { ...a, body: a.body || {} }, key));
+  return queued ? `<button class="gbtn m" disabled>⚑ ${esc(a.label)} (queued)</button>` : `<button class="gbtn" data-key="${esc(key)}" ${a.inputs?.length ? "data-actdef" : "data-act"}="${esc(JSON.stringify(a))}">${esc(a.label)}</button>`;
+};
+const actP = gzAct;
+// split a list of actions into the next step(s) (shown) and everything else (More tab)
+const split = (list = [], prim = [], rename = {}, key = S.sel) => ({
+  p: prim.map((n) => list.find((a) => a.name === n)).filter(Boolean).map((a) => actP({ ...a, label: rename[a.name] || a.label }, key)).join(""),
+  m: list.filter((a) => !prim.includes(a.name)).map((a) => act(a, key)).join(""),
+});
+const wtSessions = (w) => S.sessions.filter((s) => s.status !== "archived" && (s.worktree === w.id || (w.issue && s.issues.some((i) => i.key === w.issue))));
+function claudeBody(w) {
+  const list = wtSessions(w);
+  if (!list.length) return `<div class="rows">No Claude session in this room yet.</div><div class="btns">${w.issue ? `${gz(`data-claudehere="${esc(w.issue)}" title="Start Claude on this ticket"`, "🤖", "Claude")}` : ""}</div>`;
+  return list.map((s) => { const stale = s.lastSeen && Date.now() - Date.parse(s.lastSeen) > 120000; return `<div class="rows"><b>${esc(s.name)}</b> · ${chip(s.status, s.status === "active" ? "g" : "")} ${stale ? '<span style="color:#ff5a4a">stalled? last heartbeat ' + Math.round((Date.now() - Date.parse(s.lastSeen)) / 60000) + "m ago</span>" : s.lastSeen ? '<span style="color:var(--dim)">heartbeat ok</span>' : ""}
+    ${s.resume ? `<br><code>${esc(s.resume)}</code>` : ""}</div>
+    ${s.sessionId ? "" : `<form class="af" data-setsid="${s.id}" style="padding:0 10px"><input name="sid" placeholder="paste the Claude session id to link it" style="flex:1" required><button class="gbtn">Link session</button></form>`}
+    <div class="tx" data-sid="${s.id}">${s.sessionId ? "loading transcript…" : '<span style="color:var(--dim)">Link a session id to see its conversation here.</span>'}</div>`; }).join("") + `<div class="rows" style="color:var(--dim);font-size:11px">Heartbeat (so a frozen bot shows as stalled): <code>curl -X PATCH localhost:4010/local/sessions/ID -d '{"heartbeat":true}'</code></div>`;
+}
+function previewBody(w) {
+  if (w.docker.status !== "running") return `<div class="rows">This room isn't live — docker is <b>${w.docker.status}</b>. Start docker first, then the preview shows <b>${esc(w.url)}</b> here.</div>`;
+  return `<div class="rows">Live preview of <b>${esc(w.url)}</b> · <a href="${esc(w.url)}" target="_blank" rel="noopener" style="color:var(--amber)">open in its own tab ↗</a><br><span style="color:var(--dim);font-size:11px">If it stays blank, the app may block embedding or the subdomain isn't resolving yet.</span></div><iframe src="${esc(w.url)}" style="width:100%;height:340px;border:0;background:#fff;display:block"></iframe>`;
+}
+async function loadTranscripts() {
+  for (const d of document.querySelectorAll(".tx[data-sid]")) {
+    try {
+      const j = await api("/local/sessions/" + d.dataset.sid + "/transcript"); if (!d.isConnected) continue;
+      d.innerHTML = j.messages.length ? j.messages.map((m) => `<div class="m ${m.role}"><b>${m.role === "user" ? "you" : "claude"}</b> ${esc(m.text)}</div>`).join("") : `<span style="color:var(--dim)">${esc(j.note || "No messages yet.")}</span>`;
+      d.scrollTop = d.scrollHeight;
+    } catch {}
+  }
+}
+setInterval(() => { if ((S.tab === "claude" && S.sel?.startsWith("wt:")) || Object.values(WIN).some((w) => w.st.item === "claude")) loadTranscripts(); }, 3000);
+function assignHotkeys(root) { [...root.querySelectorAll(".gz:not(.q)")].slice(0, 8).forEach((b, i) => { const k = "QWERTYUI"[i]; b.dataset.hk = k; if (!b.querySelector(".hk")) b.insertAdjacentHTML("afterbegin", `<i class="hk">${k}</i>`); }); }
+addEventListener("keydown", (e) => { if (e.ctrlKey || e.metaKey || e.altKey || /INPUT|TEXTAREA|SELECT/.test(document.activeElement?.tagName)) return; const b = document.querySelector(`#inspect .gz[data-hk="${e.key.toUpperCase()}"]`); if (b) { e.preventDefault(); b.click(); } });
+function inspect() {
+  const el = $("#inspect"); if (!S.sel) { el.style.display = "none"; return; }
+  const [kind, ...r] = S.sel.split(":"), id = r.join(":"); let title = "", chips = "", rows = "", primary = "", hint = "", more = "";
+  const nm = (u) => S.users.find((x) => x.id === u)?.name ?? u ?? "unassigned";
+  const queued = (pred) => S.orders.some(pred);
+  const urlLine = (w) => `Address: <b>${esc(w.url)}</b>`;
+  if (kind === "issue" || kind === "bp") {
+    const i = S.issues.find((x) => x.key === id); if (!i) { el.style.display = "none"; return; }
+    title = `${i.key} <small>· ${esc(i.title)}</small>`; chips = chip(i.type, i.type === "Defect" ? "r" : "g") + chip(i.status, "b") + chip(nm(i.assignee)) + (i.parent ? chip("under " + i.parent) : "");
+    const wt = S.wts.find((w) => w.issue === i.key), a = i.artifacts, key = S.sel;
+    rows = esc(trunc(i.description || "", 100));
+    const claudeOn = S.sessions.some((s) => s.status !== "archived" && s.issues.some((x) => x.key === i.key) && s.notes?.startsWith("ref:"));
+    const claudeBtn = claudeOn ? `<span style="color:#a48cf0;align-self:center">🤖 Claude is on this ticket</span>` : `${gz(`data-claudehere="${esc(i.key)}" title="Start Claude on this ticket"`, "🤖", "Claude")}`;
+    if (i.status === "Next") {
+      const s_ = split(i.actions, [], {}, key); more = s_.m;
+      primary = i.actions.some((x) => x.name === "move:Dev WIP") ? (S.orders.some((o) => o.carry?.key === i.key) ? `<span style="color:var(--amber);align-self:center">⚑ A worker is on it.</span>` : `${gz(`data-place="${esc(i.key)}" title="Start ticket: choose where its workshop goes"`, "📦", "Start")}`) : "";
+      hint = "Put it where you want its room. A worker carries the crate there and marks the plot. You can also drag the crate straight out of the stockpile.";
+    } else if (!wt && ["Dev WIP", "Dev Done", "Verification"].includes(i.status)) {
+      if (queued((o) => o.a.path === "/local/worktrees" && o.a.body.issue === i.key)) primary = `<span style="color:var(--amber);align-self:center">⚑ A worker will build this room.</span>`;
+      else primary = `${gz(`data-buildnow="${esc(i.key)}" title="Build the room"`, "🏗", "Build room")}`;
+      primary += claudeBtn;
+      hint = `Build room: a worker sets up a worktree on <b>feat/${esc(i.key.toLowerCase())}</b> at <b>~/work/impact-wt/${esc(i.key)}</b> with its own address. Docker is a separate step. Start Claude here if you want a session going while that happens.`;
+      more = `<form class="af" data-build="${esc(i.key)}"><input name="branch" value="feat/${esc(i.key.toLowerCase())}" required><input name="path" value="~/work/impact-wt/${esc(i.key)}" required><button class="gbtn">Build room (custom names)</button></form>` + i.actions.map((x) => act(x, key)).join("");
+    } else if (wt) {
+      const dock = wt.actions.find((x) => x.name === "dockerUp"), wkey = "wt:" + wt.id;
+      if (wt.docker.status !== "running" && i.status === "Dev WIP") { primary = dock ? actP({ ...dock, label: "Start docker" }, wkey) : ""; hint = "A worker starts this room's docker stack so you can run and test locally."; }
+      else if (i.status === "Dev WIP" && !wt.pr) { const op = i.actions.find((x) => x.name === "openPr"); primary = op ? actP({ ...op, label: "Open draft PR" }, key) : ""; hint = "Docker is up and the room is live. A worker opens a draft PR for this branch (repo, title and branch are prefilled)."; }
+      else if (i.status === "Dev WIP") { const s_ = split(i.actions, ["move:Dev Done"], { "move:Dev Done": "Mark built (Dev Done)" }, key); primary = s_.p; hint = "The PR exists. When the work is built and reviewed, mark it Dev Done."; }
+      else if (i.status === "Dev Done") { const s_ = split(i.actions, ["move:Verification"], { "move:Verification": "Send to verification" }, key); primary = s_.p; hint = "Merged work goes to staging for verification."; }
+      else if (i.status === "Verification") { const s_ = split(i.actions, ["move:Done"], { "move:Done": "Mark done" }, key); primary = s_.p; hint = "Verified on staging? Mark it done."; }
+      else hint = "Shipped.";
+      primary += claudeBtn; more = i.actions.map((x) => act(x, key)).join("") + wt.actions.map((x) => act(x, wkey)).join("");
+    } else { hint = "Shipped."; more = i.actions.map((x) => act(x, key)).join(""); }
+  } else if (kind === "pr") {
+    const [repo, n] = id.split("#"), p = S.prs.find((x) => x.repo === repo && String(x.id) === n); if (!p) { el.style.display = "none"; return; }
+    title = `${esc(id)} <small>· ${esc(p.title)}</small>`; chips = chip(p.state, p.state === "APPROVED" ? "g" : p.state === "CHANGES_REQUESTED" ? "r" : "b") + chip(p.source + " → " + p.destination);
+    rows = `By <b>${esc(nm(p.author))}</b> · reviewers: <b>${p.reviewers.map(nm).map(esc).join(", ") || "none"}</b>${p.issue ? `<br>Ticket: <b>${esc(p.issue)}</b>` : ""}`;
+    const STG = { DRAFT: ["move:OPEN"], OPEN: ["move:APPROVED", "move:CHANGES_REQUESTED"], APPROVED: ["move:MERGED"], CHANGES_REQUESTED: ["move:OPEN"] }[p.state] || [];
+    const s_ = split(p.actions, STG, {}, S.sel); primary = s_.p; more = s_.m;
+    hint = { DRAFT: "Mark it ready when CI is green.", OPEN: "Waiting on a review decision.", APPROVED: "Approved — merging sends it towards staging.", CHANGES_REQUESTED: "Fix the comments, then re-request review." }[p.state] || "";
+    const todo = S.derived.find((d) => d.ref.endsWith(":" + id));
+    if (todo?.kind === "review" && !claimed().has(todo.ref)) primary += `${gz(`data-claude="${esc(todo.ref)}" title="Claude pre-reviews this PR"`, "🤖", "Pre-review")}`;
+  } else if (kind === "wt") {
+    const w = S.wts.find((x) => x.id === id); if (!w) { el.style.display = "none"; return; }
+    title = `${esc(w.branch)} <small>· ${esc(w.repo)} workshop</small>`; chips = chip("docker " + w.docker.status, w.docker.status === "running" ? "g" : "") + (w.pr ? chip(`PR #${w.pr.id} ${w.pr.state}`, "b") : chip("no PR")) + (w.issue ? chip(w.issue + " " + (w.issueStatus || "")) : chip("no ticket"));
+    rows = (w.issue ? `${esc(w.issue)} · ${esc(trunc(S.issues.find((x) => x.key === w.issue)?.title ?? "", 48))}` : "");
+    const s_ = split(w.actions, w.docker.status === "running" ? [] : ["dockerUp"], { dockerUp: "Start docker" }, S.sel); primary = s_.p; more = s_.m;
+    hint = w.docker.status === "running" ? "Docker is running — this room is live at its address." : "Start the docker stack to make this room live.";
+    const iss = w.issue ? S.issues.find((x) => x.key === w.issue) : null, nxt = iss && { "Dev WIP": w.pr ? "move:Dev Done" : null, "Dev Done": "move:Verification", Verification: "move:Done" }[iss.status];
+    if (nxt) { const a2 = iss.actions.find((x) => x.name === nxt); if (a2) { primary += actP({ ...a2, label: { "move:Dev Done": "Mark built (Dev Done)", "move:Verification": "Send to verification", "move:Done": "Mark done" }[nxt] }, S.sel); hint += ` Ticket ${esc(iss.key)} is <b>${esc(iss.status)}</b>.`; } }
+    else if (w.docker.status === "running" && w.issue && !w.pr) { const op = iss?.actions.find((x) => x.name === "openPr"); if (op) { primary += actP({ ...op, label: "Open draft PR" }, S.sel); hint += " Ready to open a draft PR for this branch."; } }
+  } else if (kind === "env") {
+    const e = S.envs.find((x) => `${x.repo}/${x.environment}` === id); if (!e) { el.style.display = "none"; return; }
+    const sv = e.service; title = `${esc(e.environment)} <small>· ${esc(e.repo)} · serves ${esc(e.branch)}</small>`; chips = chip("pipeline " + e.pipelineStatus, e.pipelineStatus === "FAILED" ? "r" : e.pipelineStatus === "RUNNING" ? "y" : "g") + chip(`${sv.runningCount}/${sv.desiredCount} running`);
+    rows = `Serving <b>${esc(e.current?.sha || "nothing")}</b>${e.notDeployed.length ? `<br>Waiting at the door: <b>${e.notDeployed.map((x) => esc(x.issue || x.message)).join(", ")}</b>` : "<br>Nothing waiting."}${e.latestPipeline ? `<br>Pipeline #${e.latestPipeline.id}: ${e.latestPipeline.steps.map((s) => esc(s.name) + " " + s.status.toLowerCase()).join(" → ")}` : ""}`;
+    const s_ = split(e.actions, e.notDeployed.length ? ["deploy"] : [], {}, S.sel); primary = s_.p; more = s_.m;
+    hint = e.notDeployed.length ? "Changes are waiting at the door. A worker starts a deploy to bring them in." : "Everything merged is already being served.";
+  } else if (kind === "rel") {
+    const fmtD = (t) => t ? new Date(t + "T12:00").toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }) : "no date";
+    if (id === "new") {
+      title = "Plan a release"; chips = chip("new bench");
+      rows = "A release is built from branches. Give it a name and a target day, and choose how it ships.";
+      primary = `<form class="af" data-newrel="1"><input name="name" placeholder="Name, e.g. 1.1" required><input name="target" type="date"><select name="mode"><option value="branch">release branch (chosen branches only)</option><option value="develop">all of develop</option></select><button class="gbtn">Plan release</button></form>`;
+      hint = "Release branch: cut a fresh release/&lt;name&gt; holding only the branches you pick. All of develop: merge develop straight to master when it is 100% releasable.";
+    } else {
+      const r = S.releases.find((x) => x.id === id); if (!r) { el.style.display = "none"; return; }
+      title = `Release ${esc(r.name)} <small>· ${fmtD(r.target)}</small>`; chips = chip(r.status === "built" ? "built" : r.ready ? "ready" : "waiting", r.status === "built" ? "b" : r.ready ? "g" : "y") + chip(r.mode === "develop" ? "ships all of develop" : "release branch");
+      const have = r.items.reduce((n, i) => n + Object.values(i.ingredients).filter((v) => v === true).length, 0), total = r.items.reduce((n, i) => n + Object.values(i.ingredients).filter((v) => v !== null).length, 0);
+      if (r.auto && r.status === "planning") {
+        const held = r.items.filter((i) => i.fate === "held"), prog = r.items.filter((i) => i.fate === "progress"), inn = r.items.filter((i) => i.fate === "in");
+        chips += chip("automatic", "b") + (r.atRisk ? chip("at risk", "r") : "");
+        rows = `${r.mode === "develop" ? "Proposal: <b>merge develop straight to master</b> — everything on develop is verified." : inn.length ? `Proposal: <b>cut a release branch</b> with ${inn.map((i) => esc(i.branch)).join(", ")}.` : "Nothing is verified and ready yet."}${held.length ? `<br><span style="color:#ffd27a">⚠ Held back (on develop, not ready): ${held.map((i) => esc(i.branch)).join(", ")}</span>` : ""}${prog.length ? `<br>In progress: ${prog.map((i) => esc(i.branch)).join(", ")}` : ""}${r.waiting.length ? `<br>Waiting on: ${r.waiting.slice(0, 4).map(esc).join(" · ")}` : ""}`;
+        const q = queued((o) => o.key === S.sel && o.a.path.endsWith("/build"));
+        primary = q ? `<span style="color:var(--amber);align-self:center">⚑ A worker will ship this release.</span>` : r.ready ? `${gz(`data-buildrel="${esc(r.id)}" title="Ship the release"`, "🚀", "Ship")}` : `<span style="color:var(--dim);align-self:center">Nothing ready to ship yet</span>`;
+        hint = r.ready ? (r.mode === "develop" ? "A worker opens a PR from develop to master." : `A worker cuts <b>release/${esc(r.name.toLowerCase().replace(/[^a-z0-9.]+/g, "-"))}</b> with only the ready branches, and opens a PR to master. Held-back branches wait for the next release.`) : "Branches join this release by themselves. Nothing needs planning.";
+        more = r.items.filter((i) => i.ingredients.merged).map((i) => `<button class="gbtn m" data-hold="${esc(r.id)}|${esc(i.branch)}">${(r.exclude || []).includes(i.branch) ? "Include" : "Hold back"} ${esc(i.branch)}</button>`).join("") + `<form class="af" data-editrel="${esc(r.id)}"><input name="name" value="${esc(r.name)}" required><input name="target" type="date" value="${esc(r.target || "")}"><button class="gbtn">Save name and day</button></form>`;
+      } else if (r.status === "built") {
+        rows = `Built as <b>${esc(r.releaseBranch)}</b> → master · <b>PR #${r.pr.id}</b> · ${r.shipped.length} branch${r.shipped.length === 1 ? "" : "es"} aboard`;
+        primary = `<button class="gbtn" data-selpr="${esc(r.pr.repo)}#${r.pr.id}">Open the PR</button>`; hint = "From here it's the normal flow: review, merge, then deploy master.";
+      } else {
+        rows = `${r.items.length} branch${r.items.length === 1 ? "" : "es"} · <b>${have}/${total}</b> ingredients ready${r.waiting.length ? `<br>Waiting on: ${r.waiting.slice(0, 5).map(esc).join(" · ")}` : ""}${r.extras.length ? `<br><span style="color:#ffd27a">⚠ develop also holds ${r.extras.map((e) => esc(e.issue || e.branch)).join(", ")} — not in this release.</span>` : ""}`;
+        const q = queued((o) => o.key === S.sel && o.a.path.endsWith("/build"));
+        primary = q ? `<span style="color:var(--amber);align-self:center">⚑ A worker will build this release.</span>` : r.ready ? `${gz(`data-buildrel="${esc(r.id)}" title="Build the release"`, "🚀", "Ship")}` : `<span style="color:var(--dim);align-self:center">Not ready yet</span>`;
+        hint = r.ready ? (r.mode === "develop" ? "A worker opens a PR from develop to master." : `A worker cuts <b>release/${esc(r.name.toLowerCase().replace(/[^a-z0-9.]+/g, "-"))}</b> with these branches and opens a PR to master.`) : "Every light must be green first. Click a workshop's parcel and drag it here to add a branch.";
+        const inRel = new Set(S.releases.filter((x) => x.status === "planning").flatMap((x) => x.branches));
+        const avail = [...new Set([...S.wts.filter((w) => w.repo === r.repo).map((w) => w.branch), ...S.prs.filter((q2) => q2.repo === r.repo && q2.destination === "develop" && q2.state !== "DECLINED").map((q2) => q2.source)])].filter((b) => !inRel.has(b));
+        if (r.mode === "branch" && avail.length) primary += `<form class="af" data-addbranch="${esc(r.id)}"><select name="branch">${avail.map((b) => `<option>${esc(b)}</option>`).join("")}</select><button class="gbtn">Add branch (a worker hauls it)</button></form>`;
+        more = `<form class="af" data-editrel="${esc(r.id)}"><input name="name" value="${esc(r.name)}" required><input name="target" type="date" value="${esc(r.target || "")}"><select name="mode"><option value="branch" ${r.mode === "branch" ? "selected" : ""}>release branch</option><option value="develop" ${r.mode === "develop" ? "selected" : ""}>all of develop</option></select><button class="gbtn">Save</button></form>`
+          + r.branches.map((b) => `<button class="gbtn m" data-rmbranch="${esc(r.id)}|${esc(b)}">Remove ${esc(b)}</button>`).join("") + `<button class="gbtn m" data-delrel="${esc(r.id)}">Delete this release</button>`;
+      }
+    }
+  } else if (kind === "pawn") {
+    const p = pawns.find((x) => x.id === id); if (!p) { el.style.display = "none"; return; }
+    const sg = suggest(p), pr = TYPES.filter(([t]) => prioOf(p, t) > 0).map(([t, l]) => `${l} ${prioOf(p, t)}`).join(" · ");
+    title = `${esc(p.name)} <small>· ${p.kind === "mech" ? "Claude mech" : "colonist"}</small>`; chips = chip(p.job ? "working" : "idle", p.job ? "g" : "");
+    rows = `Job: <b>${esc(jobTextFor(p))}</b><br>Would pick next: <b>${sg ? esc(trunc(sg.title, 46)) : "nothing needs them"}</b>`;
+    if (p.id === S.me.id && S.hand) primary += `<button class="gbtn" data-finish="1">Finished ✓</button><button class="gbtn" data-drop="1">Stop (not now)</button>`;
+    if (sg && p.id === S.me.id && !S.hand) primary += `<button class="gbtn" data-hand="${esc(sg.ref)}">Start suggested</button>`;
+    if (p.kind === "mech") { primary += `<button class="gbtn" data-sess="${p.id}:idle">It's back ✓</button><button class="gbtn" data-sess="${p.id}:archived">Retire</button>`; more = (p.session.actions || []).filter((a) => a.name !== "archive").map((a) => act(a, S.sel)).join(""); }
+  } else { el.style.display = "none"; return; }
+  const itabs = kind === "wt" ? [["Workshop", `wt:${id}`], ["Claude", `wt:${id}|claude`], ["Bills", `wt:${id}|bills`]] : kind === "pr" ? [["Details", `pr:${id}`]] : kind === "pawn" ? [["Log", `log:${id}`]] : [];
+  S.moreHtml = more;
+  const tabsHtml = itabs.map(([n, k]) => `<button class="gbtn" data-openwin="${esc(k)}">${n}</button>`).join("") + (more ? '<button class="gbtn" data-openmore="1">More</button>' : "");
+  el.innerHTML = `${tabsHtml ? `<div class="itabs">${tabsHtml}</div>` : ""}<div class="card"><div class="ih">${title}<span class="ix" data-close="1">✕</span></div>${chips ? `<div class="chips">${chips}</div>` : ""}${rows ? `<div class="rows">${rows}</div>` : ""}${primary ? `<div class="btns">${primary}</div>` : ""}</div>`;
+  el.style.display = "block"; assignHotkeys(el);
+}
+function renderWork() {
+  const W = $("#work"); if (W.style.display !== "block") return;
+  const cell = (p, t) => { const v = prioOf(p, t); return `<td><button class="p ${v ? "p" + v : ""}" data-p="${p.id}|${t}">${v || "–"}</button></td>`; };
+  W.innerHTML = `<h3>Work <span style="color:var(--dim);font-size:12px">· 1 = first, 4 = last, – = never · click to change</span></h3><table><tr><th></th>${TYPES.map(([, l]) => `<th>${l}</th>`).join("")}</tr>${pawns.map((p) => `<tr><td>${esc(p.name)} <span style="color:var(--dim)">${p.kind === "mech" ? "(mech)" : ""}</span></td>${TYPES.map(([t]) => cell(p, t)).join("")}</tr>`).join("")}</table>
+  <div class="sub">Colonists</div>${S.users.filter((u) => u.id !== S.me.id).map((u) => `<label><input type="checkbox" data-human="${u.id}" ${S.roster.humans[u.id] ? "checked" : ""}>${esc(u.name)}</label>`).join("")}
+  <div class="sub">Claude mechs (each one is a session)</div>${S.sessions.filter((s) => s.status !== "archived").map((s) => `<label><input type="checkbox" data-mech="${s.id}" ${s.status === "active" || S.roster.mechs[s.id] ? "checked" : ""} ${s.status === "active" ? "disabled" : ""}>${esc(trunc(s.name, 30))} <span style="color:var(--dim)">${s.status}</span></label>`).join("") || '<span style="color:var(--dim)">none</span>'}
+  <div class="sub">Hire a mech</div><form id="hire" style="display:flex;gap:6px"><input class="in" name="name" placeholder="What is it for?" style="flex:1" required><button class="gbtn">Hire</button></form>`;
+}
+
+const gz = (attrs, icon, caption, cls = "") => { const t = (attrs.match(/title="([^"]*)"/) || [])[1]; return `<button class="gbtn ${cls === "q" ? "m" : ""}" ${attrs}>${t && cls !== "q" ? t : caption}</button>`; };
+const gzi = (attrs, icon, caption) => `<button class="gz" ${attrs}><span class="gi">${icon}</span><span class="gc">${caption}</span></button>`; // icon buttons: the Architect menu only
+const age = (t) => { const d = Math.floor((Date.now() - Date.parse(t)) / 864e5); return d < 1 ? "today" : d + "d"; };
+const STARS = { Spike: 1, Story: 2, Defect: 2 }, EFFORT = { Spike: ["about an hour", "1h"], Story: ["about two hours", "2h"], Defect: ["an hour and a half", "1.5h"] };
+const lens = '<svg width="24" height="24" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5" fill="none" stroke="#e8e8e8" stroke-width="2.6"/><path d="M15 15L22 22" stroke="#e8e8e8" stroke-width="3.2"/></svg>';
+const trashSvg = (t) => `<svg class="qtrash" data-qtrash="${esc(t)}" width="26" height="28" viewBox="0 0 26 28"><rect x="9" y="2" width="8" height="4" fill="#dcdcdc"/><rect x="2" y="6" width="22" height="3.5" fill="#dcdcdc"/><path d="M4.5 11h17l-1.6 15h-13.8z" fill="#dcdcdc"/><path d="M10 14v9M13 14v9M16 14v9" stroke="#2a2d31" stroke-width="1.5"/></svg>`;
+// the Quests tab, copied from RimWorld: every ticket is a quest that arrives from outside
+function questItems() {
+  const dropKeys = new Set(S.drops.map((d) => d.key)), dis = S.dismissed, out = [], rk = (k) => { const m = /^([^#]+)#(\d+)$/.exec(k); return m && S.prs.find((x) => x.repo === m[1] && String(x.id) === m[2]); };
+  for (const i of S.issues.filter((x) => x.type !== "Feature")) out.push({ kind: "ticket", key: i.key, title: i.title, type: i.type, created: i.created, assignee: i.assignee, issue: i, tab: dropKeys.has(i.key) || ["Dev WIP", "Dev Done", "Verification"].includes(i.status) ? "active" : i.status === "Done" || (i.status === "Next" && dis.has(i.key)) ? "hist" : "avail" });
+  for (const q of S.prs) { const k = `${q.repo}#${q.id}`; if (q.state === "OPEN" && (q.reviewers || []).includes(S.me.id) && q.author !== S.me.id && !S.reviews.some((r) => r.key === k && !r.done) && !dropKeys.has(k)) out.push({ kind: "review", key: k, title: `Review: ${q.title}`, type: "Review", created: q.created, assignee: q.author, pr: q, tab: dis.has(k) ? "hist" : "avail" }); }
+  for (const r of S.reviews) { const q = rk(r.key); out.push({ kind: "review", key: r.key, title: `Review: ${q?.title ?? r.key}`, type: "Review", created: r.at, assignee: q?.author, pr: q, tab: r.done ? "hist" : "active", done: r.done }); }
+  for (const d of S.drops.filter((x) => x.kind === "review")) { const q = rk(d.key); out.push({ kind: "review", key: d.key, title: `Review: ${q?.title ?? d.key}`, type: "Review", created: d.at, assignee: q?.author, pr: q, tab: "active", arriving: true }); }
+  return out;
+}
+function questsWin() {
+  return (st) => {
+    st.tab ??= "avail"; st.q ??= "";
+    const dis = S.dismissed, all = questItems(), nm = (u) => S.users.find((x) => x.id === u)?.name ?? u ?? "Someone";
+    const tabs = { avail: ["Available", all.filter((x) => x.tab === "avail")], active: ["Active", all.filter((x) => x.tab === "active")], hist: ["Historical", all.filter((x) => x.tab === "hist")] };
+    const q = st.q.trim().toLowerCase(), daysOf = (i) => Math.max(0, Math.floor((Date.now() - Date.parse(i.created)) / 864e5));
+    const list = tabs[st.tab][1].filter((i) => !q || (i.key + " " + i.title).toLowerCase().includes(q)).sort((a, b) => (b.assignee === S.me.id) - (a.assignee === S.me.id) || Date.parse(a.created) - Date.parse(b.created));
+    if (!list.some((i) => i.key === st.sel)) st.sel = list[0]?.key;
+    const sel = list.find((i) => i.key === st.sel), chip = (g, t) => `<span class="qchip"><i>${g}</i>${t}</span>`;
+    let right = '<div class="qdesc" style="color:#9a9da0">Nothing here.</div>';
+    if (sel) {
+      const days = daysOf(sel), onWay = S.drops.some((d) => d.key === sel.key), isRv = sel.kind === "review", avail = st.tab === "avail", mid0 = [];
+      const exp = avail ? `Waiting for ${days < 1 ? "less than a day" : days + " day" + (days > 1 ? "s" : "")}` : st.tab === "active" ? (onWay ? "A ship is bringing it" : "Accepted") : sel.done || sel.issue?.status === "Done" ? "Completed" : "Dismissed";
+      let desc, mid = "", parent = null, sibs = [], doneN = 0, foot;
+      const acc = (rows) => rows.map(([mode, chips, val]) => `<div class="qacc"><button class="gbtn" data-qaccept="${esc(sel.key)}|${mode}">Accept for:</button><div>${chips.map(([g, t]) => chip(g, t)).join("")} <span class="qval">value ${val}</span></div></div>`).join("");
+      if (isRv) {
+        const pr = sel.pr; desc = `<span class="qo">${esc(nm(sel.assignee))}</span> opened a pull request in <span class="qb">${esc(pr?.repo ?? "")}</span> and asked you to review it: ${esc((pr?.title ?? sel.title).replace(/[.!?]?\s*$/, "."))} It is a <span class="qr">review</span> and should take <span class="qa">about twenty minutes</span>${avail ? " once you accept" : ""}.`;
+        if (avail) mid = acc([["me", [["☻", "You review it"], ["▢", "A review package is dropped near the base"], ["✓", "Approve, request changes or decline"]], "effort <b>≈ 20m</b>"], ["claude", [["⚙", "Claude pre-reviews it"], ["▢", "A review package is dropped near the base"], ["✓", "You still make the decision"]], "your time <b>≈ 5m</b>"]]);
+        else if (st.tab === "active" && pr) {
+          const decided = pr.state !== "OPEN", key = "pr:" + sel.key, decide = pr.actions.filter((a) => ["move:APPROVED", "move:CHANGES_REQUESTED", "move:DECLINED"].includes(a.name)), ready = decided && !S.pickups.some((u) => u.key === sel.key);
+          const reqs = [["Package delivered", !onWay], ["CI passed", pr.checks === "passed"], ["Decision made", decided]];
+          mid = `<div class="qreq">${reqs.map(([n, v]) => `<div class="line">${tri(v ? true : null)}<span>${n}</span></div>`).join("")}</div>`
+            + (decided ? "" : `<div class="qacc"><div style="display:flex;gap:8px;padding-left:12px">${decide.map((a) => act(a, key)).join("")}</div><span class="qval">a worker carries your decision to the package</span></div>`)
+            + `<div class="qacc">${ready ? `<button class="gbtn" data-qcomplete="${esc(sel.key)}">Complete:</button>` : '<button class="gbtn" disabled style="opacity:.5">Complete:</button>'}<div>${chip("▲", "A ship comes back for the package")}${chip("✓", "The review is filed")} <span class="qval">reward <b>one less thing</b> waiting on you</span></div></div>${decided ? "" : '<div class="qval">Make your decision first, then the ship can collect the package.</div>'}`;
+        }
+        foot = `<div class="l">View: ${esc(sel.key)}</div><div class="r">${esc(pr?.repo ?? "")}<br>${pr ? "Opened by " + esc(nm(pr.author)) : ""}<br><em>${pr ? esc(pr.state.replace("_", " ").toLowerCase()) : ""}</em></div>`;
+      } else {
+        const i = sel.issue; parent = i.parent ? S.issues.find((x) => x.key === i.parent) : null; sibs = parent ? S.issues.filter((x) => x.type !== "Feature" && x.parent === parent.key) : []; doneN = sibs.filter((x) => x.status === "Done").length;
+        const wt = S.wts.find((w) => w.issue === i.key), pr = wt?.pr ? S.prs.find((x) => x.repo === wt.repo && x.id === wt.pr.id) : null, [effLong, effShort] = EFFORT[i.type] || EFFORT.Story;
+        desc = `<span class="qo">${esc(nm(i.assignee))}</span> has ${avail ? "this waiting" : "asked for this"}${parent ? ` under <span class="qb">${esc(parent.title)}</span>` : ""}. ${esc((i.description || i.title).replace(/[.!?]?\s*$/, "."))} It is a <span class="qr">${esc(i.type.toLowerCase())}</span> and should take <span class="qa">${effLong}</span>${avail ? " once you accept" : ""}.`;
+        if (avail) mid = acc([["me", [["☻", "You do the work"], ["⌂", "A workshop is built for you"], ["▶", "Docker starts by itself"]], `effort <b>≈ ${effShort}</b>`], ["claude", [["⚙", "Claude takes it"], ["⌂", "A workshop is built for it"], ["▶", "Docker starts by itself"]], `your time <b>≈ 15m</b>`]]);
+        else if (st.tab === "active") {
+          const pushed = !!pr && S.images.some((m) => m.prId === pr.id && m.pushed), ready = pushed && !S.pickups.some((u) => u.key === i.key);
+          const reqs = [["Workshop built", !!wt], ["Commits pushed", !!wt && (i.artifacts?.commits || []).some((c) => c.branch === wt.branch)], ["PR opened", !!pr], ["CI passed", pr?.checks === "passed"], ["Approved", !!pr && ["APPROVED", "MERGED"].includes(pr.state)], ["Merged", pr?.state === "MERGED"], ["Image pushed to ECR", pushed]];
+          mid = `<div class="qreq">${reqs.map(([n, v]) => `<div class="line">${tri(v ? true : null)}<span>${n}</span></div>`).join("")}</div><div class="qacc">${ready ? `<button class="gbtn" data-qcomplete="${esc(i.key)}">Complete:</button>` : '<button class="gbtn" disabled style="opacity:.5">Complete:</button>'}<div>${chip("▲", "A ship comes back for it")}${chip("⌂", "The workshop is taken down")}${chip("✓", "Ticket marked done")} <span class="qval">reward <b>1 verified branch</b> for the release</span></div></div>${pushed ? "" : '<div class="qval">Once it is merged and its image is in ECR, the ship can collect it. Deploying is separate.</div>'}`;
+        }
+        foot = `<div class="l">View: ${esc(parent ? parent.key : i.key)}</div>${parent ? `<div class="r">${esc(parent.title)}<br>Progress: ${doneN} of ${sibs.length} done<br><em>${doneN === sibs.length ? "Finished" : "On track"}</em></div>` : ""}`;
+      }
+      right = `${avail ? trashSvg(sel.key) : st.tab === "hist" && dis.has(sel.key) ? trashSvg("r:" + sel.key) : ""}<div class="qt">${esc(sel.title)}</div><div class="qexp">${exp}</div><div class="qdesc">${desc}</div>${mid}<div class="qfoot">${foot}</div>`;
+    }
+    const rows = list.map((i) => `<div class="qrow ${i.key === st.sel ? "on" : ""}" data-qrow="${esc(i.key)}"><span class="qn">${esc(i.title)}</span><span class="stars">${"★".repeat(i.kind === "review" ? 1 : STARS[i.type] || 2)}</span><span class="ag">${daysOf(i) < 1 ? "new" : daysOf(i) + "d"}</span></div>`).join("");
+    return { title: "Quests", body: `<div class="qwrap"><div class="qleft"><div class="qtabs">${Object.entries(tabs).map(([k, [n]]) => `<div class="qtab ${st.tab === k ? "on" : ""}" data-qtab="${k}">${n}</div>`).join("")}</div><div class="qlist">${rows}</div><div class="qsearch">${lens}<input class="qsearchin" value="${esc(st.q)}"></div></div><div class="qright">${right}</div></div>`, after: (w) => { if (st.refocus) { const i = w.el.querySelector(".qsearchin"); if (i) { i.focus(); i.setSelectionRange(i.value.length, i.value.length); } st.refocus = false; } } };
+  };
+}
+const openTickets = () => openWin("tickets", { width: 1040, bare: true, render: questsWin() });
+async function acceptQuest(key, mode) {
+  const rv = key.includes("#"), P = plotRect(key); await wsave("/world/plots/" + encodeURIComponent(key), "PATCH", { x: P.x, y: P.y }); // a free spot near the base, reserved for the drop
+  const d = await api("/world/drops", "POST", rv ? { kind: "review", key, mode } : { key, mode }).catch(() => null); if (!d) return;
+  closeWin("tickets"); await refresh(true); focus(P.x + RW / 2, P.y + RH / 2, 0.7);
+}
+async function completeQuest(key) {
+  const rv = key.includes("#"), u = await api("/world/pickups", "POST", rv ? { kind: "review", key } : { key }).catch(() => null); if (!u) return;
+  const wt = S.wts.find((w) => w.issue === key), R = rv ? reg["rv:" + key] : wt && reg["wt:" + wt.id]; closeWin("tickets"); await refresh(true); if (R) focus(R.x + R.w / 2, R.y + R.h / 2, 0.7);
+}
+// ships: they bring accepted quests and come back for finished ones
+const flights = [];
+const SHIP = `<ellipse cx="16" cy="66" rx="34" ry="9" fill="#000" opacity=".28"/><path d="M0 -50C11 -42 15 -22 15 8L44 30L44 40L15 31L11 50L-11 50L-15 31L-44 40L-44 30L-15 8C-15 -22 -11 -42 0 -50Z" fill="#8f9aa4" stroke="${K}" stroke-width="3"/><path d="M-30 33L-15 20M30 33L15 20" stroke="${K}" stroke-width="2"/><ellipse cy="-28" rx="6" ry="11" fill="#2a4a6a" stroke="${K}" stroke-width="2"/><circle cx="-7" cy="52" r="4" fill="#ffb347" class="blink"/><circle cx="7" cy="52" r="4" fill="#ffb347" class="blink"/>`;
+function startFlight(kind, rec) {
+  let R = null; if (kind === "pickup") { if (rec.kind === "review") R = reg["rv:" + rec.key]; else { const wt = S.wts.find((w) => w.issue === rec.key); R = wt && reg["wt:" + wt.id]; } } R ??= plotRect(rec.key);
+  const g = document.createElementNS(NS, "g"); g.innerHTML = `<g class="crt" display="none">${crate(0, 0, "", "#d6b06a")}</g><g class="shp">${SHIP}</g>`; $("#ov").appendChild(g);
+  flights.push({ kind, id: rec.id, g, t: 0, cx: R.x + R.w / 2, cy: R.y + R.h / 2 + 10, done: false, ang: 135 });
+}
+function stepFlights(dt) {
+  for (const f of flights.slice()) {
+    f.t += dt; const hov = 3.2, hold = f.kind === "drop" ? 1.8 : 2.2, leave = 3.2, hp = [f.cx, f.cy - 40], from = [f.cx - 780, f.cy - 520], away = [f.cx + 800, f.cy - 560];
+    const lerp = (a, b, u) => [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u]; let pos;
+    if (f.t < hov) { const u = f.t / hov; pos = lerp(from, hp, u * u * (3 - 2 * u)); } else if (f.t < hov + hold) pos = hp; else { const u = Math.min(1, (f.t - hov - hold) / leave); pos = lerp(hp, away, u * u); }
+    if (f.pos) { const dx = pos[0] - f.pos[0], dy = pos[1] - f.pos[1]; if (Math.hypot(dx, dy) > 0.05) f.ang = Math.atan2(dy, dx) * 180 / Math.PI + 90; } f.pos = pos;
+    const sc = f.t < hov ? 1.5 - 0.35 * (f.t / hov) : f.t < hov + hold ? 1.15 : 1.15 + 0.5 * Math.min(1, (f.t - hov - hold) / leave);
+    f.g.querySelector(".shp").setAttribute("transform", `translate(${pos[0].toFixed(1)} ${pos[1].toFixed(1)}) rotate(${f.ang.toFixed(1)}) scale(${sc.toFixed(2)})`);
+    const tt = f.t - hov, crt = f.g.querySelector(".crt"); let cx = f.cx, cy = null;
+    if (f.kind === "drop") { if (tt >= 0 && tt < hold) { cy = tt < 1.1 ? hp[1] + 34 + (f.cy - hp[1] - 34) * (tt / 1.1) : f.cy; if (tt >= 1.1 && !f.done) { f.done = true; f.g.insertAdjacentHTML("afterbegin", [-26, 0, 26, -12, 14].map((dx, i) => `<circle class="puff" cx="${f.cx + dx}" cy="${f.cy + 6 - (i % 2) * 8}" r="16" fill="#cdbf9f"/>`).join("")); api("/world/drops/" + f.id + "/land", "POST").then(() => refresh(true)).catch(() => {}); } } }
+    else if (tt >= -0.2) { if (tt < 0.7) cy = f.cy; else if (tt < 1.7) { const u = (tt - 0.7) / 1.0; cy = f.cy + (hp[1] + 14 - f.cy) * u; if (u >= 0.99 && !f.done) { f.done = true; api("/world/pickups/" + f.id + "/collect", "POST").then(() => refresh(true)).catch(() => {}); } } else { cy = pos[1] + 14; cx = pos[0]; } }
+    if (cy === null) crt.setAttribute("display", "none"); else { crt.setAttribute("display", ""); crt.setAttribute("transform", `translate(${cx.toFixed(1)} ${cy.toFixed(1)}) scale(1.8)`); }
+    if (f.t >= hov + hold + leave) { f.g.remove(); flights.splice(flights.indexOf(f), 1); }
+  }
+}
+
+// the bottom bar: each tab opens its own panel. Only the Architect menu uses icons.
+function markTabs() { const on = { archbtn: $("#arch").style.display === "block", workbtn: $("#work").style.display === "block", ticketsbtn: !!WIN.tickets, historybtn: !!WIN.history, worldbtn: !!WIN.world }; for (const [id, v] of Object.entries(on)) $("#" + id)?.classList.toggle("on", v); }
+function closeMainTabs(except) { for (const id of ["tickets", "history", "world"]) if (id !== except) closeWin(id); if (except !== "work") $("#work").style.display = "none"; if (except !== "arch") $("#arch").style.display = "none"; markTabs(); }
+const ARCH = { Tickets: [["📝", "New story", "Story"], ["🐞", "New defect", "Defect"], ["🔬", "New spike", "Spike"]], Release: [["📦", "One-off release", "rel"]] };
+function renderArch() { $("#arch").innerHTML = `<div style="display:flex;gap:10px"><div class="cats">${Object.keys(ARCH).map((k) => `<button class="${S.archCat === k ? "on" : ""}" data-archcat="${k}">${k}</button>`).join("")}</div>${S.archCat ? `<div class="des">${ARCH[S.archCat].map(([ic, cap, v]) => gzi(`data-archdo="${v}"`, ic, cap)).join("")}</div>` : ""}</div>`; }
+const hhmm = (t) => new Date(t).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+const whoName = (id) => S.users.find((u) => u.id === id)?.name ?? S.sessions.find((x) => x.id === id)?.name ?? id ?? "someone";
+const logRows = (list) => list.length ? list.map((e) => `<div class="cap"><span class="dim">${hhmm(e.at)}</span><span style="flex:1">${esc(e.label)}</span><span class="dim">${esc(trunc(whoName(e.worker), 16))}</span>${tri(e.ok)}</div>`).join("") : '<div class="dim" style="padding:14px">Nothing yet.</div>';
+const historyWin = () => () => ({ title: "History", desc: "Everything the workers have done, newest first.", body: `<div class="wp full">${logRows(S.log || [])}</div>` });
+const cap1 = (t) => t.charAt(0).toUpperCase() + t.slice(1);
+function openWorld(envName) { closeMainTabs("world"); const w = openWin("world", { width: 900, render: worldWin() }); if (envName) { w.st.env = envName; drawWin(w); } }
+function worldWin() {
+  return (st) => {
+    st.env ??= S.envs[0]?.environment; const e = S.envs.find((x) => x.environment === st.env) ?? S.envs[0];
+    if (!e) return { title: "World", desc: "Where things are delivered.", body: '<div class="wp full dim" style="padding:14px">No environments yet.</div>' };
+    const lp = e.latestPipeline, sv = e.service, imgs = S.images.filter((m) => m.environment === e.environment).slice().reverse(), running = ["RUNNING", "QUEUED"].includes(e.pipelineStatus);
+    const list = S.envs.map((x) => `<div class="row ${x.environment === e.environment ? "on" : ""}" data-wenv="${esc(x.environment)}"><span>${cap1(x.environment)}</span><small>${x.latestPipeline?.held ? "waiting for you" : x.current ? esc(x.current.sha) : "nothing yet"}</small></div>`).join("");
+    const stepRow = (s) => `<div class="line">${tri(s.status === "SUCCESS" ? true : s.status === "FAILED" ? false : null)}<span>${esc(s.name)}</span><span class="sp"></span><span class="dim">${esc(s.status.toLowerCase())}</span></div>`;
+    const action = lp?.held ? `<button class="gbtn" data-switchwin="${esc(e.environment)}">Switch…</button>` : !running && e.notDeployed.length ? `<button class="gbtn" data-rundeploy="${esc(e.environment)}">Run deploy</button>` : "";
+    const pane = sec("Serving", e.current ? `<div class="big">${esc(e.current.sha)} <span class="dim" style="font-size:13px">revision ${e.current.taskRevision ?? "?"}</span></div><div class="dim">${sv.runningCount}/${sv.desiredCount} tasks running · follows ${esc(e.branch)}</div>` : '<div class="dim">Nothing has been switched in yet.</div>')
+      + (lp ? sec("Pipeline", `<div class="dim" style="margin-bottom:4px">Run ${lp.id} · ${esc(lp.sha)}</div>${lp.steps.map(stepRow).join("")}${lp.held ? '<div class="line"><span class="tri mid">~</span><span style="color:#ffd27a">Built, pushed and registered. The switch waits for you.</span></div>' : ""}${action ? `<div class="btns" style="padding:8px 0 0">${action}</div>` : ""}`) : (action ? sec("Pipeline", `<div class="btns" style="padding:0">${action}</div>`) : ""))
+      + (e.notDeployed.length ? sec("Merged, not switched in yet", e.notDeployed.map((c) => `<div class="cap"><code>${esc(c.sha)}</code><span style="flex:1">${esc(c.issue ? c.issue + " · " : "")}${esc(trunc(c.message || "", 60))}</span></div>`).join("")) : "")
+      + sec("Images in the registry (ECR)", imgs.length ? `<div class="dim" style="font-size:11px;margin-bottom:4px">built · pushed · switched in</div>` + imgs.slice(0, 8).map((m) => `<div class="cap"><code>${esc(m.sha)}</code><span style="flex:1">${esc(m.issue ? m.issue + " · " : "")}${esc(trunc(m.message || "", 44))}</span>${tri(m.built)}${tri(m.pushed)}${tri(m.switched ? true : m.held ? null : false)}</div>`).join("") : '<div class="dim">Nothing has been built for this place yet.</div>');
+    return { title: "World", desc: "The places things are delivered to.", body: `<div class="wl">${list}</div><div class="wp">${pane}</div>` };
+  };
+}
+function switchWin(envName) {
+  const e = S.envs.find((x) => x.environment === envName), lp = e?.latestPipeline; if (!lp) return;
+  openWin("switch", { width: 700, static: true, nofoot: true, render: () => {
+    const m = S.images.find((x) => x.pipelineId === lp.id && x.environment === envName), pr = m?.prId ? S.prs.find((x) => x.repo === e.repo && x.id === m.prId) : null, prev = S.images.filter((x) => x.environment === envName && x.switched && x.pipelineId !== lp.id);
+    const f = [["Image pushed to ECR", !!m?.pushed], ["CI passed on the change", pr ? pr.checks === "passed" : null], ["Reviewed and merged", pr ? pr.state === "MERGED" : null], ["Rollback ready: an earlier image is still in the registry", prev.length > 0]];
+    return { title: `Switch ${esc(envName)}`, desc: `Point ${esc(envName)} at the new image. This is the step that can go wrong.`, body: `<div class="wp full"><div class="cols3"><div>${sec("Image", `<div class="big">${esc(lp.sha)}</div><div class="dim">${esc(m?.message ?? "")}</div>`)}${sec("Target", `<div class="big">${cap1(esc(envName))}</div><div class="dim">now serving ${esc(e.current?.sha ?? "nothing")}</div>`)}</div><div style="flex:1.4">${sec("Readiness", f.map(([n, v]) => `<div class="line">${tri(v)}<span>${n}</span></div>`).join(""))}${sec("Expected", '<div class="line"><span>Duration</span><span class="sp"></span><span style="color:#7fe8e8">about 5 minutes</span></div><div class="line"><span>If it fails</span><span class="sp"></span><span class="dim">the service rolls back by itself</span></div>')}</div></div><div class="btns" style="justify-content:space-between;padding:6px 0 0"><button class="gbtn" data-wclose="switch" style="width:180px;padding:10px">Cancel</button><button class="gbtn" data-switchgo="${esc(envName)}" style="width:180px;padding:10px">Begin</button></div></div>` };
+  } });
+}
+function openNewTicket(type) {
+  openWin("newticket", { width: 460, static: true, render: () => ({ title: `New ${type.toLowerCase()}`, desc: "It arrives as an available quest.", body: `<div class="wp full"><form class="af" data-newticket="${esc(type)}" style="flex-direction:column;padding:6px 0"><input name="title" placeholder="What is it?" required style="width:100%"><select name="parent"><option value="">(no feature)</option>${S.issues.filter((i) => i.type === "Feature").map((f) => `<option value="${esc(f.key)}">${esc(f.key)} ${esc(f.title)}</option>`).join("")}</select><div><button class="gbtn">Create</button></div></form></div>` }) });
+}
+/* ---------------- windows (RimWorld-style: draggable, stackable, list on the left and detail on the right) ---------------- */
+let zTop = 30; const WIN = {};
+function openWin(id, o) {
+  let w = WIN[id];
+  if (!w) {
+    const el = document.createElement("div"); const W0 = Math.min(o.width || 780, innerWidth - 24); el.className = "win" + (o.bare ? " bare" : "") + (o.nofoot ? " nofoot" : ""); el.style.width = W0 + "px"; const n = Object.keys(WIN).length;
+    el.style.left = (o.bare ? Math.max(12, (innerWidth - W0) / 2) : Math.max(90, (innerWidth - W0) / 2 + n * 30)) + "px"; el.style.top = (o.bare ? 40 : 64 + n * 30) + "px";
+    el.innerHTML = `<div class="wt"><h2></h2><span class="wx" data-wclose="${esc(id)}">✕</span></div><div class="wd"></div><div class="wb"></div><div class="wf"><button class="gbtn" data-wclose="${esc(id)}">Close</button></div>`;
+    $("#wins").appendChild(el); w = WIN[id] = { id, el, st: {} };
+    el.addEventListener("pointerdown", () => { el.style.zIndex = ++zTop; });
+    el.querySelector(".wt").addEventListener("pointerdown", (e) => { if (e.target.closest(".wx")) return; const dx = e.clientX - el.offsetLeft, dy = e.clientY - el.offsetTop; const mv = (ev) => { el.style.left = Math.max(0, ev.clientX - dx) + "px"; el.style.top = Math.max(0, ev.clientY - dy) + "px"; }, up = () => { removeEventListener("pointermove", mv); removeEventListener("pointerup", up); }; addEventListener("pointermove", mv); addEventListener("pointerup", up); });
+  }
+  w.render = o.render; w.static = !!o.static; w.el.style.zIndex = ++zTop; drawWin(w); markTabs(); return w;
+}
+function drawWin(w) {
+  const r = w.render(w.st); if (!r) { closeWin(w.id); return; }
+  w.el.querySelector("h2").innerHTML = r.title; w.el.querySelector(".wd").innerHTML = r.desc || "";
+  const wb = w.el.querySelector(".wb"), keep = [...wb.querySelectorAll(".wp,.wl")].map((e) => e.scrollTop);
+  wb.innerHTML = r.body; [...wb.querySelectorAll(".wp,.wl")].forEach((e, i) => { e.scrollTop = keep[i] ?? 0; }); r.after?.(w);
+}
+const closeWin = (id) => { WIN[id]?.el.remove(); delete WIN[id]; markTabs(); };
+function redrawWins() { for (const w of Object.values(WIN)) { if (w.static) continue; const a = document.activeElement; if (a && w.el.contains(a) && ["INPUT", "SELECT", "TEXTAREA"].includes(a.tagName)) continue; drawWin(w); } }
+const tri = (v) => `<span class="tri ${v === true ? "ok" : v === false ? "no" : "mid"}">${v === true ? "✓" : v === false ? "✗" : "~"}</span>`;
+const sec = (t, h) => `<div class="sec"><h4>${t}</h4>${h}</div>`;
+const BILLS = { docker: ["Keep docker running", "Whenever this workshop's docker stack isn't running, queue an order to start it.", "a worktree"], openpr: ["Open a draft PR once there are commits", "As soon as the branch has a commit and no PR, queue an order to open a draft PR.", "at least one commit on the branch"], ready: ["Mark the PR ready when CI passes", "When the draft PR's CI has passed, queue an order to mark it ready for review.", "a draft PR with CI passed"], merge: ["Merge when approved and CI passes", "When the PR is approved and CI has passed, queue an order to merge it. This sends code to develop, so it starts suspended.", "an approved PR with CI passed"] };
+const WORKER = { any: "Any worker", mech: "Claude bots only", human: "Me only" };
+
+function prPane(pr, iss, wkey, w) {
+  if (!pr) {
+    const op = iss?.actions.find((x) => x.name === "openPr");
+    return sec("PR desk", `<div class="big">No PR yet</div><div class="dim">The branch has no pull request. Open a draft one when there are commits to show.</div><div class="btns" style="padding:8px 0 0">${op ? actP({ ...op, label: "Open draft PR" }, wkey) : ""}</div>`);
+  }
+  const rv = (pr.reviewers || []).map((id) => S.users.find((u) => u.id === id)?.name ?? id), appr = ["APPROVED", "MERGED"].includes(pr.state), chg = pr.state === "CHANGES_REQUESTED", ck = pr.checks || "none";
+  const mine = (pr.reviewers || []).includes(S.me.id), stg = { DRAFT: ["move:OPEN"], OPEN: mine ? ["move:APPROVED", "move:CHANGES_REQUESTED"] : [], APPROVED: ["move:MERGED"], CHANGES_REQUESTED: ["move:OPEN"] }[pr.state] || [], sp = split(pr.actions, stg, {}, wkey);
+  const ready = pr.state === "APPROVED" && ck === "passed";
+  return sec("PR desk", `<div class="big">${esc(pr.repo)}#${pr.id} <span class="dim" style="font-size:13px">${esc(pr.state.replace("_", " ").toLowerCase())} · ${esc(pr.source)} → ${esc(pr.destination)}</span></div><div class="dim">${esc(pr.title)}</div>`)
+    + sec("Checks", `<div class="line">${tri(ck === "passed" ? true : ck === "failed" ? false : null)}<span>CI ${ck === "none" ? "hasn't run" : ck}</span></div><div class="btns" style="padding:4px 0 0">${pr.actions.filter((a) => a.name.startsWith("ci:")).map((a) => act(a, wkey)).join("")}</div><div class="dim" style="font-size:11px;margin-top:4px">CI is recorded by hand for now; these buttons stand in for the real pipeline.</div>`)
+    + sec("Reviewer's seat", rv.length ? rv.map((n) => `<div class="line">${tri(appr ? true : chg ? false : null)}<span>${esc(n)}</span><span class="sp"></span><span class="dim">${appr ? "approved" : chg ? "asked for changes" : "hasn't decided"}</span></div>`).join("") : '<div class="dim">No reviewer assigned.</div>')
+    + sec("Outbox", `<div class="line">${tri(pr.state !== "DRAFT")}<span>Marked ready for review</span></div><div class="line">${tri(ck === "passed" ? true : ck === "failed" ? false : null)}<span>CI passed</span></div><div class="line">${tri(appr ? true : chg ? false : null)}<span>Approved</span></div>`
+      + `<div style="margin-top:6px;color:${ready ? "#2ee02e" : "#9a9a9a"}">${ready ? "✓ Ready to merge" : pr.state === "MERGED" ? "Merged." : "Not ready to merge yet."}</div><div class="btns" style="padding:8px 0 0">${sp.p}</div>`);
+}
+function wtWin(wtId) {
+  return (st) => {
+    const w = S.wts.find((x) => x.id === wtId); if (!w) return null; const key = "wt:" + wtId;
+    const iss = w.issue ? S.issues.find((i) => i.key === w.issue) : null, pr = w.pr ? S.prs.find((q) => q.repo === w.repo && q.id === w.pr.id) : null, sess = wtSessions(w), bl = S.bills.filter((b) => b.wt === wtId);
+    const commits = iss?.artifacts?.commits?.filter((c) => c.repo === w.repo && c.branch === w.branch) ?? [];
+    st.item ??= "ticket";
+    const items = [["ticket", "Ticket", iss?.status ?? "none"], ["branch", "Branch & commits", commits.length], ["pr", "PR desk", pr ? pr.state.toLowerCase().replace("_", " ") : "no PR"], ["docker", "Docker environment", w.docker.status], ["claude", "Claude", sess[0]?.status ?? "none"], ["preview", "Preview", w.docker.status === "running" ? "live" : "off"], ["bills", "Bills", bl.filter((b) => !b.suspended && !b.done).length + " on"]];
+    let pane = "";
+    if (st.item === "ticket") {
+      const nxt = iss && { "Dev WIP": w.pr ? "move:Dev Done" : null, "Dev Done": "move:Verification", Verification: "move:Done" }[iss.status], a2 = nxt && iss.actions.find((x) => x.name === nxt);
+      pane = iss ? sec("Ticket", `<div class="big">${esc(iss.key)} <span class="dim" style="font-size:13px">${esc(iss.type)} · ${esc(iss.status)}</span></div><div>${esc(iss.title)}</div><div class="dim" style="margin-top:6px">${esc(iss.description || "")}</div>`) + sec("Next step", a2 ? `<div class="btns" style="padding:0">${actP({ ...a2, label: { "move:Dev Done": "Mark built (Dev Done)", "move:Verification": "Send to verification", "move:Done": "Mark done" }[nxt] }, key)}</div>` : `<div class="dim">${iss.status === "Dev WIP" && !w.pr ? "Open a PR first; then the ticket can be marked built." : iss.status === "Done" ? "Done." : "Nothing to do here yet."}</div>`) : sec("Ticket", '<div class="dim">This workshop has no ticket.</div>');
+    } else if (st.item === "branch") {
+      pane = sec("Branch", `<div class="big">${esc(w.branch)}</div><div class="dim">in ${esc(w.repo)} · room at ${esc(w.url)}</div>`) + sec(`Commits (${commits.length})`, commits.length ? commits.map((c) => `<div class="cap"><code>${esc(c.sha)}</code><span class="sp" style="flex:1">${esc(c.message)}</span><span title="CI">${tri(pr?.checks === "passed" ? true : pr?.checks === "failed" ? false : null)}</span><span title="Approved">${tri(pr && ["APPROVED", "MERGED"].includes(pr.state) ? true : pr?.state === "CHANGES_REQUESTED" ? false : null)}</span></div>`).join("") + `<div class="dim" style="font-size:11px;margin-top:6px">A passing PR doesn't make anything new. The same commits just collect stamps: CI, then approval.</div>` : '<div class="dim">No commits yet. They appear here as they are pushed.</div>');
+    } else if (st.item === "pr") pane = prPane(pr, iss, key, w);
+    else if (st.item === "docker") {
+      const sp2 = split(w.actions, [w.docker.status === "running" ? "dockerStop" : "dockerUp"], { dockerUp: "Start docker", dockerStop: "Stop docker" }, key);
+      pane = sec("Docker environment", `<div class="line">${tri(w.docker.status === "running" ? true : w.docker.status === "stopped" ? null : false)}<span>${esc(w.docker.status)}</span></div><div class="dim">Address: ${esc(w.url)}${w.docker.port ? " · port " + esc(w.docker.port) : ""}</div><div class="btns" style="padding:8px 0 0">${sp2.p}</div>`) + (sp2.m ? sec("More", `<div class="btns" style="padding:0">${sp2.m}</div>`) : "");
+    } else if (st.item === "claude") pane = `<div style="margin:0 -10px">${claudeBody(w)}</div>`;
+    else if (st.item === "preview") pane = previewBody(w);
+    else {
+      pane = `<div class="btns" style="padding:0 0 4px"><button class="gbtn" data-billmenu="${esc(wtId)}">Add bill</button></div>${st.menu ? `<div class="menu">${Object.entries(BILLS).map(([k, [n, a]]) => `<div class="mi" data-billadd="${esc(wtId)}|${k}">${esc(n)}<small>${esc(a)}</small></div>`).join("")}</div>` : ""}`
+        + (bl.length ? bl.map((b) => `<div class="brow ${b.suspended ? "sus" : ""}"><div class="bn">${esc(BILLS[b.kind][0])}<small>${b.suspended ? "suspended" : b.done ? "done" : b.state === "ready" ? "condition met: an order is queued" : "waiting for its condition"} · ${esc(WORKER[b.worker])}</small></div><button class="gbtn sm" data-billmode="${b.id}">${b.mode === "forever" ? "Do forever" : "Do once"}</button><button class="gbtn sm" data-billdetails="${b.id}">Details…</button><span class="bS ${b.suspended ? "on" : ""}" title="suspend" data-billsus="${b.id}">S</span><span class="bX" title="remove" data-billdel="${b.id}">✕</span></div>`).join("") : '<div class="dim" style="padding:10px 2px">No bills. A bill is a small standing job: when its condition is met it queues an order, and a worker still has to do it.</div>');
+    }
+    return { title: `Workshop · ${esc(w.branch)}`, desc: `${esc(w.repo)}${iss ? " · " + esc(iss.key) + " " + esc(iss.title) : ""}`, body: `<div class="wl">${items.map(([k, n, v]) => `<div class="row ${st.item === k ? "on" : ""}" data-wsel="wt:${esc(wtId)}|${k}"><span>${n}</span><small>${esc(v)}</small></div>`).join("")}</div><div class="wp">${pane}</div>`, after: () => { if (st.item === "claude") loadTranscripts(); } };
+  };
+}
+function prWin(repo, id) {
+  return () => { const pr = S.prs.find((q) => q.repo === repo && q.id === id); if (!pr) return null; const iss = pr.issue ? S.issues.find((i) => i.key === pr.issue) : null; return { title: `Pull request · ${esc(repo)}#${id}`, desc: esc(pr.title), body: `<div class="wp full">${prPane(pr, iss, `pr:${repo}#${id}`)}</div>` }; };
+}
+function billWin(id) {
+  return () => {
+    const b = S.bills.find((x) => x.id === id); if (!b) return null; const [name, about, needs] = BILLS[b.kind], w = S.wts.find((x) => x.id === b.wt);
+    return { title: `⚙ ${esc(name)}`, desc: `Workshop ${esc(w?.branch ?? "")}`, body: `<div class="wp full"><div class="cols3"><div>${sec("What it does", `<div>${esc(about)}</div><div class="dim" style="margin-top:8px">Requires: ${esc(needs)}</div>`)}<button class="gbtn" style="width:100%" data-billsus="${b.id}">${b.suspended ? "Suspended — click to resume" : "Not suspended"}</button></div>
+      <div>${sec("Repeat", `<div class="line"><button class="gbtn sm" data-billset="${b.id}|mode|once" style="${b.mode === "once" ? "filter:brightness(1.5)" : ""}">Do once</button><button class="gbtn sm" data-billset="${b.id}|mode|forever" style="${b.mode === "forever" ? "filter:brightness(1.5)" : ""}">Do forever</button></div>`)}${sec("Allowed worker", `<button class="gbtn" style="width:100%" data-billset="${b.id}|worker|${{ any: "mech", mech: "human", human: "any" }[b.worker]}">${esc(WORKER[b.worker])}</button><div class="dim" style="font-size:11px;margin-top:4px">Click to change.</div>`)}</div>
+      <div>${sec("Right now", `<div class="line">${tri(b.state === "ready" ? true : null)}<span>${b.suspended ? "suspended" : b.done ? "already done" : b.state === "ready" ? "condition met" : "waiting for its condition"}</span></div>${b.done ? `<div class="btns" style="padding:8px 0 0"><button class="gbtn sm" data-billset="${b.id}|rearm|1">Run again</button></div>` : ""}`)}<button class="gbtn" style="width:100%" data-billdel="${b.id}">Delete this bill</button></div></div></div>` };
+  };
+}
+function openWorkshop(wtId, item) { const w = openWin("wt:" + wtId, { width: 840, render: wtWin(wtId) }); if (item) { w.st.item = item; drawWin(w); } }
+$("#stage").addEventListener("dblclick", (e) => { const t = e.target.closest?.("[data-s^='wt:']"); if (t) openWorkshop(t.dataset.s.slice(3)); });
+
+/* ---------------- camera ---------------- */
+const stageSize = () => { const r = $("#stage").getBoundingClientRect(); return [r.width, r.height]; };
+const applyCam = () => $("#cam").setAttribute("transform", `translate(${cam.x} ${cam.y}) scale(${cam.k})`);
+function focus(cx, cy, k = 0.9) { const [w, h] = stageSize(); cam = { k, x: w / 2 - cx * k, y: h / 2 - cy * k }; applyCam(); }
+const GO = { all: () => { const [w, h] = stageSize(), k = Math.min(w / 2650, h / 1560); cam = { k, x: (w - 2650 * k) / 2, y: (h - 1560 * k) / 2 + 10 }; applyCam(); }, store: () => focus(320, 270, 0.95), land: () => focus(1250, 420, 0.7), inbox: () => focus(340, 1130, 0.95), serve: () => focus(1250, 1330, 0.75), bench: () => { const r = S.releases.find((x) => x.status === "planning"), b = r && reg["rel:" + r.id]; focus(b ? b.x + b.w / 2 : 2220, b ? b.y + b.h / 2 : 900, 0.8); } };
+let drag = null;
+const worldPos = (e) => { const r = $("#stage").getBoundingClientRect(); return [(e.clientX - r.left - cam.x) / cam.k, (e.clientY - r.top - cam.y) / cam.k]; };
+function ghostAt(e) {
+  if (!S.place) return; const [wx, wy] = worldPos(e), x = Math.round((wx - RW / 2) / 20) * 20, y = Math.round((wy - RH / 2) / 20) * 20, ok = freeAt(x, y, S.place.key);
+  S.place.pos = { x, y, ok }; let g = $("#ghost"); if (!g) { g = document.createElementNS(NS, "g"); g.id = "ghost"; g.style.pointerEvents = "none"; $("#ov").appendChild(g); }
+  g.innerHTML = `<rect x="${x}" y="${y}" width="${RW}" height="${RH}" fill="${ok ? "#4fe08a" : "#ff5a4a"}" opacity=".16" stroke="${ok ? "#7be07b" : "#ff6b5a"}" stroke-width="3" stroke-dasharray="14 9"/><text class="room" x="${x + 6}" y="${y - 10}" style="fill:${ok ? "#9be8a8" : "#ff9a8a"}">${esc(S.place.key)} · ${ok ? "release to build here" : "can't build here"}</text>${crate(x + RW / 2, y + RH / 2, "", "#d6b06a")}`;
+}
+function endPlace() { S.place = null; S.haul = null; $("#ghost")?.remove(); $("#hud").style.display = "none"; }
+const benches = () => S.releases.filter((r) => r.status === "planning" && !r.auto && r.mode === "branch" && reg["rel:" + r.id]);
+function beginHaul(wtKey) { const w = S.wts.find((x) => "wt:" + x.id === wtKey); if (!w) return; S.haul = { from: wtKey, branch: w.branch }; $("#hud").textContent = `Hauling ${w.branch} — drop it on a release bench · Esc cancels`; $("#hud").style.display = "block"; }
+function haulGhost(e) {
+  const [wx, wy] = worldPos(e); let g = $("#ghost"); if (!g) { g = document.createElementNS(NS, "g"); g.id = "ghost"; g.style.pointerEvents = "none"; $("#ov").appendChild(g); }
+  const over = benches().find((r) => { const b = reg["rel:" + r.id]; return wx >= b.x && wx <= b.x + b.w && wy >= b.y && wy <= b.y + b.h; }); S.haul.target = over?.id ?? null;
+  g.innerHTML = benches().map((r) => { const b = reg["rel:" + r.id], on = r.id === over?.id; return `<rect x="${b.x - 6}" y="${b.y - 6}" width="${b.w + 12}" height="${b.h + 12}" fill="${on ? "#4fe08a" : "none"}" opacity="${on ? ".18" : "1"}" stroke="${on ? "#7be07b" : "#7be07b88"}" stroke-width="3" stroke-dasharray="12 8"/>`; }).join("") + `${crate(wx, wy, "", "#cfa863")}<text class="key" x="${wx}" y="${wy + 26}">${esc(S.haul.branch)}</text>`;
+}
+function finishHaul(e) {
+  haulGhost(e); const H = S.haul, t = H.target; endPlace();
+  if (!t) { const [wx, wy] = worldPos(e); floatText(wx, wy - 20, "drop it on a release bench"); return; }
+  designate({ name: "addBranch", label: `Add ${H.branch}`, method: "POST", path: `/releases/${t}/branches`, body: { branch: H.branch } }, {}, "rel:" + t, { carry: { fromKey: H.from, toKey: "rel:" + t } });
+}
+function beginPlace(key, drag) { S.place = { key, drag }; $("#hud").textContent = `Placing ${key} — ${drag ? "release" : "click"} to put it down · Esc cancels`; $("#hud").style.display = "block"; }
+function confirmPlace() {
+  const P = S.place; if (!P?.pos) return endPlace();
+  if (!P.pos.ok) { floatText(P.pos.x + RW / 2, P.pos.y + 40, "can't build there"); if (P.drag) endPlace(); return; }
+  const i = S.issues.find((x) => x.key === P.key), a = i?.actions.find((x) => x.name === "move:Dev WIP");
+  if (a) designate({ ...a, label: "Start ticket" }, {}, "issue:" + P.key, { place: { x: P.pos.x, y: P.pos.y } });
+  endPlace();
+}
+addEventListener("keydown", (e) => { if (e.key === "Escape") { if (S.place || S.haul) endPlace(); else if (!Object.keys(WIN).length) closeMainTabs(null); else { const top = Object.values(WIN).sort((a, b) => +b.el.style.zIndex - +a.el.style.zIndex)[0]; if (top) closeWin(top.id); } } });
+$("#stage").addEventListener("contextmenu", (e) => { if (S.place) { e.preventDefault(); endPlace(); } });
+$("#stage").addEventListener("pointerdown", (e) => {
+  if (e.button === 2) return; const c = e.target.closest?.("[data-s^='issue:']"), k = c?.dataset.s.slice(6);
+  drag = { parcel: e.target.closest?.("[data-parcel]")?.dataset.parcel ?? null, x: e.clientX, y: e.clientY, cx: cam.x, cy: cam.y, moved: false, crate: !S.place && k && S.issues.find((i) => i.key === k)?.status === "Next" ? k : null };
+});
+addEventListener("pointermove", (e) => {
+  if (S.place) ghostAt(e); if (!drag) return; const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+  if (drag.parcel && !S.place && Math.hypot(dx, dy) > 6) { beginHaul(drag.parcel); drag.moved = true; }
+  if (S.haul) { haulGhost(e); return; }
+  if (drag.crate && !S.place && Math.hypot(dx, dy) > 6) { beginPlace(drag.crate, true); drag.moved = true; ghostAt(e); return; }
+  if (S.place?.drag) return;
+  if (Math.hypot(dx, dy) > 4) { drag.moved = true; $("#stage").classList.add("drag"); } if (drag.moved) { cam.x = drag.cx + dx; cam.y = drag.cy + dy; applyCam(); }
+});
+addEventListener("pointerup", (e) => { const d = drag; drag = null; $("#stage").classList.remove("drag"); if (!d) return; if (S.haul) return finishHaul(e); if (S.place?.drag) { ghostAt(e); return confirmPlace(); } if (d.moved) return; if (S.place) { ghostAt(e); return confirmPlace(); } const t = e.target.closest?.("#stage [data-s]"); if (!t && e.target.closest?.("#stage [data-opentickets]")) { openTickets(); return; } select(t ? t.dataset.s : null); });
+$("#stage").addEventListener("wheel", (e) => { e.preventDefault(); const r = $("#stage").getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top, k2 = Math.max(0.25, Math.min(2.2, cam.k * (e.deltaY < 0 ? 1.12 : 1 / 1.12))); cam.x = mx - (mx - cam.x) * (k2 / cam.k); cam.y = my - (my - cam.y) * (k2 / cam.k); cam.k = k2; applyCam(); }, { passive: false });
+
+/* ---------------- state + events ---------------- */
+function select(s) { S.sel = s; S.tab = "main"; renderOverlay(); inspect(); renderPawnBar(); }
+function renderOverlay() { $("#ov").querySelectorAll(".selbox,.ordm").forEach((n) => n.remove());
+  for (const o of S.orders) { const r = reg[o.key]; if (!r) continue; const g = document.createElementNS(NS, "g"); g.setAttribute("class", "ordm"); g.setAttribute("transform", `translate(${r.x + r.w - 4} ${r.y - 14})`); g.innerHTML = `<path d="M0 18V0" stroke="#17110c" stroke-width="3"/><path d="M0 1h15l-4 5 4 5H0z" fill="#4f8dff" stroke="#17110c" stroke-width="1.6"/>`; $("#ov").appendChild(g); } const r = S.sel && reg[S.sel]; if (r && !S.sel.startsWith("pawn:")) { const b = document.createElementNS(NS, "rect"); b.setAttribute("class", "sel selbox"); Object.entries({ x: r.x - 8, y: r.y - 8, width: r.w + 16, height: r.h + 16, rx: 4 }).forEach(([k, v]) => b.setAttribute(k, v)); $("#ov").appendChild(b); } }
+async function refresh(force) {
+  try {
+    const [issues, prs, envs, wts, sessions, world, releases, bills, images] = await Promise.all([api("/jira/issues"), api("/bitbucket/pullrequests"), api("/bitbucket/environments"), api("/local/worktrees"), api("/local/sessions"), api("/world"), api("/releases"), api("/bills"), api("/images")]);
+    const s = JSON.stringify([issues.map((i) => [i.key, i.status, i.assignee, i.artifacts?.commits?.length]), prs.map((p) => [p.repo, p.id, p.state]), envs.map((e) => [e.pipelineStatus, e.notDeployed.length, e.current?.sha, e.service.runningCount, e.service.pendingCount, e.latestPipeline?.steps.map((x) => x.status)]), wts.map((w) => [w.id, w.docker.status, w.pr?.state, w.issue]), sessions.map((x) => [x.id, x.status, x.notes]), world.orders.map((o) => [o.id, o.worker]), world.plots, world.hand, world.work, world.roster, world.bread, world.doneToday, (world.log || [])[0]?.at, (world.drops || []).map((d) => d.id), (world.pickups || []).map((u) => u.id), (world.reviews || []).map((r) => [r.key, r.done]), images.map((m) => [m.pipelineId, m.pushed, m.switched, m.held, m.status]), bills.map((b) => [b.id, b.mode, b.suspended, b.done, b.state, b.worker]), releases.map((r) => [r.id, r.status, r.mode, r.branches, r.ready, r.atRisk, r.exclude, r.items.map((i) => [i.branch, i.ingredients, i.pr?.checks, i.pr?.state, i.fate]), r.extras.length])]);
+    if (!force && s === sig) return; const first = !sig; sig = s;
+    const prevO = Object.fromEntries(S.orders.map((o) => [o.id, o])); S.log = world.log || []; S.drops = world.drops || []; S.pickups = world.pickups || []; S.reviews = world.reviews || []; S.images = images;
+    Object.assign(S, { issues, prs, envs, wts, sessions, releases, bills, plots: world.plots, hand: world.hand, work: world.work, roster: world.roster, bread: world.bread, doneToday: world.doneToday, orders: world.orders.map((o) => ({ ...o, phase: prevO[o.id]?.phase, progress: prevO[o.id]?.progress ?? 0 })) });
+    S.derived = derive();
+    const prSig = Object.fromEntries(S.prs.map((q) => [`${q.repo}#${q.id}`, `${q.state}|${q.checks || "none"}`]));
+    if (S.prevPr) for (const q of S.prs) {
+      const k = `${q.repo}#${q.id}`, was = S.prevPr[k]; if (!was || was === prSig[k]) continue;
+      if (S.lastDone && Date.now() - S.lastDone.at < 8000 && S.lastDone.path.includes(`/pullrequests/${q.id}`)) continue; // a worker did that one
+      const [os, oc] = was.split("|"), nm = S.users.find((u) => u.id === (q.reviewers || [])[0])?.name ?? "A reviewer";
+      spawnRunner(`pr:${k}`, oc !== (q.checks || "none") ? `CI ${q.checks}` : q.state === "APPROVED" ? `${nm} approved` : q.state === "CHANGES_REQUESTED" ? `${nm} wants changes` : q.state.toLowerCase());
+    }
+    S.prevPr = prSig;
+    for (const d of S.drops) if (!S.seen.has("d" + d.id)) { S.seen.add("d" + d.id); startFlight("drop", d); }
+    for (const u of S.pickups) if (!S.seen.has("u" + u.id)) { S.seen.add("u" + u.id); startFlight("pickup", u); }
+    if (S.hand && !S.derived.some((d) => d.ref === S.hand)) { S.hand = null; wsave("/world/done", "POST"); wsave("/world", "PATCH", { hand: null }); }
+    $("#layer").innerHTML = build(); syncPawns(); renderRes(); renderPawnBar(); renderAlerts(); renderOverlay(); inspect(); renderWork(); redrawWins(); if (first) focus(760, 560, 0.72);
+  } catch {}
+}
+async function runAct(a, vals = {}) { const body = { ...(a.body || {}), ...vals }; const path = a.path.replace(/\{(\w+)\}/g, (_m, k) => { const v = body[k]; delete body[k]; return encodeURIComponent(v); }); await api(path, a.method, body); await refresh(true); }
+document.addEventListener("click", async (e) => {
+  const t = e.target; let el;
+  if ((el = t.closest("[data-actdef]"))) { const a = JSON.parse(el.dataset.actdef), v = {}; for (const n of a.inputs) v[n.name] = n.value ?? n.options?.[0]?.value ?? ""; return designate(a, v, el.dataset.key || S.sel); }
+  if ((el = t.closest("[data-act]"))) return designate(JSON.parse(el.dataset.act), {}, el.dataset.key || S.sel);
+  if ((el = t.closest("[data-hand]"))) { S.hand = el.dataset.hand; await wsave("/world", "PATCH", { hand: S.hand }); await refresh(true); const tg = targetOf(S.hand); if (tg) { S.sel = "pawn:" + S.me.id; inspect(); } return; }
+  if ((el = t.closest("[data-claude]"))) { const ref = el.dataset.claude, d = S.derived.find((x) => x.ref === ref), rest = ref.slice(ref.indexOf(":") + 1), body = { name: d.title, notes: "ref:" + ref, status: "active" }; if (/^[A-Z]+-\d+$/.test(rest)) body.issues = [rest]; else if (/^[^#]+#\d+$/.test(rest)) body.prs = [rest]; await api("/local/sessions", "POST", body).catch(() => {}); return refresh(true); }
+  if (t.closest("#ticketsbtn")) { if (WIN.tickets) closeWin("tickets"); else { closeMainTabs("tickets"); openTickets(); } return; }
+  if (t.closest("#archbtn")) { const a = $("#arch"), isOpen = a.style.display === "block"; closeMainTabs(isOpen ? null : "arch"); if (!isOpen) { a.style.display = "block"; renderArch(); } markTabs(); return; }
+  if (t.closest("#historybtn")) { if (WIN.history) closeWin("history"); else { closeMainTabs("history"); openWin("history", { width: 720, render: historyWin() }); } return; }
+  if (t.closest("#worldbtn")) { if (WIN.world) closeWin("world"); else openWorld(); return; }
+  if ((el = t.closest("[data-jump]"))) { closeWin("world"); GO[el.dataset.jump](); return; }
+  if ((el = t.closest("[data-archcat]"))) { S.archCat = el.dataset.archcat; return renderArch(); }
+  if ((el = t.closest("[data-archdo]"))) { $("#arch").style.display = "none"; markTabs(); if (el.dataset.archdo === "rel") return select("rel:new"); return openNewTicket(el.dataset.archdo); }
+  if ((el = t.closest("[data-alertsall]"))) { S.alertsAll = !S.alertsAll; return renderAlerts(); }
+  if ((el = t.closest("[data-qtab]"))) { const w = WIN.tickets; if (w) { w.st.tab = el.dataset.qtab; w.st.sel = null; drawWin(w); } return; }
+  if ((el = t.closest("[data-qrow]"))) { const w = WIN.tickets; if (w) { w.st.sel = el.dataset.qrow; drawWin(w); } return; }
+  if ((el = t.closest("[data-qaccept]"))) { const [k, m] = el.dataset.qaccept.split("|"); return acceptQuest(k, m); }
+  if ((el = t.closest("[data-qcomplete]"))) return completeQuest(el.dataset.qcomplete);
+  if ((el = t.closest("[data-qtrash]"))) { const v = el.dataset.qtrash, w = WIN.tickets; v.startsWith("r:") ? S.dismissed.delete(v.slice(2)) : S.dismissed.add(v); if (w) { w.st.sel = null; drawWin(w); } return; }
+  if ((el = t.closest("[data-wenv]"))) { const w = WIN.world; if (w) { w.st.env = el.dataset.wenv; drawWin(w); } return; }
+  if ((el = t.closest("[data-switchwin]"))) { switchWin(el.dataset.switchwin); return; }
+  if ((el = t.closest("[data-switchgo]"))) { const e = S.envs.find((x) => x.environment === el.dataset.switchgo); closeWin("switch"); if (e?.latestPipeline) await wsave(`/bitbucket/repos/${e.repo}/pipelines/${e.latestPipeline.id}/switch`, "POST", {}); return refresh(true); }
+  if ((el = t.closest("[data-rundeploy]"))) { const e = S.envs.find((x) => x.environment === el.dataset.rundeploy); if (e) await wsave(`/bitbucket/repos/${e.repo}/pipelines`, "POST", { environment: e.environment }); return refresh(true); }
+  if ((el = t.closest("[data-wclose]"))) return closeWin(el.dataset.wclose);
+  if ((el = t.closest("[data-openwin]"))) { const [k, it] = el.dataset.openwin.split("|"), [kind, ...rest] = k.split(":"), id = rest.join(":"); if (kind === "log") openWin("log:" + id, { width: 560, render: () => ({ title: `Log · ${esc(whoName(id))}`, desc: "What this worker has done, newest first.", body: `<div class="wp full">${logRows((S.log || []).filter((e) => e.worker === id))}</div>` }) }); else if (kind === "wt") openWorkshop(id, it); else if (kind === "pr") { const [repo, n] = id.split("#"); openWin("pr:" + id, { width: 560, render: prWin(repo, +n) }); } return; }
+  if (t.closest("[data-openmore]")) { openWin("more", { width: 460, static: true, render: () => ({ title: "More", body: `<div class="wp full"><div class="btns" style="padding:8px 0">${S.moreHtml || ""}</div></div>` }) }); return; }
+  if ((el = t.closest("[data-wsel]"))) { const [wid, it] = el.dataset.wsel.split("|"), w = WIN[wid]; if (w) { w.st.item = it; w.st.menu = false; drawWin(w); } return; }
+  if ((el = t.closest("[data-billmenu]"))) { const w = WIN["wt:" + el.dataset.billmenu]; if (w) { w.st.menu = !w.st.menu; drawWin(w); } return; }
+  if ((el = t.closest("[data-billadd]"))) { const [wt, kind] = el.dataset.billadd.split("|"), w = WIN["wt:" + wt]; if (w) w.st.menu = false; await wsave("/bills", "POST", { wt, kind }); return refresh(true); }
+  if ((el = t.closest("[data-billmode]"))) { const b = S.bills.find((x) => x.id === el.dataset.billmode); await wsave("/bills/" + b.id, "PATCH", { mode: b.mode === "forever" ? "once" : "forever" }); return refresh(true); }
+  if ((el = t.closest("[data-billsus]"))) { const b = S.bills.find((x) => x.id === el.dataset.billsus); await wsave("/bills/" + b.id, "PATCH", { suspended: !b.suspended }); return refresh(true); }
+  if ((el = t.closest("[data-billdel]"))) { await wsave("/bills/" + el.dataset.billdel, "DELETE"); closeWin("bill:" + el.dataset.billdel); return refresh(true); }
+  if ((el = t.closest("[data-billset]"))) { const [id, f, v] = el.dataset.billset.split("|"); await wsave("/bills/" + id, "PATCH", f === "rearm" ? { rearm: true } : { [f]: v }); return refresh(true); }
+  if ((el = t.closest("[data-billdetails]"))) { openWin("bill:" + el.dataset.billdetails, { width: 780, render: billWin(el.dataset.billdetails) }); return; }
+  if ((el = t.closest("[data-spd]"))) { SPEED = +el.dataset.spd; document.querySelectorAll("#speed span").forEach((x) => x.classList.toggle("on", x === el)); return; }
+  if ((el = t.closest("[data-hold]"))) { const [id, b] = el.dataset.hold.split("|"), r = S.releases.find((x) => x.id === id), ex = new Set(r.exclude || []); ex.has(b) ? ex.delete(b) : ex.add(b); await wsave("/releases/" + id, "PATCH", { exclude: [...ex] }); return refresh(true); }
+  if ((el = t.closest("[data-buildrel]"))) { const id = el.dataset.buildrel; return designate({ name: "build", label: "Build release", method: "POST", path: `/releases/${id}/build`, dur: 6 }, {}, "rel:" + id); }
+  if ((el = t.closest("[data-selpr]"))) return select("pr:" + el.dataset.selpr);
+  if ((el = t.closest("[data-rmbranch]"))) { const [id, b] = el.dataset.rmbranch.split("|"); await wsave(`/releases/${id}/branches/${encodeURIComponent(b)}`, "DELETE"); return refresh(true); }
+  if ((el = t.closest("[data-delrel]"))) { await wsave("/releases/" + el.dataset.delrel, "DELETE"); select(null); return refresh(true); }
+  if ((el = t.closest("[data-place]"))) { beginPlace(el.dataset.place, false); return; }
+  if ((el = t.closest("[data-buildnow]"))) { const k = el.dataset.buildnow; return designate({ label: "Build room", method: "POST", path: "/local/worktrees", body: { repo: "impact", branch: `feat/${k.toLowerCase()}`, path: `~/work/impact-wt/${k}`, issue: k, dockerStatus: "none" }, dur: 8 }, {}, "bp:" + k); }
+  if ((el = t.closest("[data-claudehere]"))) { const k = el.dataset.claudehere, i = S.issues.find((x) => x.key === k); const wt = S.wts.find((w) => w.issue === k); await api("/local/sessions", "POST", { name: `${k} ${i?.title ?? ""}`, issues: [k], notes: "ref:bp:" + k, status: "active", ...(wt ? { worktree: wt.id } : {}) }).catch(() => {}); return refresh(true); }
+  if ((el = t.closest("[data-tab]"))) { S.tab = el.dataset.tab; return inspect(); }
+  if (t.closest("[data-finish]")) { S.hand = null; await wsave("/world/done", "POST"); await wsave("/world", "PATCH", { hand: null }); return refresh(true); }
+  if (t.closest("[data-drop]")) { S.hand = null; await wsave("/world", "PATCH", { hand: null }); return refresh(true); }
+  if ((el = t.closest("[data-sess]"))) { const [id, st] = el.dataset.sess.split(":"); await api("/local/sessions/" + id, "PATCH", { status: st }).catch(() => {}); return refresh(true); }
+  if (t.closest("[data-close]")) return select(null);
+  if ((el = t.closest("#alerts [data-ref]"))) { if (/^(pipe|deploy|switch):/.test(el.dataset.ref)) { openWorld(el.dataset.ref.split("/").pop()); return; } const d = S.derived.find((x) => x.ref === el.dataset.ref), tg = targetOf(el.dataset.ref); if (tg) { focus(tg.x + tg.w / 2, tg.y + tg.h / 2, 0.9); select(tg.key.startsWith("bp:") ? tg.key : tg.key); } return; }
+  if ((el = t.closest("#pawns [data-s]"))) { const p = pawns.find((x) => "pawn:" + x.id === el.dataset.s); if (p) focus(p.x, p.y, 1); return select(el.dataset.s); }
+  if ((el = t.closest("[data-go]"))) return GO[el.dataset.go]();
+  if (t.closest("#workbtn")) { const W = $("#work"), isOpen = W.style.display === "block"; closeMainTabs(isOpen ? null : "work"); W.style.display = isOpen ? "none" : "block"; renderWork(); markTabs(); return; }
+  if ((el = t.closest("[data-p]"))) { const [id, ty] = el.dataset.p.split("|"), p = pawns.find((x) => x.id === id), v = prioOf(p, ty), n = v >= 4 ? 0 : v + 1; (S.work[id] ??= {})[ty] = n; wsave("/world", "PATCH", { work: S.work }); renderWork(); renderAlerts(); inspect(); }
+});
+document.addEventListener("change", (e) => { const t = e.target; if (t.dataset.human) { S.roster.humans[t.dataset.human] = t.checked; wsave("/world", "PATCH", { roster: S.roster }); syncPawns(); renderPawnBar(); renderWork(); } if (t.dataset.mech) { S.roster.mechs[t.dataset.mech] = t.checked; wsave("/world", "PATCH", { roster: S.roster }); syncPawns(); renderPawnBar(); renderWork(); } });
+document.addEventListener("input", (e) => { if (e.target.classList?.contains("qsearchin")) { const w = WIN.tickets; if (w) { w.st.q = e.target.value; w.st.refocus = true; drawWin(w); } } });
+document.addEventListener("submit", async (e) => {
+  e.preventDefault(); const f = e.target, v = Object.fromEntries(new FormData(f));
+  if (f.dataset.a) return designate(JSON.parse(f.dataset.a), v, f.dataset.key || S.sel);
+  if (f.dataset.build) { const key = f.dataset.build; return designate({ label: "Build room", method: "POST", path: "/local/worktrees", body: { repo: "impact", branch: v.branch, path: v.path, issue: key, dockerStatus: "none" }, dur: 8 }, {}, S.sel); }
+  if (f.dataset.newrel) { const r = await api("/releases", "POST", { name: v.name, target: v.target || null, mode: v.mode }).catch(() => null); await refresh(true); if (r) select("rel:" + r.id); return; }
+  if (f.dataset.addbranch) return designate({ name: "addBranch", label: `Add ${v.branch}`, method: "POST", path: `/releases/${f.dataset.addbranch}/branches`, body: { branch: v.branch } }, {}, "rel:" + f.dataset.addbranch);
+  if (f.dataset.editrel) { await wsave("/releases/" + f.dataset.editrel, "PATCH", { name: v.name, target: v.target || null, mode: v.mode }); return refresh(true); }
+  if (f.dataset.newticket) { await api("/jira/issues", "POST", { title: v.title, type: f.dataset.newticket, parent: v.parent || undefined, assignee: S.me.id }).catch(() => null); closeWin("newticket"); return refresh(true); }
+  if (f.dataset.setsid) { await api("/local/sessions/" + f.dataset.setsid, "PATCH", { sessionId: v.sid.trim() }).catch(() => {}); return refresh(true); }
+  if (f.id === "hire") { await api("/local/sessions", "POST", { name: v.name, status: "active" }).catch(() => {}); f.reset(); return refresh(true); }
+});
+
+/* ---------------- boot ---------------- */
+$("#defs").innerHTML = `
+<pattern id="dirt" width="48" height="48" patternUnits="userSpaceOnUse"><rect width="48" height="48" fill="#5d4630"/><circle cx="9" cy="12" r="2.4" fill="#684e35"/><circle cx="31" cy="30" r="3" fill="#523e29"/><circle cx="40" cy="8" r="1.6" fill="#6b5237"/><circle cx="16" cy="40" r="1.8" fill="#4d3825"/><path d="M24 20l2-5 2 5" stroke="#5e7a34" stroke-width="1.6" fill="none"/><path d="M6 36l1.6-4 1.6 4" stroke="#6b8a3a" stroke-width="1.6" fill="none"/></pattern>
+<pattern id="wood" width="40" height="22" patternUnits="userSpaceOnUse"><rect width="40" height="22" fill="#8a5a2c"/><path d="M0 .5H40M0 11.5H40" stroke="#6b4320" stroke-width="1.5"/><path d="M14 0V11M30 11V22" stroke="#6b4320" stroke-width="1.5"/><rect y="2" width="40" height="3" fill="#97663a" opacity=".5"/></pattern>
+<pattern id="tile" width="24" height="24" patternUnits="userSpaceOnUse"><rect width="24" height="24" fill="#5f6d65"/><path d="M0 .5H24M.5 0V24" stroke="#4a564f" stroke-width="1.2"/></pattern>
+<pattern id="slab" width="30" height="30" patternUnits="userSpaceOnUse"><rect width="30" height="30" fill="#716a5e"/><path d="M0 .5H30M.5 0V30" stroke="#5f594f" stroke-width="1.2"/><circle cx="12" cy="14" r="1.5" fill="#675f54"/></pattern>
+<pattern id="dark" width="24" height="24" patternUnits="userSpaceOnUse"><rect width="24" height="24" fill="#34383c"/><path d="M0 .5H24M.5 0V24" stroke="#272a2e" stroke-width="1.2"/></pattern>
+<radialGradient id="glow"><stop offset="0" stop-color="#ffb347" stop-opacity=".55"/><stop offset="1" stop-color="#ffb347" stop-opacity="0"/></radialGradient>
+<filter id="sh" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity=".4"/></filter>`;
+(async () => {
+  try { const [me, users] = await Promise.all([api("/me"), api("/users")]); S.me = me; S.users = users; } catch {}
+  await refresh(true);
+  requestAnimationFrame(frame); setInterval(refresh, 4000); addEventListener("resize", () => {});
+})();
+</script></body></html>

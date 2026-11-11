@@ -1,0 +1,85 @@
+<!doctype html><html><head><meta charset="utf-8"><title>C · The Journal</title>
+<style>
+*{box-sizing:border-box;margin:0}
+body{background:#1a1613;color:#e6dbc6;font:16px/1.65 Georgia,"Iowan Old Style",serif}
+a.back{position:fixed;right:16px;top:12px;color:#9a8c72;font:13px system-ui;text-decoration:none}
+.page{max-width:1020px;margin:0 auto;padding:36px 24px;display:grid;grid-template-columns:1fr 320px;gap:36px}
+h1{font-size:40px;font-weight:400;margin-bottom:2px} .date{color:#9a8c72;font-style:italic;margin-bottom:22px}
+.day{display:flex;height:16px;border-radius:3px;overflow:hidden;margin:6px 0 4px;font:10px system-ui;color:#000}
+.day i{display:block}
+.hours{display:flex;justify-content:space-between;font:10px system-ui;color:#7d715c;margin-bottom:26px}
+p{margin-bottom:14px}
+.t{font:700 13px ui-monospace,Menlo,monospace;padding:1px 6px;border-radius:4px;background:#2c2620;color:#e8c872;white-space:nowrap}
+.t.r{color:#e0897d}.t.g{color:#a8d28f}.t.v{color:#c3aee6}
+.next{border:2px solid #e8c872;border-radius:10px;padding:16px 20px;margin:22px 0;background:#241e18}
+.next small{font:700 11px system-ui;letter-spacing:.14em;text-transform:uppercase;color:#e8c872}
+.next div{font-size:20px;margin:4px 0 10px}
+button{font:700 13px system-ui;background:#e8c872;border:0;border-radius:6px;padding:7px 14px;cursor:pointer;margin-right:8px}
+button.s{background:#3a322a;color:#e6dbc6}
+h2{font:600 11px system-ui;letter-spacing:.14em;text-transform:uppercase;color:#9a8c72;margin:0 0 10px}
+.log p{font-size:14px;margin-bottom:8px;color:#bfb29a} .log time{font:11px ui-monospace,monospace;color:#7d715c;margin-right:8px}
+.grid{width:100%;border-collapse:collapse;font:12px system-ui;margin-bottom:26px}
+.grid th{font-weight:500;color:#9a8c72;padding:4px 2px;font-size:10px;text-transform:uppercase;letter-spacing:.06em}
+.grid td{text-align:center;padding:6px 2px;border-top:1px solid #2c2620}
+.grid td:first-child{text-align:left;font:700 12px ui-monospace,monospace}
+.c-done{color:#a8d28f}.c-now{color:#e8c872}.c-wait{color:#c3aee6}.c-bad{color:#e0897d}.c-no{color:#40382f}
+.side .card{background:#221c17;border:1px solid #33291f;border-radius:10px;padding:14px 16px;margin-bottom:16px}
+.mood{display:flex;gap:6px;margin-top:6px}
+.mood i{flex:1;height:8px;border-radius:4px}
+.row{display:flex;justify-content:space-between;font-size:14px;padding:3px 0}
+</style></head><body>
+<a class="back" href="index.html">← back</a>
+<div class="page">
+<main>
+<h1>Tuesday</h1><div class="date">Fourth week of the sprint. Quiet morning, busy afternoon.</div>
+
+<h2>Your day</h2>
+<div class="day"><i style="flex:2;background:#5aa3c7"></i><i style="flex:1;background:#a58bd0"></i><i style="flex:2;background:#5aa3c7"></i><i style="flex:1;background:#e8c872"></i><i style="flex:3;background:#2c2620"></i></div>
+<div class="hours"><span>9</span><span>11</span><span>13</span><span>15</span><span>17</span></div>
+
+<p>Good afternoon. <span class="t g">142</span> was approved while you were at lunch, and it's been sitting there for twelve minutes. Nothing's wrong with it; it's just waiting on you.</p>
+<p>The one that isn't fine is <span class="t r">151</span>. Its staging deploy failed an hour ago on the migration step. It's the second trip back to the workshop for this one.</p>
+<p><span class="t v">147</span> in the billing village has been with the reviewer for six hours. That's slower than usual for Sam. A nudge wouldn't be rude.</p>
+<p><span class="t g">139</span> checked out clean on staging, so the master PR is yours to open. And there are two letters in the tray: one from billing, one from your teammate in web.</p>
+
+<div class="next"><small>Do this next</small><div>Merge <span class="t g">142</span>. It's one click and it unblocks staging.</div><button>Merge 142</button><button class="s">Not now</button><button class="s">Show me 151 instead</button></div>
+
+<h2>Chores</h2>
+<table class="grid"><tr><th></th><th>Code</th><th>CI</th><th>Review</th><th>Staging</th><th>Verify</th><th>Master</th><th>Prod</th></tr>
+<tr><td>142</td><td class="c-done">●</td><td class="c-done">●</td><td class="c-done">●</td><td class="c-now">◐</td><td class="c-no">○</td><td class="c-no">○</td><td class="c-no">○</td></tr>
+<tr><td>139</td><td class="c-done">●</td><td class="c-done">●</td><td class="c-done">●</td><td class="c-done">●</td><td class="c-done">●</td><td class="c-wait">⏳</td><td class="c-no">○</td></tr>
+<tr><td>151</td><td class="c-done">●</td><td class="c-done">●</td><td class="c-done">●</td><td class="c-bad">✖</td><td class="c-no">○</td><td class="c-no">○</td><td class="c-no">○</td></tr>
+<tr><td>147</td><td class="c-done">●</td><td class="c-done">●</td><td class="c-wait">⏳</td><td class="c-no">○</td><td class="c-no">○</td><td class="c-no">○</td><td class="c-no">○</td></tr>
+<tr><td>149</td><td class="c-done">●</td><td class="c-now">◐</td><td class="c-no">○</td><td class="c-no">○</td><td class="c-no">○</td><td class="c-no">○</td><td class="c-no">○</td></tr>
+<tr><td>155</td><td class="c-now">◐</td><td class="c-no">○</td><td class="c-no">○</td><td class="c-no">○</td><td class="c-no">○</td><td class="c-no">○</td><td class="c-no">○</td></tr></table>
+
+<h2>Earlier today</h2>
+<div class="log">
+<p><time>14:02</time>142 was approved.</p>
+<p><time>13:40</time>151 failed to deploy to staging.</p>
+<p><time>12:15</time>147 left your hands and went to review.</p>
+<p><time>11:58</time>You verified 139 on staging. It works.</p>
+<p><time>10:30</time>155 got its draft PR.</p></div>
+</main>
+
+<aside class="side">
+<div class="card"><h2>How things feel</h2>
+<div class="row"><span>Pace</span><span>4h from start to live</span></div>
+<div class="mood"><i style="background:#a8d28f"></i><i style="background:#a8d28f"></i><i style="background:#a8d28f"></i><i style="background:#e8c872"></i><i style="background:#2c2620"></i></div>
+<div class="row" style="margin-top:10px"><span>Hands full</span><span>6 in flight</span></div>
+<div class="mood"><i style="background:#e8c872"></i><i style="background:#e8c872"></i><i style="background:#e8c872"></i><i style="background:#e0897d"></i><i style="background:#2c2620"></i></div>
+<div class="row" style="margin-top:10px"><span>Waiting on others</span><span>2</span></div></div>
+
+<div class="card"><h2>Where things are</h2>
+<div class="row"><span>Staging</span><span class="t g">142 · 139</span></div>
+<div class="row"><span>Production</span><span class="dim">3 days old</span></div>
+<div class="row"><span>Laptop</span><span>3 worktrees up</span></div>
+<div class="row"><span>Stale</span><span class="t r">api-142</span></div></div>
+
+<div class="card"><h2>Letters</h2>
+<div class="row"><span>PR #88 · billing</span><span>3h</span></div>
+<div class="row"><span>PR #412 · web</span><span>1h</span></div></div>
+
+<div class="card"><h2>On the job board</h2>
+<div class="row"><span>158 Rate limit headers</span></div><div class="row"><span>160 Tidy logs</span></div><div class="row"><span>161 ???</span></div></div>
+</aside></div></body></html>

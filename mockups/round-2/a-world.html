@@ -1,0 +1,93 @@
+<!doctype html><html><head><meta charset="utf-8"><title>A · The World</title>
+<style>
+*{box-sizing:border-box;margin:0}
+body{background:#1b2619;color:#efe6cf;font:15px/1.4 "Trebuchet MS",system-ui,sans-serif;display:flex;flex-direction:column;min-height:100vh}
+header{display:flex;justify-content:space-between;align-items:center;padding:10px 22px;background:#141d13;border-bottom:2px solid #2f402c}
+header a{color:#c9b78a;text-decoration:none;font-size:13px}
+header b{font-size:18px;letter-spacing:.04em;color:#e8c872}
+.stats{display:flex;gap:18px;font-size:13px;color:#a9b894}
+.stats span b{color:#efe6cf}
+svg{width:100%;flex:1;display:block;max-height:calc(100vh - 150px)}
+text{font-family:"Trebuchet MS",system-ui,sans-serif}
+.lbl{font-size:15px;font-weight:700;fill:#efe6cf;text-anchor:middle;paint-order:stroke;stroke:#1b2619;stroke-width:4px}
+.sub{font-size:11px;fill:#c9d2b8;text-anchor:middle;paint-order:stroke;stroke:#1b2619;stroke-width:3px}
+.pn{font:700 12px ui-monospace,Menlo,monospace;fill:#1b2619;text-anchor:middle}
+.ring{fill:none;stroke:#f0b43c;stroke-width:3;transform-box:fill-box;transform-origin:center;animation:pulse 1.6s ease-out infinite}
+.ringr{stroke:#e0614f}
+@keyframes pulse{0%{transform:scale(1);opacity:1}100%{transform:scale(1.9);opacity:0}}
+.bob{animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-4px)}}
+.spin{transform-box:fill-box;transform-origin:center;animation:spin 2s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.bubble{margin:0 22px 16px;padding:12px 18px;background:#efe6cf;color:#2a2418;border-radius:14px;display:flex;gap:14px;align-items:center;box-shadow:0 3px 0 #a99a72}
+.bubble .who{font-size:28px}
+.bubble b{color:#a85d00}
+.bubble button{margin-left:auto;background:#e8c872;border:2px solid #a99a72;border-radius:8px;padding:6px 14px;font:700 13px inherit;cursor:pointer;color:#2a2418}
+</style></head><body>
+<header><b>🏡 My Place</b><div class="stats"><span>Tue · 14:20</span><span>Shipped this week <b>9</b></span><span>Avg door-to-door <b>4h 12m</b></span></div><a href="index.html">← back to boards</a></header>
+
+<svg viewBox="0 0 1100 600" preserveAspectRatio="xMidYMid meet">
+<defs>
+<symbol id="house" viewBox="0 0 100 80"><rect x="10" y="30" width="80" height="46" rx="4" fill="currentColor"/><polygon points="2,32 50,4 98,32" fill="#000" fill-opacity=".35"/><rect x="42" y="50" width="16" height="26" rx="2" fill="#000" fill-opacity=".4"/></symbol>
+<pattern id="grass" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="#2a3a27"/><circle cx="8" cy="10" r="2" fill="#324630"/><circle cx="28" cy="26" r="2.5" fill="#324630"/><circle cx="18" cy="34" r="1.5" fill="#223020"/></pattern>
+</defs>
+<rect width="1100" height="600" fill="url(#grass)"/>
+
+<!-- neighbouring villages (other codebases) -->
+<path d="M640 300 C640 240 600 200 560 170" stroke="#6d7f5c" stroke-width="3" stroke-dasharray="3 8" fill="none" stroke-linecap="round"/>
+<path d="M640 300 C700 240 760 190 800 160" stroke="#6d7f5c" stroke-width="3" stroke-dasharray="3 8" fill="none" stroke-linecap="round"/>
+<use href="#house" x="500" y="100" width="90" height="72" style="color:#6e7d94"/><text class="lbl" x="545" y="196">Billing village</text><text class="sub" x="545" y="212">their repo · 1 PR waiting on you</text>
+<use href="#house" x="760" y="90" width="90" height="72" style="color:#6e7d94"/><text class="lbl" x="805" y="186">Web village</text><text class="sub" x="805" y="202">teammate's PR #412 · waiting on you</text>
+<circle cx="560" cy="130" r="9" fill="#f0b43c"/><text x="560" y="134" class="pn" style="font-size:10px">✉</text>
+<circle cx="835" cy="120" r="9" fill="#f0b43c"/><text x="835" y="124" class="pn" style="font-size:10px">✉</text>
+
+<!-- road -->
+<path id="road" d="M110 440 C200 440 200 350 290 350 S400 440 470 440 S560 320 640 320 S740 440 820 440 S910 320 990 320" stroke="#7a6a45" stroke-width="34" fill="none" stroke-linecap="round"/>
+<path d="M110 440 C200 440 200 350 290 350 S400 440 470 440 S560 320 640 320 S740 440 820 440 S910 320 990 320" stroke="#c9b78a" stroke-width="26" fill="none" stroke-linecap="round"/>
+<path d="M110 440 C200 440 200 350 290 350 S400 440 470 440 S560 320 640 320 S740 440 820 440 S910 320 990 320" stroke="#e3d3a8" stroke-width="2" stroke-dasharray="10 12" fill="none"/>
+<!-- loop-back trail -->
+<path d="M820 470 C700 560 400 560 290 400" stroke="#e0614f" stroke-width="3" stroke-dasharray="2 9" fill="none" stroke-linecap="round" opacity=".8"/>
+<text class="sub" x="560" y="560" style="fill:#e0897d">↺ "it broke on staging", back to the workshop</text>
+
+<!-- Job board -->
+<rect x="70" y="395" width="80" height="50" rx="3" fill="#8a6a3a"/><rect x="62" y="388" width="96" height="8" fill="#5e4524"/>
+<text class="lbl" x="110" y="485">Job Board</text><text class="sub" x="110" y="501">Next · 3 jobs</text>
+<g class="bob"><rect x="86" y="404" width="46" height="26" rx="4" fill="#e8c872"/><text class="pn" x="109" y="422">158</text></g>
+
+<!-- Workshop -->
+<use href="#house" x="240" y="270" width="100" height="80" style="color:#8a5a3a"/>
+<text class="lbl" x="290" y="392">The Workshop</text><text class="sub" x="290" y="408">2 benches · 2 docker stoves lit</text>
+<g><rect x="232" y="236" width="46" height="26" rx="4" fill="#5aa3c7"/><text class="pn" x="255" y="254">155</text></g>
+<g><rect x="286" y="236" width="46" height="26" rx="4" fill="#d65a4a"/><text class="pn" x="309" y="254">151</text><circle class="ring ringr" cx="309" cy="249" r="20"/></g>
+<text class="sub" x="255" y="228">empty states</text><text class="sub" x="309" y="226" style="fill:#e0897d">audit export 🔥</text>
+
+<!-- Gatehouse -->
+<use href="#house" x="425" y="370" width="90" height="72" style="color:#6e5f7a"/>
+<text class="lbl" x="470" y="470">Gatehouse</text><text class="sub" x="470" y="486">CI is inspecting</text>
+<g><rect x="447" y="340" width="46" height="26" rx="4" fill="#9a9a9a"/><text class="pn" x="470" y="358">149</text></g>
+<circle class="spin" cx="508" cy="353" r="8" fill="none" stroke="#5aa3c7" stroke-width="3" stroke-dasharray="14 8"/>
+
+<!-- Review hall -->
+<use href="#house" x="585" y="245" width="110" height="88" style="color:#7a5f8a"/>
+<text class="lbl" x="640" y="364">Review Hall</text><text class="sub" x="640" y="380">waiting on other people</text>
+<g><rect x="580" y="210" width="46" height="26" rx="4" fill="#a58bd0"/><text class="pn" x="603" y="228">147</text></g>
+<g><rect x="634" y="210" width="46" height="26" rx="4" fill="#a58bd0"/><text class="pn" x="657" y="228">139↑</text></g>
+<g><rect x="690" y="268" width="46" height="26" rx="4" fill="#f0b43c"/><text class="pn" x="713" y="286">142 ✓</text><circle class="ring" cx="713" cy="281" r="20"/></g>
+<text x="590" y="200" class="sub">6h ⏳</text>
+
+<!-- Staging yard -->
+<rect x="770" y="395" width="100" height="56" rx="6" fill="#3d5a3a" stroke="#6d8f5f" stroke-width="3" stroke-dasharray="6 5"/>
+<text class="lbl" x="820" y="484">Staging Yard</text><text class="sub" x="820" y="500">a1b2c3d · healthy</text>
+<g><rect x="797" y="408" width="46" height="26" rx="4" fill="#f0b43c"/><text class="pn" x="820" y="426">139 ✓</text><circle class="ring" cx="820" cy="421" r="20"/></g>
+
+<!-- Prod harbour -->
+<path d="M945 335 h90 v50 q-45 24 -90 0z" fill="#315a73"/><rect x="975" y="285" width="4" height="50" fill="#c9b78a"/><polygon points="979,287 1010,298 979,309" fill="#7fb069"/>
+<text class="lbl" x="990" y="412">Prod Harbour</text><text class="sub" x="990" y="428">last ship 3 days ago · calm seas</text>
+
+<!-- you -->
+<g class="bob"><circle cx="352" cy="300" r="14" fill="#efe6cf"/><text x="352" y="306" text-anchor="middle" style="font-size:18px">🧑‍💻</text></g>
+<text class="sub" x="352" y="328" style="fill:#e8c872">you</text>
+</svg>
+
+<div class="bubble"><span class="who">🧑‍💻</span><div><b>Your move:</b> 142 got approved at the Review Hall. Merge it, then take a look at 151: it's on fire in the Workshop.</div><button>Merge 142</button></div>
+</body></html>

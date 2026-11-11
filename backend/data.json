@@ -1,0 +1,916 @@
+{
+  "me": "nate",
+  "users": [
+    {
+      "id": "nate",
+      "name": "Nathan"
+    },
+    {
+      "id": "jo",
+      "name": "Jo"
+    },
+    {
+      "id": "sam",
+      "name": "Sam"
+    },
+    {
+      "id": "priya",
+      "name": "Priya"
+    }
+  ],
+  "jira": {
+    "project": "PROJ",
+    "nextNumber": 17,
+    "issues": [
+      {
+        "key": "PROJ-1",
+        "title": "Authentication",
+        "description": "Register, log in, stay logged in, edit profile.",
+        "type": "Feature",
+        "parent": null,
+        "assignee": "nate",
+        "spawnedFrom": null,
+        "status": "Next",
+        "comments": [],
+        "created": "2026-11-10T22:04:38.273Z",
+        "updated": "2026-11-10T22:04:38.273Z",
+        "history": [
+          {
+            "at": "2026-11-10T22:04:38.273Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-2",
+        "title": "Articles",
+        "description": "Create, read, edit, delete and list articles, with tags and pagination.",
+        "type": "Feature",
+        "parent": null,
+        "assignee": "nate",
+        "spawnedFrom": null,
+        "status": "Next",
+        "comments": [],
+        "created": "2026-11-10T22:04:38.278Z",
+        "updated": "2026-11-10T22:04:38.278Z",
+        "history": [
+          {
+            "at": "2026-11-10T22:04:38.278Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-3",
+        "title": "Comments & favorites",
+        "description": "Readers can comment on and favorite articles.",
+        "type": "Feature",
+        "parent": null,
+        "assignee": "nate",
+        "spawnedFrom": null,
+        "status": "Next",
+        "comments": [],
+        "created": "2026-11-10T22:04:38.282Z",
+        "updated": "2026-11-10T22:04:38.282Z",
+        "history": [
+          {
+            "at": "2026-11-10T22:04:38.282Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-4",
+        "title": "Spike: JWT refresh vs. long-lived tokens",
+        "description": "",
+        "type": "Spike",
+        "parent": "PROJ-1",
+        "assignee": "nate",
+        "spawnedFrom": null,
+        "status": "Dev Done",
+        "comments": [],
+        "created": "2026-11-10T22:04:38.285Z",
+        "updated": "2026-11-10T22:09:06.216Z",
+        "history": [
+          {
+            "at": "2026-11-10T22:04:38.285Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          },
+          {
+            "at": "2026-11-10T22:05:44.300Z",
+            "by": "nate",
+            "from": "Next",
+            "to": "Dev WIP"
+          },
+          {
+            "at": "2026-11-10T22:09:06.216Z",
+            "by": "nate",
+            "from": "Dev WIP",
+            "to": "Dev Done"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-5",
+        "title": "User can register with email, username and password",
+        "description": "",
+        "type": "Story",
+        "parent": "PROJ-1",
+        "assignee": "nate",
+        "spawnedFrom": null,
+        "status": "Next",
+        "comments": [],
+        "created": "2026-11-10T22:04:38.289Z",
+        "updated": "2026-11-10T22:04:38.289Z",
+        "history": [
+          {
+            "at": "2026-11-10T22:04:38.289Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-6",
+        "title": "User can log in and out",
+        "description": "",
+        "type": "Story",
+        "parent": "PROJ-1",
+        "assignee": "nate",
+        "spawnedFrom": null,
+        "status": "Next",
+        "comments": [],
+        "created": "2026-11-10T22:04:38.293Z",
+        "updated": "2026-11-10T22:04:38.293Z",
+        "history": [
+          {
+            "at": "2026-11-10T22:04:38.293Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-7",
+        "title": "Login error message shows raw 422 JSON",
+        "description": "",
+        "type": "Defect",
+        "parent": "PROJ-1",
+        "assignee": "nate",
+        "spawnedFrom": null,
+        "status": "Next",
+        "comments": [],
+        "created": "2026-11-10T22:04:38.296Z",
+        "updated": "2026-11-10T22:04:38.296Z",
+        "history": [
+          {
+            "at": "2026-11-10T22:04:38.296Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-8",
+        "title": "User can edit profile (bio, image, password)",
+        "description": "",
+        "type": "Story",
+        "parent": "PROJ-1",
+        "assignee": "nate",
+        "spawnedFrom": null,
+        "status": "Next",
+        "comments": [],
+        "created": "2026-11-10T22:04:38.300Z",
+        "updated": "2026-11-10T22:04:38.300Z",
+        "history": [
+          {
+            "at": "2026-11-10T22:04:38.300Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-9",
+        "title": "Author can publish an article with tags",
+        "description": "",
+        "type": "Story",
+        "parent": "PROJ-2",
+        "assignee": "nate",
+        "spawnedFrom": null,
+        "status": "Next",
+        "comments": [],
+        "created": "2026-11-10T22:04:38.304Z",
+        "updated": "2026-11-10T22:04:38.304Z",
+        "history": [
+          {
+            "at": "2026-11-10T22:04:38.304Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-10",
+        "title": "Reader can view an article by slug",
+        "description": "",
+        "type": "Story",
+        "parent": "PROJ-2",
+        "assignee": "nate",
+        "spawnedFrom": null,
+        "status": "Next",
+        "comments": [],
+        "created": "2026-11-10T22:04:38.307Z",
+        "updated": "2026-11-10T22:04:38.307Z",
+        "history": [
+          {
+            "at": "2026-11-10T22:04:38.307Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-11",
+        "title": "Paginate the feed 10 per page",
+        "description": "",
+        "type": "Story",
+        "parent": "PROJ-2",
+        "assignee": "nate",
+        "spawnedFrom": null,
+        "status": "Next",
+        "comments": [],
+        "created": "2026-11-10T22:04:38.310Z",
+        "updated": "2026-11-10T22:04:38.310Z",
+        "history": [
+          {
+            "at": "2026-11-10T22:04:38.310Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-12",
+        "title": "Global feed is slow with 10k+ articles",
+        "description": "",
+        "type": "Defect",
+        "parent": "PROJ-2",
+        "assignee": "nate",
+        "spawnedFrom": null,
+        "status": "Next",
+        "comments": [],
+        "created": "2026-11-10T22:04:38.313Z",
+        "updated": "2026-11-10T22:04:38.313Z",
+        "history": [
+          {
+            "at": "2026-11-10T22:04:38.313Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-13",
+        "title": "Tag with '&' breaks the tag filter URL",
+        "description": "",
+        "type": "Defect",
+        "parent": "PROJ-2",
+        "assignee": "nate",
+        "spawnedFrom": null,
+        "status": "Next",
+        "comments": [],
+        "created": "2026-11-10T22:04:38.315Z",
+        "updated": "2026-11-10T22:04:38.315Z",
+        "history": [
+          {
+            "at": "2026-11-10T22:04:38.315Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-14",
+        "title": "Spike: full-text search options",
+        "description": "",
+        "type": "Spike",
+        "parent": "PROJ-2",
+        "assignee": "nate",
+        "spawnedFrom": null,
+        "status": "Next",
+        "comments": [],
+        "created": "2026-11-10T22:04:38.318Z",
+        "updated": "2026-11-10T22:04:38.318Z",
+        "history": [
+          {
+            "at": "2026-11-10T22:04:38.318Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-15",
+        "title": "Reader can favorite / unfavorite an article",
+        "description": "",
+        "type": "Story",
+        "parent": "PROJ-3",
+        "assignee": "nate",
+        "spawnedFrom": null,
+        "status": "Next",
+        "comments": [],
+        "created": "2026-11-10T22:04:38.320Z",
+        "updated": "2026-11-10T22:04:38.320Z",
+        "history": [
+          {
+            "at": "2026-11-10T22:04:38.320Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          }
+        ]
+      },
+      {
+        "key": "PROJ-16",
+        "title": "Reader can comment on an article",
+        "description": "",
+        "type": "Story",
+        "parent": "PROJ-3",
+        "assignee": "nate",
+        "spawnedFrom": null,
+        "status": "Next",
+        "comments": [],
+        "created": "2026-11-10T22:04:38.323Z",
+        "updated": "2026-11-10T22:04:38.323Z",
+        "history": [
+          {
+            "at": "2026-11-10T22:04:38.323Z",
+            "by": "nate",
+            "from": null,
+            "to": "Next"
+          }
+        ]
+      }
+    ]
+  },
+  "bitbucket": {
+    "repos": [
+      {
+        "slug": "impact",
+        "role": "mine",
+        "nextPrId": 3,
+        "pullrequests": [
+          {
+            "id": 1,
+            "repo": "impact",
+            "title": "Release 1.0",
+            "description": "",
+            "source": "release/1.0",
+            "destination": "master",
+            "author": "jo",
+            "reviewers": [
+              "nate"
+            ],
+            "state": "MERGED",
+            "comments": [],
+            "created": "2026-11-10T22:04:38.325Z",
+            "updated": "2026-11-10T22:04:38.335Z",
+            "history": [
+              {
+                "at": "2026-11-10T22:04:38.325Z",
+                "by": "jo",
+                "from": null,
+                "to": "OPEN"
+              },
+              {
+                "at": "2026-11-10T22:04:38.333Z",
+                "by": "nate",
+                "from": "OPEN",
+                "to": "APPROVED"
+              },
+              {
+                "at": "2026-11-10T22:04:38.335Z",
+                "by": "jo",
+                "from": "APPROVED",
+                "to": "MERGED"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "repo": "impact",
+            "title": "PROJ-4 Spike: JWT refresh vs. long-lived tokens",
+            "description": "",
+            "source": "feat/proj-4",
+            "destination": "develop",
+            "issue": "PROJ-4",
+            "author": "nate",
+            "reviewers": [
+              "jo"
+            ],
+            "state": "MERGED",
+            "comments": [],
+            "created": "2026-11-10T22:06:01.791Z",
+            "updated": "2026-11-10T22:08:50.050Z",
+            "history": [
+              {
+                "at": "2026-11-10T22:06:01.791Z",
+                "by": "nate",
+                "from": null,
+                "to": "DRAFT"
+              },
+              {
+                "at": "2026-11-10T22:06:47.852Z",
+                "by": "nate",
+                "from": "DRAFT",
+                "to": "OPEN"
+              },
+              {
+                "at": "2026-11-10T22:08:22.073Z",
+                "by": "jo",
+                "from": "OPEN",
+                "to": "APPROVED"
+              },
+              {
+                "at": "2026-11-10T22:08:50.050Z",
+                "by": "nate",
+                "from": "APPROVED",
+                "to": "MERGED"
+              }
+            ],
+            "checks": "passed"
+          }
+        ],
+        "branches": [
+          {
+            "name": "release/1.0",
+            "issue": null,
+            "created": "2026-11-10T22:04:38.325Z"
+          },
+          {
+            "name": "feat/proj-4",
+            "issue": "PROJ-4",
+            "created": "2026-11-10T22:05:51.311Z"
+          }
+        ],
+        "commits": [
+          {
+            "sha": "b9d67d8",
+            "branch": "release/1.0",
+            "message": "Bump version to 1.0",
+            "prId": null,
+            "issue": null,
+            "author": "jo",
+            "at": "2026-11-10T22:04:38.330Z"
+          },
+          {
+            "sha": "5e41008",
+            "branch": "master",
+            "message": "Release 1.0",
+            "prId": 1,
+            "issue": null,
+            "author": "jo",
+            "at": "2026-11-10T22:04:38.335Z"
+          },
+          {
+            "sha": "fda96f0",
+            "branch": "develop",
+            "message": "PROJ-4 Spike: JWT refresh vs. long-lived tokens",
+            "prId": 2,
+            "issue": "PROJ-4",
+            "author": "nate",
+            "at": "2026-11-10T22:08:50.050Z"
+          }
+        ],
+        "pipelines": [
+          {
+            "id": 1,
+            "repo": "impact",
+            "environment": "production",
+            "branch": "master",
+            "sha": "5e41008",
+            "trigger": "manual",
+            "status": "SUCCESS",
+            "gated": false,
+            "held": false,
+            "released": false,
+            "steps": [
+              {
+                "name": "Build image",
+                "status": "SUCCESS",
+                "startedAt": "2026-11-10T22:04:38.726Z",
+                "finishedAt": "2026-11-10T22:04:42.728Z"
+              },
+              {
+                "name": "Push image to ECR",
+                "status": "SUCCESS",
+                "startedAt": "2026-11-10T22:04:42.728Z",
+                "finishedAt": "2026-11-10T22:04:46.732Z"
+              },
+              {
+                "name": "Register task definition",
+                "status": "SUCCESS",
+                "startedAt": "2026-11-10T22:04:46.732Z",
+                "finishedAt": "2026-11-10T22:04:50.735Z"
+              },
+              {
+                "name": "Update ECS service",
+                "status": "SUCCESS",
+                "startedAt": "2026-11-10T22:04:50.736Z",
+                "finishedAt": "2026-11-10T22:04:54.739Z"
+              },
+              {
+                "name": "Wait for service to stabilize",
+                "status": "SUCCESS",
+                "startedAt": "2026-11-10T22:04:54.740Z",
+                "finishedAt": "2026-11-10T22:04:59.744Z"
+              }
+            ],
+            "taskRevision": 1,
+            "created": "2026-11-10T22:04:38.338Z",
+            "startedAt": "2026-11-10T22:04:38.726Z",
+            "finishedAt": "2026-11-10T22:04:59.744Z",
+            "ecsDeploymentId": "ecs-svc/1794348294740203136"
+          },
+          {
+            "id": 2,
+            "repo": "impact",
+            "environment": "staging",
+            "branch": "develop",
+            "sha": "fda96f0",
+            "trigger": "merge",
+            "status": "RUNNING",
+            "gated": true,
+            "held": true,
+            "released": false,
+            "steps": [
+              {
+                "name": "Build image",
+                "status": "SUCCESS",
+                "startedAt": "2026-11-10T22:08:50.515Z",
+                "finishedAt": "2026-11-10T22:08:54.519Z"
+              },
+              {
+                "name": "Push image to ECR",
+                "status": "SUCCESS",
+                "startedAt": "2026-11-10T22:08:54.519Z",
+                "finishedAt": "2026-11-10T22:08:58.524Z"
+              },
+              {
+                "name": "Register task definition",
+                "status": "SUCCESS",
+                "startedAt": "2026-11-10T22:08:58.524Z",
+                "finishedAt": "2026-11-10T22:09:02.527Z"
+              },
+              {
+                "name": "Update ECS service",
+                "status": "PENDING"
+              },
+              {
+                "name": "Wait for service to stabilize",
+                "status": "PENDING"
+              }
+            ],
+            "taskRevision": 1,
+            "created": "2026-11-10T22:08:50.050Z",
+            "startedAt": "2026-11-10T22:08:50.515Z",
+            "finishedAt": null
+          }
+        ],
+        "nextPipelineId": 3,
+        "services": {
+          "staging": {
+            "clusterName": "impact-staging",
+            "serviceName": "impact-service",
+            "family": "impact-staging",
+            "desiredCount": 1,
+            "nextRevision": 2,
+            "taskDefinitions": [
+              {
+                "family": "impact-staging",
+                "revision": 1,
+                "arn": "arn:aws:ecs:us-east-1:123456789012:task-definition/impact-staging:1",
+                "image": "123456789012.dkr.ecr.us-east-1.amazonaws.com/impact:fda96f0",
+                "registeredAt": "2026-11-10T22:09:02.527Z",
+                "pipelineId": 2
+              }
+            ],
+            "deployments": [],
+            "history": [],
+            "events": []
+          },
+          "production": {
+            "clusterName": "impact-production",
+            "serviceName": "impact-service",
+            "family": "impact-production",
+            "desiredCount": 2,
+            "nextRevision": 2,
+            "taskDefinitions": [
+              {
+                "family": "impact-production",
+                "revision": 1,
+                "arn": "arn:aws:ecs:us-east-1:123456789012:task-definition/impact-production:1",
+                "image": "123456789012.dkr.ecr.us-east-1.amazonaws.com/impact:5e41008",
+                "registeredAt": "2026-11-10T22:04:50.736Z",
+                "pipelineId": 1
+              }
+            ],
+            "deployments": [
+              {
+                "id": "ecs-svc/1794348294740203136",
+                "status": "PRIMARY",
+                "taskDefinition": "arn:aws:ecs:us-east-1:123456789012:task-definition/impact-production:1",
+                "launchType": "FARGATE",
+                "desiredCount": 2,
+                "pendingCount": 0,
+                "runningCount": 2,
+                "failedTasks": 0,
+                "rolloutState": "COMPLETED",
+                "rolloutStateReason": "ECS deployment ecs-svc/1794348294740203136 completed.",
+                "createdAt": "2026-11-10T22:04:54.740Z",
+                "updatedAt": "2026-11-10T22:04:59.743Z"
+              }
+            ],
+            "history": [
+              {
+                "serviceDeploymentArn": "arn:aws:ecs:us-east-1:123456789012:service-deployment/impact-production/impact-service/1794348294740203136",
+                "deploymentId": "ecs-svc/1794348294740203136",
+                "status": "SUCCESSFUL",
+                "statusReason": null,
+                "createdAt": "2026-11-10T22:04:54.740Z",
+                "startedAt": "2026-11-10T22:04:54.740Z",
+                "finishedAt": "2026-11-10T22:04:59.744Z",
+                "targetServiceRevision": {
+                  "taskDefinition": "arn:aws:ecs:us-east-1:123456789012:task-definition/impact-production:1",
+                  "requestedTaskCount": 2,
+                  "runningTaskCount": 2,
+                  "pendingTaskCount": 0
+                },
+                "sourceServiceRevisions": [],
+                "deploymentCircuitBreaker": {
+                  "status": "MONITORING_COMPLETE",
+                  "failureCount": 0,
+                  "threshold": 10
+                },
+                "rollback": null,
+                "pipelineId": 1
+              }
+            ],
+            "events": [
+              {
+                "id": "370586ca-2b81-4900-9595-cd70965f5090",
+                "createdAt": "2026-11-10T22:04:59.744Z",
+                "message": "(service impact-service) has reached a steady state."
+              },
+              {
+                "id": "e59b09f3-4ab8-48b3-960e-00b0314280a1",
+                "createdAt": "2026-11-10T22:04:59.743Z",
+                "message": "(service impact-service) has started 1 tasks: (task 0ff8a50b9085c2a91bc4f2540a523c74)."
+              },
+              {
+                "id": "c5769d7f-baa5-4476-9702-d90a526b4b47",
+                "createdAt": "2026-11-10T22:04:57.242Z",
+                "message": "(service impact-service) has started 1 tasks: (task 7b51e9a70cbb9ec72176f3fdfe96faf6)."
+              }
+            ]
+          }
+        }
+      },
+      {
+        "slug": "pagaboplus",
+        "role": "review",
+        "nextPrId": 1,
+        "pullrequests": [],
+        "branches": [],
+        "commits": [],
+        "pipelines": [],
+        "nextPipelineId": 1,
+        "services": {
+          "staging": {
+            "clusterName": "pagaboplus-staging",
+            "serviceName": "pagaboplus-service",
+            "family": "pagaboplus-staging",
+            "desiredCount": 1,
+            "nextRevision": 1,
+            "taskDefinitions": [],
+            "deployments": [],
+            "history": [],
+            "events": []
+          },
+          "production": {
+            "clusterName": "pagaboplus-production",
+            "serviceName": "pagaboplus-service",
+            "family": "pagaboplus-production",
+            "desiredCount": 2,
+            "nextRevision": 1,
+            "taskDefinitions": [],
+            "deployments": [],
+            "history": [],
+            "events": []
+          }
+        }
+      },
+      {
+        "slug": "sypro",
+        "role": "review",
+        "nextPrId": 1,
+        "pullrequests": [],
+        "branches": [],
+        "commits": [],
+        "pipelines": [],
+        "nextPipelineId": 1,
+        "services": {
+          "staging": {
+            "clusterName": "sypro-staging",
+            "serviceName": "sypro-service",
+            "family": "sypro-staging",
+            "desiredCount": 1,
+            "nextRevision": 1,
+            "taskDefinitions": [],
+            "deployments": [],
+            "history": [],
+            "events": []
+          },
+          "production": {
+            "clusterName": "sypro-production",
+            "serviceName": "sypro-service",
+            "family": "sypro-production",
+            "desiredCount": 2,
+            "nextRevision": 1,
+            "taskDefinitions": [],
+            "deployments": [],
+            "history": [],
+            "events": []
+          }
+        }
+      }
+    ]
+  },
+  "worktrees": [
+    {
+      "id": "wt-1",
+      "repo": "impact",
+      "branch": "feat/proj-4",
+      "path": "~/work/impact-wt/PROJ-4",
+      "issue": "PROJ-4",
+      "docker": {
+        "status": "running",
+        "port": null
+      },
+      "notes": "",
+      "created": "2026-11-10T22:05:51.311Z"
+    }
+  ],
+  "nextWorktreeId": 2,
+  "sessions": [],
+  "bills": [],
+  "nextBillId": 1,
+  "releases": [
+    {
+      "id": "rel-1",
+      "name": "1.1",
+      "target": "2026-11-13",
+      "mode": "auto",
+      "auto": true,
+      "repo": "impact",
+      "branches": [],
+      "exclude": [],
+      "status": "planning",
+      "created": "2026-11-10T22:04:38.849Z"
+    }
+  ],
+  "nextReleaseId": 2,
+  "world": {
+    "plots": {
+      "PROJ-4": {
+        "x": 640,
+        "y": 140
+      }
+    },
+    "orders": [],
+    "hand": null,
+    "work": {},
+    "roster": {
+      "humans": {},
+      "mechs": {}
+    },
+    "bread": 0,
+    "done": {
+      "Tue Nov 10 2026": 10
+    },
+    "nextOrderId": 11,
+    "log": [
+      {
+        "at": "2026-11-10T22:09:06.217Z",
+        "worker": "nate",
+        "label": "Mark built (Dev Done) · wt-1",
+        "ok": true,
+        "error": null,
+        "bill": null
+      },
+      {
+        "at": "2026-11-10T22:08:50.052Z",
+        "worker": "nate",
+        "label": "Merge · wt-1",
+        "ok": true,
+        "error": null,
+        "bill": null
+      },
+      {
+        "at": "2026-11-10T22:07:26.323Z",
+        "worker": "nate",
+        "label": "CI passed · wt-1",
+        "ok": true,
+        "error": null,
+        "bill": null
+      },
+      {
+        "at": "2026-11-10T22:07:06.073Z",
+        "worker": "nate",
+        "label": "CI started · wt-1",
+        "ok": true,
+        "error": null,
+        "bill": null
+      },
+      {
+        "at": "2026-11-10T22:06:47.853Z",
+        "worker": "nate",
+        "label": "Mark ready for review · wt-1",
+        "ok": true,
+        "error": null,
+        "bill": null
+      },
+      {
+        "at": "2026-11-10T22:06:39.543Z",
+        "worker": "nate",
+        "label": "CI passed · wt-1",
+        "ok": true,
+        "error": null,
+        "bill": null
+      },
+      {
+        "at": "2026-11-10T22:06:38.490Z",
+        "worker": "nate",
+        "label": "CI started · wt-1",
+        "ok": true,
+        "error": null,
+        "bill": null
+      },
+      {
+        "at": "2026-11-10T22:06:01.793Z",
+        "worker": "nate",
+        "label": "Open draft PR · wt-1",
+        "ok": true,
+        "error": null,
+        "bill": null
+      },
+      {
+        "at": "2026-11-10T22:05:52.377Z",
+        "worker": "nate",
+        "label": "Start docker · PROJ-4",
+        "ok": true,
+        "error": null,
+        "bill": null
+      },
+      {
+        "at": "2026-11-10T22:05:51.314Z",
+        "worker": "nate",
+        "label": "Build room · PROJ-4",
+        "ok": true,
+        "error": null,
+        "bill": null
+      },
+      {
+        "at": "2026-11-10T22:05:44.303Z",
+        "worker": null,
+        "label": "Accepted PROJ-4 — you work on it",
+        "ok": true,
+        "bill": null
+      }
+    ],
+    "drops": [],
+    "reviews": [],
+    "pickups": [],
+    "nextDropId": 2
+  },
+  "nextSessionId": 1
+}
